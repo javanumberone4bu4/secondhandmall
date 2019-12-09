@@ -25,6 +25,7 @@ import java.util.List;
  */
 @Controller
 public class GoodsDetailController {
+
     private IGoodsService goodsService;
     private ISumClassifyService sumClassifyService;
     private ICommentsService commentsService;

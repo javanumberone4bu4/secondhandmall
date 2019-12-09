@@ -27,7 +27,7 @@ public class SumClassifyController {
         this.goodsService = goodsService;
     }
 
-    @GetMapping("/sumClassify/all")
+    @GetMapping("/")
     @ApiOperation(value = "查询所有总分类")
     public String selectAll(Model model, HttpSession session){
         List<Sumclassify> sumclassifies = sumClassifyService.selectAll();
@@ -43,10 +43,6 @@ public class SumClassifyController {
         model.addAttribute("upTime",upTimes);
         model.addAttribute("like",likes);
         return "index";
-    }
-    @GetMapping("/")
-    public String get(){
-        return "redirect:/sumClassify/all";
     }
 
 
