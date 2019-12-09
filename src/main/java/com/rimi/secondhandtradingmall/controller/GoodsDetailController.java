@@ -48,6 +48,9 @@ public class GoodsDetailController {
         model.addAttribute("comments",comments);
         if(goods.getGoodsDescription().contains(",")){
             String[] split = goods.getGoodsDescription().split(",");
+            for (String s : split) {
+                System.out.println(s);
+            }
             model.addAttribute("descriptions6",split);
         }else{
             model.addAttribute("descriptions6",goods.getGoodsDescription());

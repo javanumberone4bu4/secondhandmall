@@ -24,7 +24,7 @@
         </div>
         <ul class="layui-nav close" >
             <li class="layui-nav-item layui-this"><a href="/">首页</a></li>
-            <li class="layui-nav-item" th:each="sumclassify : ${session.sumClassifies2}"><a th:href="'/list?sumclassifyName='+${sumclassify.getSumclassifyName()}+'&sumclassifyId='+${sumclassify.getSumclassifyId()}+'&pageNum=1&pageSize=3'" ><span id="clickNum" th:text="${sumclassify.getSumclassifyName()}" ></span></a></li>
+            <li class="layui-nav-item" th:each="sumclassify : ${session.sumClassifies2}"><a th:href="'/list?sumclassifyName='+${sumclassify.getSumclassifyName()}+'&sumclassifyId='+${sumclassify.getSumclassifyId()}+'&pageNum=1&pageSize=3'" ><input id="clickId1" type="text" style="display: none" th:value="${sumclassify.getSumclassifyId()}" /><span id="clickNum" th:text="${sumclassify.getSumclassifyName()}" ></span></a></li>
         </ul>
         <button id="switch">
             <span></span><span class="second"></span><span class="third"></span>

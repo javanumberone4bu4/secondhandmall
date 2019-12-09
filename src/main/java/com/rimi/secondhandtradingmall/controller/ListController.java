@@ -40,17 +40,13 @@ public class ListController {
         List<Secondclassify> secondclassifies = secondClassifyService.selectSecond(vo.getSumclassifyId());
         model.addAttribute("secondclassifies",secondclassifies);
         session.setAttribute("secondclassifies",secondclassifies);
-        //Sumclassify sumclassify = sumClassifyService.selectByName(vo.getSumclassifyName());
-        //sumclassify.setSumclassifyClicknum(sumclassify.getSumclassifyClicknum()+1);
-        //int update = sumClassifyService.update(sumclassify);
+        Sumclassify sumclassify = sumClassifyService.selectByName(vo.getSumclassifyName());
+        sumclassify.setSumclassifyClicknum(sumclassify.getSumclassifyClicknum()+1);
+        int update = sumClassifyService.update(sumclassify);
         List<Goods> goods1 = goodsService.selectSecond(vo.getSumclassifyId());
         session.setAttribute("count",goods1.size());
-        System.out.println(goods1.size());
         PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
         List<Goods> cache = goodsService.selectSecond(vo.getSumclassifyId());
-        for (Goods goods : cache) {
-            System.out.println(goods);
-        }
         model.addAttribute("cache", cache);
         return "list";
     }
