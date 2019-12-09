@@ -23,8 +23,8 @@
             <a class="shop" href="usershop.html"><i class="layui-icon layui-icon-house-shop"></i><span class="layui-badge" th:text="${session.shoppingcarmsgSumnum}"></span></a>
         </div>
         <ul class="layui-nav close" >
-            <li class="layui-nav-item layui-this"><a href="/sumClassify/all">首页</a></li>
-            <li class="layui-nav-item" th:each="sumclassify : ${sumClassifies}"><a th:href="'/list?sumclassifyName='+${sumclassify.getSumclassifyName()}+'&sumclassifyId='+${sumclassify.getSumclassifyId()}+'&pageNum=1&pageSize=3'" ><span id="clickNum" th:text="${sumclassify.getSumclassifyName()}" ></span></a></li>
+            <li class="layui-nav-item layui-this"><a href="/">首页</a></li>
+            <li class="layui-nav-item" th:each="sumclassify : ${session.sumClassifies2}"><a th:href="'/list?sumclassifyName='+${sumclassify.getSumclassifyName()}+'&sumclassifyId='+${sumclassify.getSumclassifyId()}+'&pageNum=1&pageSize=3'" ><span id="clickNum" th:text="${sumclassify.getSumclassifyName()}" ></span></a></li>
         </ul>
         <button id="switch">
             <span></span><span class="second"></span><span class="third"></span>
