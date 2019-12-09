@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class SumclassifyVo {
+
     private String sumclassifyName;
     private Integer sumclassifyId;
     private Integer pageNum;

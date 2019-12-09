@@ -35,8 +35,7 @@ public class SumClassifyController {
         List<Goods> goods = goodsService.selectTop();
         List<Goods> upTimes = goodsService.selectTime();
         List<Goods> likes = goodsService.selectLike();
-        model.addAttribute("sumClassifies",sumclassifies);
-        session.setAttribute("sumClassifies2",sumclassifies);
+        session.setAttribute("sumClassifies",sumclassifies);
         model.addAttribute("top",top);
         model.addAttribute("goods",goods);
         session.setAttribute("goods",goods);
