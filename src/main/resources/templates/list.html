@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>二手交易商城-列表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/static/css/index.css">
+  <script src="/layui/require.js"></script>
+</head>
+<body>
+
+<div class="house-header">
+  <div class="layui-container">
+    <div class="house-nav">
+      <span class="layui-breadcrumb" lay-separator="|">
+        <a href="login.html">登录</a>
+        <a href="">我的订单</a>
+        <a href="">在线客服</a>
+      </span>
+      <span class="layui-breadcrumb house-breadcrumb-icon" lay-separator=" ">
+        <a id="search"><i class="layui-icon layui-icon-house-find"></i></a>
+        <a href="login.html"><i class="layui-icon layui-icon-username"></i></a>
+        <a href="usershop.html"><i class="layui-icon layui-icon-house-shop"></i></a>
+      </span>
+    </div> 
+    <div class="house-banner layui-form">
+      <a class="banner" href="/sumClassify/all">
+        <img src="/static/img/banner.png" alt="二手交易商城">
+      </a>
+      <div class="layui-input-inline">
+        <input type="text" placeholder="搜索好物" class="layui-input"><i class="layui-icon layui-icon-house-find"></i>
+      </div>
+      <a class="shop" href="usershop.html"><i class="layui-icon layui-icon-house-shop"></i><span class="layui-badge" th:text="${session.shoppingcarmsgSumnum}"></span></a>
+    </div>
+    <ul class="layui-nav close">
+      <li class="layui-nav-item layui-this"><a href="/sumClassify/all">首页</a></li>
+      <li class="layui-nav-item" th:each="sumclassify : ${session.sumClassifies2}"><a th:href="'/list?sumclassifyName='+${sumclassify.getSumclassifyName()}+'&sumclassifyId='+${sumclassify.getSumclassifyId()}+'&pageNum=1&pageSize=3'" th:text="${sumclassify.getSumclassifyName()}"></a></li>
+    </ul>
+    <button id="switch">
+      <span></span><span class="second"></span><span class="third"></span>
+    </button>
+  </div>
+</div>
+
+<div class="layui-container house-list">
+  <p class="classify"><a href="/sumClassify/all">首页</a> &gt; <span th:text="${sumclassifyName.getSumclassifyName()}"></span></p>
+  <div class="list-banner"></div>
+  <div class="filter">
+    <div><span>分类：</span><ul><li class="active">全部</li><li th:each="secondclassify : ${session.secondclassifies}" th:text="${secondclassify.getSecondclassifyName()}"></li></ul></div>
+    <div><span>排序：</span><ul><li class="active">默认</li><li>价格<i class="layui-icon layui-icon-house-up"></i><i class="layui-icon layui-icon-triangle-d"></i></li><li>上架时间</li></ul></div>
+  </div>
+  <div class="layui-row layui-col-space25">
+    <div class="layui-col-xs6 layui-col-sm3" th:each="goods : ${cache}">
+      <div class="list-detail">
+        <div class="img" ><img th:src="${goods.getGoodsLogo()}"></div>
+        <p class="title" ><a href="detail.html" th:text="${goods.getGoodsName()}"></a></p>
+        <p ><span class="price">￥<span th:text="${goods.getGoodsPrice()}"></span></span><span th:text="${goods.getGoodsPaypeople()}"></span>人付款</p>
+      </div>
+    </div>
+  </div>
+  <div id="houseList"></div>
+</div>
+
+<div class="house-footer">
+  <div class="layui-container">
+    <div class="intro">
+      <span class="first"><i class="layui-icon layui-icon-house-shield"></i>7天无理由退换货</span>
+      <span class="second"><i class="layui-icon layui-icon-house-car"></i>满99元全场包邮</span>
+      <span class="third"><i class="layui-icon layui-icon-house-diamond"></i>100%品质保证</span>
+      <span class="last"><i class="layui-icon layui-icon-house-tel"></i>客服400-2888-966</span>
+    </div>
+    <div class="about">
+      <span class="layui-breadcrumb" lay-separator="|">
+        <a href="/about">关于我们</a>
+        <a href="/about">帮助中心</a>
+        <a href="/about">售后服务</a>
+        <a href="/about">配送服务</a>
+        <a href="/about">关于货源</a>
+      </span>
+      <p>二手交易商城版权所有 &copy; 2012-2020</p>
+    </div>   
+  </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script th:inline="javascript">
+  layui.config({
+    base: '/static/js/' //layui自定义layui组件目录
+  }).use(['jquery','laypage'],function () {
+    var $ = layui.jquery
+            ,laypage=layui.laypage;
+    $.ajax({
+      type: "post",
+      url: "/shoppingCarMsg/note",//请求地址已在另一处设置
+      data: {telephone:"18780811904"},
+      dataType: "json",
+      success: function(result){
+        console.log(result);
+      }
+    });
+    var count=[[${session.count}]];
+    //执行一个laypage实例
+    laypage.render({
+      elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
+      ,count: count //数据总数，从服务端得到
+      ,limit:3
+      ,curr:1
+      ,prev:'上一页'
+      ,netx:'下一页'
+      ,first:1
+      ,last:50
+      ,layout:['page','next']
+      ,jump:function (obj,first) {
+        if (!first) {
+          $('list-detail').empty();
+          location.href="/list?pageNum="+obj.curr+"&pageSize="+obj.limit+"&sumclassifyName="+[[${session.sumclassifyName.sumclassifyName}]]+"&sumclassifyId="+[[${session.sumclassifyName.sumclassifyId}]];
+        }
+      }
+  });
+
+  })
+
+</script>
+<script>
+  layui.config({
+    base: '/static/js/'
+  }).use('house'); 
+</script>
+
+</body>
+</html>

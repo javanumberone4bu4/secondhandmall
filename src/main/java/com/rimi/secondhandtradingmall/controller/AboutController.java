@@ -1,0 +1,16 @@
+package com.rimi.secondhandtradingmall.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+/**
+ * @author Wang Xiaoping
+ * @date 2019/12/5 8:56
+ */
+@Controller
+public class AboutController {
+    @GetMapping("/about")
+    public String about(){
+        return "about";
+    }
+}
