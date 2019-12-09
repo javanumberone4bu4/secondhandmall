@@ -3,17 +3,15 @@ package com.rimi.secondhandtradingmall.bean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.util.List;
-
 import lombok.Data;
 
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/4 15:41
+ * @author junelee
+ * @date 2019/12/9 17:03
  */
-@ApiModel(value = "com.rimi.secondhandtradingmall.bean.Singlecenter")
+@ApiModel(value = "com-rimi-secondhandtradingmall-bean-Singlecenter")
 @Data
 public class Singlecenter implements Serializable {
     /**
@@ -32,7 +30,7 @@ public class Singlecenter implements Serializable {
      * 用户名
      */
     @ApiModelProperty(value = "用户名")
-    private String telephone;
+    private String sTelephone;
 
     /**
      * 待发货数
@@ -51,6 +49,12 @@ public class Singlecenter implements Serializable {
      */
     @ApiModelProperty(value = "积分数")
     private Integer singlecenterMark;
-    private List<Comments> list9;
+
+    /**
+     * 个人收货地址
+     */
+    @ApiModelProperty(value = "个人收货地址")
+    private String singlecenterAddress;
+
     private static final long serialVersionUID = 1L;
 }

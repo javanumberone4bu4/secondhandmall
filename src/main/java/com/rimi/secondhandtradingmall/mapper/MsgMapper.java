@@ -5,8 +5,8 @@ import com.rimi.secondhandtradingmall.bean.Msg;
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/4 15:45
+ * @author junelee
+ * @date 2019/12/9 14:24
  */
 public interface MsgMapper {
     int deleteByPrimaryKey(Integer msgId);

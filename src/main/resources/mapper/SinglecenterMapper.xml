@@ -6,15 +6,16 @@
     <!--@Table singlecenter-->
     <id column="singlecenter_id" jdbcType="INTEGER" property="singlecenterId" />
     <result column="singlecenter_image" jdbcType="VARCHAR" property="singlecenterImage" />
-    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="s_telephone" jdbcType="VARCHAR" property="sTelephone" />
     <result column="singlecenter_dfnum" jdbcType="INTEGER" property="singlecenterDfnum" />
     <result column="singlecenter_dsnum" jdbcType="INTEGER" property="singlecenterDsnum" />
     <result column="singlecenter_mark" jdbcType="INTEGER" property="singlecenterMark" />
+    <result column="singlecenter_address" jdbcType="VARCHAR" property="singlecenterAddress" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    singlecenter_id, singlecenter_image, telephone, singlecenter_dfnum, singlecenter_dsnum, 
-    singlecenter_mark
+    singlecenter_id, singlecenter_image, s_telephone, singlecenter_dfnum, singlecenter_dsnum, 
+    singlecenter_mark, singlecenter_address
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -30,10 +31,12 @@
   </delete>
   <insert id="insert" keyColumn="singlecenter_id" keyProperty="singlecenterId" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into singlecenter (singlecenter_image, telephone, singlecenter_dfnum, 
-      singlecenter_dsnum, singlecenter_mark)
-    values (#{singlecenterImage,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{singlecenterDfnum,jdbcType=INTEGER}, 
-      #{singlecenterDsnum,jdbcType=INTEGER}, #{singlecenterMark,jdbcType=INTEGER})
+    insert into singlecenter (singlecenter_image, s_telephone, singlecenter_dfnum, 
+      singlecenter_dsnum, singlecenter_mark, singlecenter_address
+      )
+    values (#{singlecenterImage,jdbcType=VARCHAR}, #{sTelephone,jdbcType=VARCHAR}, #{singlecenterDfnum,jdbcType=INTEGER}, 
+      #{singlecenterDsnum,jdbcType=INTEGER}, #{singlecenterMark,jdbcType=INTEGER}, #{singlecenterAddress,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="singlecenter_id" keyProperty="singlecenterId" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -42,8 +45,8 @@
       <if test="singlecenterImage != null">
         singlecenter_image,
       </if>
-      <if test="telephone != null">
-        telephone,
+      <if test="sTelephone != null">
+        s_telephone,
       </if>
       <if test="singlecenterDfnum != null">
         singlecenter_dfnum,
@@ -54,13 +57,16 @@
       <if test="singlecenterMark != null">
         singlecenter_mark,
       </if>
+      <if test="singlecenterAddress != null">
+        singlecenter_address,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="singlecenterImage != null">
         #{singlecenterImage,jdbcType=VARCHAR},
       </if>
-      <if test="telephone != null">
-        #{telephone,jdbcType=VARCHAR},
+      <if test="sTelephone != null">
+        #{sTelephone,jdbcType=VARCHAR},
       </if>
       <if test="singlecenterDfnum != null">
         #{singlecenterDfnum,jdbcType=INTEGER},
@@ -71,6 +77,9 @@
       <if test="singlecenterMark != null">
         #{singlecenterMark,jdbcType=INTEGER},
       </if>
+      <if test="singlecenterAddress != null">
+        #{singlecenterAddress,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter">
@@ -80,8 +89,8 @@
       <if test="singlecenterImage != null">
         singlecenter_image = #{singlecenterImage,jdbcType=VARCHAR},
       </if>
-      <if test="telephone != null">
-        telephone = #{telephone,jdbcType=VARCHAR},
+      <if test="sTelephone != null">
+        s_telephone = #{sTelephone,jdbcType=VARCHAR},
       </if>
       <if test="singlecenterDfnum != null">
         singlecenter_dfnum = #{singlecenterDfnum,jdbcType=INTEGER},
@@ -92,6 +101,9 @@
       <if test="singlecenterMark != null">
         singlecenter_mark = #{singlecenterMark,jdbcType=INTEGER},
       </if>
+      <if test="singlecenterAddress != null">
+        singlecenter_address = #{singlecenterAddress,jdbcType=VARCHAR},
+      </if>
     </set>
     where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
   </update>
@@ -99,10 +111,11 @@
     <!--@mbg.generated-->
     update singlecenter
     set singlecenter_image = #{singlecenterImage,jdbcType=VARCHAR},
-      telephone = #{telephone,jdbcType=VARCHAR},
+      s_telephone = #{sTelephone,jdbcType=VARCHAR},
       singlecenter_dfnum = #{singlecenterDfnum,jdbcType=INTEGER},
       singlecenter_dsnum = #{singlecenterDsnum,jdbcType=INTEGER},
-      singlecenter_mark = #{singlecenterMark,jdbcType=INTEGER}
+      singlecenter_mark = #{singlecenterMark,jdbcType=INTEGER},
+      singlecenter_address = #{singlecenterAddress,jdbcType=VARCHAR}
     where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -11,10 +11,12 @@
     <result column="orders_summoney" jdbcType="DOUBLE" property="ordersSummoney" />
     <result column="orders_status" jdbcType="VARCHAR" property="ordersStatus" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="orders_address" jdbcType="VARCHAR" property="ordersAddress" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    orders_id, orders_msg, goods_id, orders_sumnum, orders_summoney, orders_status, telephone
+    orders_id, orders_msg, goods_id, orders_sumnum, orders_summoney, orders_status, telephone, 
+    orders_address
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -31,11 +33,11 @@
   <insert id="insert" keyColumn="orders_id" keyProperty="ordersId" parameterType="com.rimi.secondhandtradingmall.bean.Orders" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into orders (orders_msg, goods_id, orders_sumnum, 
-      orders_summoney, orders_status, telephone
-      )
+      orders_summoney, orders_status, telephone, 
+      orders_address)
     values (#{ordersMsg,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{ordersSumnum,jdbcType=INTEGER}, 
-      #{ordersSummoney,jdbcType=DOUBLE}, #{ordersStatus,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}
-      )
+      #{ordersSummoney,jdbcType=DOUBLE}, #{ordersStatus,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{ordersAddress,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="orders_id" keyProperty="ordersId" parameterType="com.rimi.secondhandtradingmall.bean.Orders" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -59,6 +61,9 @@
       <if test="telephone != null">
         telephone,
       </if>
+      <if test="ordersAddress != null">
+        orders_address,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="ordersMsg != null">
@@ -78,6 +83,9 @@
       </if>
       <if test="telephone != null">
         #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ordersAddress != null">
+        #{ordersAddress,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -103,6 +111,9 @@
       <if test="telephone != null">
         telephone = #{telephone,jdbcType=VARCHAR},
       </if>
+      <if test="ordersAddress != null">
+        orders_address = #{ordersAddress,jdbcType=VARCHAR},
+      </if>
     </set>
     where orders_id = #{ordersId,jdbcType=INTEGER}
   </update>
@@ -114,7 +125,16 @@
       orders_sumnum = #{ordersSumnum,jdbcType=INTEGER},
       orders_summoney = #{ordersSummoney,jdbcType=DOUBLE},
       orders_status = #{ordersStatus,jdbcType=VARCHAR},
-      telephone = #{telephone,jdbcType=VARCHAR}
+      telephone = #{telephone,jdbcType=VARCHAR},
+      orders_address = #{ordersAddress,jdbcType=VARCHAR}
     where orders_id = #{ordersId,jdbcType=INTEGER}
   </update>
+    <insert id="insertAll">
+      insert into orders (orders_msg, goods_id, orders_sumnum,
+      orders_summoney, telephone
+      )
+      values (#{orderForm,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{shoppingcarNum,jdbcType=INTEGER},
+      #{total,jdbcType=DOUBLE}, #{telephone,jdbcType=VARCHAR}
+      )
+    </insert>
 </mapper>

@@ -1,6 +1,8 @@
 package com.rimi.secondhandtradingmall.mapper;
 
+import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Shoppingcar;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * ${Description}
@@ -20,4 +22,8 @@ public interface ShoppingcarMapper {
     int updateByPrimaryKeySelective(Shoppingcar record);
 
     int updateByPrimaryKey(Shoppingcar record);
+
+    Goods selectAllGoodsByPhoneAndGoodsId(@Param("goodsId") Integer goodsId, @Param("telephone") String telephone);
+
+    boolean dropShoppingcarGoodsByGoodsIdAndPhone(@Param("id") Integer id, @Param("telephone") String telephone);
 }

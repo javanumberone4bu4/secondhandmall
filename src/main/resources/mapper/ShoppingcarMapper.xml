@@ -105,4 +105,12 @@
       telephone = #{telephone,jdbcType=VARCHAR}
     where shoppingcar_id = #{shoppingcarId,jdbcType=INTEGER}
   </update>
+    <select id="selectAllGoodsByPhoneAndGoodsId" resultType="com.rimi.secondhandtradingmall.bean.Goods">
+      select *
+      from shoppingcar where goods_id = #{goodsId,jdbcType=INTEGER} and telephone = #{telephone,jdbcType=VARCHAR};
+    </select>
+  <delete id="dropShoppingcarGoodsByGoodsIdAndPhone">
+    delete from shoppingcar
+    where shoppingcar_id = #{id,jdbcType=INTEGER} and telephone = #{telephone,jdbcType=VARCHAR};
+  </delete>
 </mapper>

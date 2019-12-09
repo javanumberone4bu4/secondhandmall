@@ -5,8 +5,8 @@ import com.rimi.secondhandtradingmall.bean.Singlecenter;
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/4 15:41
+ * @author junelee
+ * @date 2019/12/9 17:03
  */
 public interface SinglecenterMapper {
     int deleteByPrimaryKey(Integer singlecenterId);

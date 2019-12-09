@@ -7,10 +7,11 @@
     <id column="msg_id" jdbcType="INTEGER" property="msgId" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="msg_message" jdbcType="VARCHAR" property="msgMessage" />
+    <result column="session_id" jdbcType="VARCHAR" property="sessionId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    msg_id, telephone, msg_message
+    msg_id, telephone, msg_message, session_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -26,8 +27,10 @@
   </delete>
   <insert id="insert" keyColumn="msg_id" keyProperty="msgId" parameterType="com.rimi.secondhandtradingmall.bean.Msg" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into msg (telephone, msg_message)
-    values (#{telephone,jdbcType=VARCHAR}, #{msgMessage,jdbcType=VARCHAR})
+    insert into msg (telephone, msg_message, session_id
+      )
+    values (#{telephone,jdbcType=VARCHAR}, #{msgMessage,jdbcType=VARCHAR}, #{sessionId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="msg_id" keyProperty="msgId" parameterType="com.rimi.secondhandtradingmall.bean.Msg" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -39,6 +42,9 @@
       <if test="msgMessage != null">
         msg_message,
       </if>
+      <if test="sessionId != null">
+        session_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="telephone != null">
@@ -46,6 +52,9 @@
       </if>
       <if test="msgMessage != null">
         #{msgMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionId != null">
+        #{sessionId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -59,6 +68,9 @@
       <if test="msgMessage != null">
         msg_message = #{msgMessage,jdbcType=VARCHAR},
       </if>
+      <if test="sessionId != null">
+        session_id = #{sessionId,jdbcType=VARCHAR},
+      </if>
     </set>
     where msg_id = #{msgId,jdbcType=INTEGER}
   </update>
@@ -66,7 +78,8 @@
     <!--@mbg.generated-->
     update msg
     set telephone = #{telephone,jdbcType=VARCHAR},
-      msg_message = #{msgMessage,jdbcType=VARCHAR}
+      msg_message = #{msgMessage,jdbcType=VARCHAR},
+      session_id = #{sessionId,jdbcType=VARCHAR}
     where msg_id = #{msgId,jdbcType=INTEGER}
   </update>
 </mapper>

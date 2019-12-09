@@ -3,17 +3,15 @@ package com.rimi.secondhandtradingmall.bean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.util.List;
-
 import lombok.Data;
 
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/4 15:45
+ * @author junelee
+ * @date 2019/12/9 14:24
  */
-@ApiModel(value = "com.rimi.secondhandtradingmall.bean.Msg")
+@ApiModel(value = "com-rimi-secondhandtradingmall-bean-Msg")
 @Data
 public class Msg implements Serializable {
     /**
@@ -33,5 +31,12 @@ public class Msg implements Serializable {
      */
     @ApiModelProperty(value = "验证码")
     private String msgMessage;
+
+    /**
+     * 用户的sessionId
+     */
+    @ApiModelProperty(value = "用户的sessionId")
+    private String sessionId;
+
     private static final long serialVersionUID = 1L;
 }
