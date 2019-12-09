@@ -1,6 +1,7 @@
 package com.rimi.secondhandtradingmall.mapper;
 
 import com.rimi.secondhandtradingmall.bean.Collections;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * ${Description}
@@ -20,4 +21,6 @@ public interface CollectionsMapper {
     int updateByPrimaryKeySelective(Collections record);
 
     int updateByPrimaryKey(Collections record);
+
+    Collections selectByTelephoneAndGoodsId(@Param("telephone")String telephone,@Param("goodsId")Integer goodsId);
 }

@@ -1,6 +1,7 @@
 package com.rimi.secondhandtradingmall.mapper;
 
-import com.rimi.secondhandtradingmall.bean.Orders;import org.apache.ibatis.annotations.Param;
+import com.rimi.secondhandtradingmall.bean.Orders;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * ${Description}

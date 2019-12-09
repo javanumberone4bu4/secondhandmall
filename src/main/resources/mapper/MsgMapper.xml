@@ -82,4 +82,7 @@
       session_id = #{sessionId,jdbcType=VARCHAR}
     where msg_id = #{msgId,jdbcType=INTEGER}
   </update>
+    <select id="selectByTelephoneAndSessionId" resultMap="BaseResultMap">
+      select * from msg where telephone=#{telephone} and session_id=#{sessionId}
+    </select>
 </mapper>

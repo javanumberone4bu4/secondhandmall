@@ -117,7 +117,8 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
       $(this).siblings().children("i").replaceWith("");
     });
   });
-  
+
+
   //详情页——数量选择
   var btnDetail = $(".house-detail").find(".shopChoose").find(".btn-input").children("button")
   ,inpDetail = $(".house-detail").find(".shopChoose").find(".btn-input").children("input")
@@ -148,13 +149,13 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   });
   
   //详情页——分页
-  laypage.render({
-    elem: 'detailList'
-    ,count: 50
-    ,theme: '#daba91'
-    ,layout: ['page', 'next']
-  });
-  
+  // laypage.render({
+  //   elem: 'detailList'
+  //   ,count: 50
+  //   ,theme: '#daba91'
+  //   ,layout: ['page', 'next']
+  // });
+  //
   //详情页——收藏
   $(".house-detail").find(".shopChoose").find(".collect").on('click', function(){
     $(this).find("#collect").addClass("layui-icon-rate-solid").removeClass("layui-icon-rate");
@@ -319,7 +320,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
       };
     }
     ,text: {
-      none: '<div class="house-usershop-table-none"><div><img src="../res/static/img/shopnone.png"></div><p>购物车空空如也</p><a class="layui-btn layui-btn-primary" href="list.html">去逛逛</a></div>'
+      none: '<div class="house-usershop-table-none"><div><img src="/static/img/shopnone.png"></div><p>购物车空空如也</p><a class="layui-btn layui-btn-primary" href="list.html">去逛逛</a></div>'
     }
     ,id: 'house-usershop-table'
   });

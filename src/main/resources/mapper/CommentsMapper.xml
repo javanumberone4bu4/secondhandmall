@@ -13,7 +13,7 @@
     <association property="singlecenter" javaType="com.rimi.secondhandtradingmall.bean.Singlecenter">
       <id column="singlecenter_id" jdbcType="INTEGER" property="singlecenterId" />
       <result column="singlecenter_image" jdbcType="VARCHAR" property="singlecenterImage" />
-      <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+      <result column="s_telephone" jdbcType="VARCHAR" property="sTelephone" />
       <result column="singlecenter_dfnum" jdbcType="INTEGER" property="singlecenterDfnum" />
       <result column="singlecenter_dsnum" jdbcType="INTEGER" property="singlecenterDsnum" />
       <result column="singlecenter_mark" jdbcType="INTEGER" property="singlecenterMark" />
@@ -113,6 +113,6 @@
     where comments_id = #{commentsId,jdbcType=INTEGER}
   </update>
     <select id="selectByGoodsId" resultMap="BaseResultMap">
-      select c.comments_id as commentsId,c.goods_id as goodsId,c.telephone as telephone,c.comments_content as commentsContent,c.comments_pictures as commentsPictures,c.comments_time as commentsTime,s.singlecenter_image as singlecenterImage from comments c join singlecenter s on c.telephone=s.telephone where goods_id=#{goodsId}
+      select c.comments_id as comments_id,c.goods_id as goods_id,c.telephone as telephone,c.comments_content as comments_content,c.comments_pictures as comments_pictures,c.comments_time as comments_time,s.singlecenter_image as singlecenter_image from comments c left join singlecenter s on c.telephone=s.s_telephone where c.goods_id=#{goodsId}
     </select>
 </mapper>

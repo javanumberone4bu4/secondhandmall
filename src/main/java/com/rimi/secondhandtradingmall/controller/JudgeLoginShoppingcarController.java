@@ -1,5 +1,7 @@
 package com.rimi.secondhandtradingmall.controller;
 
+import com.rimi.secondhandtradingmall.bean.Msg;
+import com.rimi.secondhandtradingmall.service.IMsgService;
 import com.rimi.secondhandtradingmall.vo.AllGoodsVo2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +18,21 @@ import java.io.IOException;
  */
 @Controller
 public class JudgeLoginShoppingcarController {
+    private IMsgService msgService;
 
-    @GetMapping("/judgeLogin")
+    public JudgeLoginShoppingcarController(IMsgService msgService) {
+        this.msgService = msgService;
+    }
+
+    @GetMapping("/judgeLogin2")
     public String judgeLogin(AllGoodsVo2 vo, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        Msg msg = msgService.selectByTelephoneAndSessionId(vo.getTelephone(), vo.getSessionId());
         // 判断当前用户是否登陆
-        if (request.getAttribute("sessionId")==null){
+        if (msg == null) {
             return "redirect:/login";
         }
 
-        request.setAttribute("sessionId",vo.getTelephone());
+        request.setAttribute("sessionId", vo.getTelephone());
         // 调用支付功能
         return "purchase";
     }

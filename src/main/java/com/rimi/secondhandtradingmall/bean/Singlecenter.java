@@ -7,9 +7,8 @@ import lombok.Data;
 
 /**
  * ${Description}
- *
- * @author junelee
- * @date 2019/12/9 17:03
+ * @author Wang Xiaoping
+ * @date 2019/12/9 16:36
  */
 @ApiModel(value = "com-rimi-secondhandtradingmall-bean-Singlecenter")
 @Data

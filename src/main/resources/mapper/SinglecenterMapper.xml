@@ -15,7 +15,11 @@
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     singlecenter_id, singlecenter_image, s_telephone, singlecenter_dfnum, singlecenter_dsnum, 
+<<<<<<< Updated upstream
     singlecenter_mark, singlecenter_address
+=======
+    singlecenter_mark
+>>>>>>> Stashed changes
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -32,11 +36,17 @@
   <insert id="insert" keyColumn="singlecenter_id" keyProperty="singlecenterId" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into singlecenter (singlecenter_image, s_telephone, singlecenter_dfnum, 
+<<<<<<< Updated upstream
       singlecenter_dsnum, singlecenter_mark, singlecenter_address
       )
     values (#{singlecenterImage,jdbcType=VARCHAR}, #{sTelephone,jdbcType=VARCHAR}, #{singlecenterDfnum,jdbcType=INTEGER}, 
       #{singlecenterDsnum,jdbcType=INTEGER}, #{singlecenterMark,jdbcType=INTEGER}, #{singlecenterAddress,jdbcType=VARCHAR}
       )
+=======
+      singlecenter_dsnum, singlecenter_mark)
+    values (#{singlecenterImage,jdbcType=VARCHAR}, #{sTelephone,jdbcType=VARCHAR}, #{singlecenterDfnum,jdbcType=INTEGER}, 
+      #{singlecenterDsnum,jdbcType=INTEGER}, #{singlecenterMark,jdbcType=INTEGER})
+>>>>>>> Stashed changes
   </insert>
   <insert id="insertSelective" keyColumn="singlecenter_id" keyProperty="singlecenterId" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter" useGeneratedKeys="true">
     <!--@mbg.generated-->

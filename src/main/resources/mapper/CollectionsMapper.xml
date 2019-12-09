@@ -69,4 +69,7 @@
       telephone = #{telephone,jdbcType=VARCHAR}
     where collections_id = #{collectionsId,jdbcType=INTEGER}
   </update>
+    <select id="selectByTelephoneAndGoodsId" resultMap="BaseResultMap">
+      select * from collections where telephone=#{telephone} and goods_id=#{goodsId}
+    </select>
 </mapper>

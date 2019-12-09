@@ -1,6 +1,4 @@
-package com.rimi.secondhandtradingmall.bean;
-
-import lombok.Data;
+package com.rimi.secondhandtradingmall.common;
 
 /**
  * @author junelee

@@ -39,18 +39,25 @@ public class GoodsDetailController {
     @GetMapping("/detail")
     public String detail(CommentVo vo, Model model, HttpSession session){
         Goods goods = goodsService.selectByPrimaryKey(vo.getGoodsId());
+        //if(goods!=null) {
+        //    session.setAttribute("sumNum", goods.getGoodsNum());
+        //}else{
+        //    session.setAttribute("sumNum", 0);
+        //}
         Sumclassify sumclassify = sumClassifyService.selectByGoodsId(vo.getGoodsId());
         model.addAttribute("sumclassifyDetail",sumclassify);
         List<Comments> comments1 = commentsService.selectByGoodsId(vo.getGoodsId());
-        model.addAttribute("count",comments1.size());
+        if(comments1!=null&&comments1.size()>0){
+            model.addAttribute("count",comments1.size());
+        }else {
+            model.addAttribute("count",0);
+        }
         PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
         List<Comments> comments = commentsService.selectByGoodsId(vo.getGoodsId());
         model.addAttribute("comments",comments);
+        //assert goods != null;
         if(goods.getGoodsDescription().contains(",")){
             String[] split = goods.getGoodsDescription().split(",");
-            for (String s : split) {
-                System.out.println(s);
-            }
             model.addAttribute("descriptions6",split);
         }else{
             model.addAttribute("descriptions6",goods.getGoodsDescription());
@@ -70,14 +77,14 @@ public class GoodsDetailController {
         model.addAttribute("detail",goods);
         return "detail";
     }
-    @PostMapping("/chooseNum")
-    public String chooseNum(GoodsVo vo, Model model){
-        Goods goods = goodsService.selectByPrimaryKey(vo.getGoodsId());
-        if((vo.getGoodsNum()-goods.getGoodsNum()>0)){
-            model.addAttribute("value",0);
-        }else {
-            model.addAttribute("value",1);
-        }
-        return "detail";
-    }
+    //@PostMapping("/chooseNum")
+    //public String chooseNum(GoodsVo vo, Model model){
+    //    Goods goods = goodsService.selectByPrimaryKey(vo.getGoodsId());
+    //    if((vo.getGoodsNum()-goods.getGoodsNum()>0)){
+    //        model.addAttribute("value",0);
+    //    }else {
+    //        model.addAttribute("value",1);
+    //    }
+    //    return "detail";
+    //}
 }

@@ -24,13 +24,13 @@
     <div class="layui-col-sm6 shopChoose">
       <div class="title"><p th:text="${detail.getGoodsName()}"></p></div>
       <p><span>￥<big><b th:text="${detail.getGoodsPrice()}"></b></big></span></p>
-      <dl><dt>颜色</dt><dd class="active" th:each="goods : ${colors}" th:text="${colors[goodsStat.index]}"></dd></dl>
-      <dl><dt>尺寸</dt><dd class="active" th:each="goods : ${sizes}" th:text="${sizes[goodsStat.index]}"></dd></dl>
+      <dl><dt>颜色</dt><dd  th:each="goods : ${colors}" th:text="${colors[goodsStat.index]}"></dd></dl>
+      <dl><dt>尺寸</dt><dd  th:each="goods : ${sizes}" th:text="${sizes[goodsStat.index]}"></dd></dl>
       <div class="number layui-form">
         <label>数量</label>
         <div class="layui-input-inline btn-input">
           <button class="layui-btn layui-btn-primary sup">-</button>
-          <input type="text" class="layui-input">
+          <input type="text" class="layui-input" id="payNum">
           <button class="layui-btn layui-btn-primary sub">+</button>
         </div>
         <p class="inputTips" >已超出库存数量！</p>
@@ -47,7 +47,7 @@
       <div class="layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
           <li class="layui-this">详情</li>
-            <li id="comments9">评论 <span>(<span th:text="${count}"></span>)</span></li>
+            <li>评论 <span>(<span th:text="${count}"></span>)</span></li>
         </ul>
         <div class="layui-tab-content">
           <div class="layui-tab-item layui-show" th:each="goods : ${descriptions6}">
@@ -108,6 +108,7 @@
       laypage.render({
           elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
           ,count: count //数据总数，从服务端得到
+          ,theme: '#daba91'
           ,limit:3
           ,curr:1
           ,prev:'上一页'
@@ -122,22 +123,48 @@
               }
           }
       });
-    var goodsNum=$(".layui-input").val();
-    var goodsId=[[${detail.GoodsId}]];
-    $('.sale').on('click',function () {
+    //获取浏览器的sessionId
+    function getSessionId(){
+      var c_name = 'JSESSIONID';
+      if(document.cookie.length>0){
+        c_start=document.cookie.indexOf(c_name + "=")
+        if(c_start!=-1){
+          c_start=c_start + c_name.length+1
+          c_end=document.cookie.indexOf(";",c_start)
+          if(c_end==-1) c_end=document.cookie.length
+          return unescape(document.cookie.substring(c_start,c_end));
+        }
+      }
+    }
+
+
+    // var goodsNum=$("#payNum").val();
+    //点击收藏发送异步请求
+    var goodsId=[[${detail.goodsId}]];
+    $('.collect').on('click',function () {
       $.ajax({
         type: "post",
-        url: "/chooseNum",//请求地址已在另一处设置
-        data: {goodsId:goodsId,goodsNum:goodsNum,telephone:'18780811904'},
+        url: "/chooseNum",
+        data: {goodsId:goodsId,telephone:'18780811904'},
         dataType: "json",
         success: function(result){
           console.log(result);
-          // if([[${value}]]==0){
-          //   $(".inputTips").text("");
-          // }
-          // if([[${value}]]==1){
-          //   $(".inputTips").text("已超出库存数量！")
-          // }
+        }
+      });
+    })
+    var goodsNum=$("#payNum").val();
+    //点击立即购买发送异步请求
+    var goodsId=[[${detail.goodsId}]];
+    var goodsName=[[${detail.goodsName}]];
+    var goodsPrice=[[${detail.goodsPrice}]];
+    var sessionId=getSessionId();
+    $('.sale').on('click',function () {
+      $.ajax({
+        type: "get",
+        url: "/judgeLogin?goodsId="+goodsId+"&goodsName="+goodsName+"&goodsNum="+goodsNum+"&goodsPrice="+goodsPrice+"&telephone=18780811904&sessionId="+sessionId,
+        dataType: "json",
+        success: function(result){
+          console.log(result);
         }
       });
     })

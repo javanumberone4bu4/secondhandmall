@@ -1,5 +1,6 @@
 package com.rimi.secondhandtradingmall.controller;
 
+import com.rimi.secondhandtradingmall.vo.SolrVo;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
@@ -33,19 +34,24 @@ public class SolrController {
     }
 
     @GetMapping("/query")
-    public String query(String goodsName, Model model, HttpSession session) throws IOException, SolrServerException {
+    public String query(SolrVo vo, Model model, HttpSession session) throws IOException, SolrServerException {
         //拼写查询条件
-        SolrQuery solrQuery=new SolrQuery();
-        SolrQuery solrQuery1 = solrQuery.setQuery("goodsName:" + goodsName);
-        //String intro = infomationSearchReqVO.getIntro();
-        ////转义特殊字符
-        //String searchIntro = queryParser.parse()
-        //MultiMapSolrParams solrParams = queryParser.parse("goodsName:" + goodsName);
-        //QueryResponse r = server.query(solrParams, SolrRequest.METHOD.GET);
+        SolrQuery solrQuery = new SolrQuery();
+        //StringBuffer str = new StringBuffer();
+        //str.append("cname:" + cname);
+        //str.append(" AND total:[" + total + " TO " + t2 + "]");
+        //str.append(" AND no:" + no);
+        //str.append(" AND address:" + address);
+        //str.append(" AND dt:" + dt);
+        //query.setQuery(str.toString());
+        //System.out.println(query);
+        SolrQuery solrQuery1 = solrQuery.setQuery("goodsName:" + vo.getGoodsName());
+        int start = (vo.getPageNum() - 1) * vo.getPageSize();
+        int end = vo.getPageNum() * vo.getPageSize();
         //总条数
-        solrQuery.setRows(20);
+        solrQuery.setRows(end);
         //开始条数
-        solrQuery.setStart(0);
+        solrQuery.setStart(start);
         //开启高亮
         solrQuery.setHighlight(true);
         //设置高亮字段
@@ -62,12 +68,12 @@ public class SolrController {
         //进行处理
         for (SolrDocument result : results) {
             String goodsName1 = highlighting.get(result.get("id")).get("goodsName").get(0);
-            if(!StringUtils.isEmpty(goodsName1)){
-                result.setField("goodsName",goodsName1);
+            if (!StringUtils.isEmpty(goodsName1)) {
+                result.setField("goodsName", goodsName1);
             }
         }
-        model.addAttribute("cache",results);
-        session.setAttribute("count",results.size());
+        model.addAttribute("cache", results);
+        session.setAttribute("count", results.size());
         return "list";
     }
 }
