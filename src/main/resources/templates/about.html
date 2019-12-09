@@ -10,38 +10,8 @@
 </head>
 <body>
 
-<div class="house-header">
-  <div class="layui-container">
-    <div class="house-nav">
-      <span class="layui-breadcrumb" lay-separator="|">
-        <a href="login.html">登录</a>
-        <a href="">我的订单</a>
-        <a href="">在线客服</a>
-      </span>
-      <span class="layui-breadcrumb house-breadcrumb-icon" lay-separator=" ">
-        <a id="search"><i class="layui-icon layui-icon-house-find"></i></a>
-        <a href="login.html"><i class="layui-icon layui-icon-username"></i></a>
-        <a href="usershop.html"><i class="layui-icon layui-icon-house-shop"></i></a>
-      </span>
-    </div> 
-    <div class="house-banner layui-form">
-      <a class="banner" href="/sumClassify/all">
-        <img src="/static/img/banner.png" alt="二手交易商城">
-      </a>
-      <div class="layui-input-inline">
-        <input type="text" placeholder="搜索好物" class="layui-input"><i class="layui-icon layui-icon-house-find"></i>
-      </div>
-      <a class="shop" href="usershop.html"><i class="layui-icon layui-icon-house-shop"></i><span class="layui-badge" th:text="${session.shoppingcarmsgSumnum}"></span></a>
-    </div>
-    <ul class="layui-nav close">
-      <li class="layui-nav-item layui-this"><a href="/sumClassify/all">首页</a></li>
-      <li class="layui-nav-item" th:each="sumclassify : ${session.sumClassifies2}"><a th:href="'/list?sumclassifyName='+${sumclassify.getSumclassifyName()}+'&sumclassifyId='+${sumclassify.getSumclassifyId()}+'&pageNum=1&pageSize=3'" th:text="${sumclassify.getSumclassifyName()}"></a></li>
-    </ul>
-    <button id="switch">
-      <span></span><span class="second"></span><span class="third"></span>
-    </button>
-  </div>
-</div>
+<!-- 网页头部 -->
+<div th:replace="common/house-head :: house-head"></div>
 
 <div class="layui-fulid house-about">
   <div class="house-about-banner"></div>
@@ -69,26 +39,8 @@
   </div>
 </div>
 
-<div class="house-footer">
-  <div class="layui-container">
-    <div class="intro">
-      <span class="first"><i class="layui-icon layui-icon-house-shield"></i>7天无理由退换货</span>
-      <span class="second"><i class="layui-icon layui-icon-house-car"></i>满99元全场包邮</span>
-      <span class="third"><i class="layui-icon layui-icon-house-diamond"></i>100%品质保证</span>
-      <span class="last"><i class="layui-icon layui-icon-house-tel"></i>客服400-2888-966</span>
-    </div>
-    <div class="about">
-      <span class="layui-breadcrumb" lay-separator="|">
-        <a href="/about">关于我们</a>
-        <a href="/about">帮助中心</a>
-        <a href="/about">售后服务</a>
-        <a href="/about">配送服务</a>
-        <a href="/about">关于货源</a>
-      </span>
-      <p>家居商城版权所有 &copy; 2012-2020</p>
-    </div>   
-  </div>
-</div>
+<!-- 页面footer -->
+<footer th:replace="common/footer :: footer"></footer>
 
 <script src="/layui/layui.js"></script>
 <script>

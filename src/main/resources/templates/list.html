@@ -10,7 +10,7 @@
 
 
 <div class="layui-container house-list">
-  <p class="classify"><a href="/sumClassify/all">首页</a> &gt; <span th:text="${sumclassifyName.getSumclassifyName()}"></span></p>
+  <p class="classify"><a href="/">首页</a> &gt; <span th:text="${sumclassifyName.getSumclassifyName()}"></span></p>
   <div class="list-banner"></div>
   <div class="filter">
     <div><span>分类：</span><ul><li class="active">全部</li><li th:each="secondclassify : ${session.secondclassifies}" th:text="${secondclassify.getSecondclassifyName()}"></li></ul></div>
@@ -30,7 +30,6 @@
 
  <div th:replace="common/footer :: footer"></div>
 
-<script src="/layui/layui.js"></script>
 <script th:inline="javascript">
   layui.config({
     base: '/static/js/' //layui自定义layui组件目录

@@ -27,6 +27,7 @@
         <a id="clickNum2" th:href="'/list?sumclassifyName='+${sumclassify.getSumclassifyName()}+'&sumclassifyId='+${sumclassify.getSumclassifyId()}+'&pageNum=1&pageSize=3'" >
           <img th:src="${sumclassify.getSumclassifyLogo()}">
           <div>
+            <input id="clickId2" type="hidden" th:value="${sumclassify.getSumclassifyId()}" />
             <p id="name2" th:text="${sumclassify.getSumclassifyName()}"></p>
             <span th:text="${sumclassify.getSumclassifyMoney()}"></span>
           </div>
@@ -127,31 +128,31 @@
         }
       })
     })
-    // var sumclassifyId1=$('#clickId1').val();
-    // alert(sumclassifyId1);
-    // var sumclassifyName1=$('#clickNum').val();
-    // $('#clickNum').on('click',function () {
-    //   $.ajax({
-    //     type:"get",
-    //     url:"/list?sumclassifyId="+sumclassifyId1+"&sumclassifyName="+sumclassifyName1+"&pageNum=1&pageSize=3",
-    //     dataType:"json",
-    //     success:function (result) {
-    //       console.log(result);
-    //     }
-    //   })
-    // })
-    // var sumclassifyId2=$('#clickId2').val();
-    // var sumclassifyName2=$('#name2').val();
-    // $('#clickNum2').on('click',function () {
-    //   $.ajax({
-    //     type:"get",
-    //     url:"/list?sumclassifyId="+sumclassifyId2+"&sumclassifyName="+sumclassifyName2+"&pageNum=1&pageSize=3",
-    //     dataType:"json",
-    //     success:function (result) {
-    //       console.log(result);
-    //     }
-    //   })
-    // })
+    var sumclassifyId1=$('#clickId1').val();
+    //alert(sumclassifyId1);
+    var sumclassifyName1=$('#clickNum').val();
+    $('#clickNum').on('click',function () {
+      $.ajax({
+        type:"get",
+        url:"/list?sumclassifyId="+sumclassifyId1+"&sumclassifyName="+sumclassifyName1+"&pageNum=1&pageSize=3",
+        dataType:"json",
+        success:function (result) {
+          console.log(result);
+        }
+      })
+    })
+    var sumclassifyId2=$('#clickId2').val();
+    var sumclassifyName2=$('#name2').val();
+    $('#clickNum2').on('click',function () {
+      $.ajax({
+        type:"get",
+        url:"/list?sumclassifyId="+sumclassifyId2+"&sumclassifyName="+sumclassifyName2+"&pageNum=1&pageSize=3",
+        dataType:"json",
+        success:function (result) {
+          console.log(result);
+        }
+      })
+    })
   });
 </script>
 <script>
