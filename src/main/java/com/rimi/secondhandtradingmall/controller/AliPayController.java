@@ -144,8 +144,6 @@ public class AliPayController {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-
-
         response.setContentType("text/html;charset=" + "UTF-8");
         response.getWriter().write(form);//直接将完整的表单html输出到页面
         response.getWriter().flush();

@@ -28,8 +28,6 @@ public class ShoppingCarServiceImpl implements IShoppingCarService {
     @Override
     public Goods selectAllGoodsByPhoneAndGoodsId(Integer goodsId, String telephone) {
         return shoppingcarMapper.selectAllGoodsByPhoneAndGoodsId(goodsId,telephone);
-
-
     }
 
     @Override
