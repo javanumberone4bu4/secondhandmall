@@ -47,4 +47,6 @@ public class GoodsVo2 {
     @ApiModelProperty(value = "sessionId")
     private String sessionId;
 
+
+
 }

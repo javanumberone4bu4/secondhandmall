@@ -38,4 +38,16 @@ public class ShoppingCarServiceImpl implements IShoppingCarService {
     public boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id, Object telephone) {
         return shoppingcarMapper.dropShoppingcarGoodsByGoodsIdAndPhone(id,(String)telephone);
     }
+
+    /**
+     * 查询商品总量
+     * @param telephone
+     * @return
+     */
+    @Override
+    public int selectCountByTelephone(String telephone) {
+
+        return shoppingcarMapper.selectCountByTelephone(telephone);
+
+    }
 }

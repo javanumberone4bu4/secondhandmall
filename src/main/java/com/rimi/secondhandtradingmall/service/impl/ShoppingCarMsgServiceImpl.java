@@ -22,9 +22,41 @@ public class ShoppingCarMsgServiceImpl implements IShoppingCarMsgService {
     @Override
     public int selectSumNum(String telephone) {
         Shoppingcarmsg shoppingcarmsg = shoppingcarmsgMapper.selectShoppingMsg(telephone);
-        if(shoppingcarmsg!=null){
+        if (shoppingcarmsg != null) {
             return shoppingcarmsg.getShoppingcarmsgSumnum();
         }
-      return 0;
+        return 0;
+    }
+
+    @Override
+    public Shoppingcarmsg selectCountByTelephone(String telephone) {
+        Shoppingcarmsg shoppingcarmsg = shoppingcarmsgMapper.selectShoppingMsg(telephone);
+
+        if (shoppingcarmsg != null) {
+            return shoppingcarmsg;
+        }
+        return null;
+    }
+
+    @Override
+    public int updateCountByTelephone(Shoppingcarmsg shoppingcarmsg) {
+
+        int i = shoppingcarmsgMapper.updateByPrimaryKeySelective(shoppingcarmsg);
+        if (i > 0) {
+            return i;
+        }
+        return -1;
+
+    }
+
+    @Override
+    public int insertCountByTelephone(Shoppingcarmsg shoppingcarmsg) {
+
+        int i = shoppingcarmsgMapper.insertSelective(shoppingcarmsg);
+        if (i > 0) {
+            return i;
+        }
+
+        return -1;
     }
 }

@@ -7,8 +7,10 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.rimi.secondhandtradingmall.bean.Goods;
+import com.rimi.secondhandtradingmall.bean.Shoppingcarmsg;
 import com.rimi.secondhandtradingmall.common.AcquireOrderForm;
 import com.rimi.secondhandtradingmall.service.IOrdersService;
+import com.rimi.secondhandtradingmall.service.IShoppingCarMsgService;
 import com.rimi.secondhandtradingmall.service.IShoppingCarService;
 import com.rimi.secondhandtradingmall.vo.AllGoodsVo2;
 import com.rimi.secondhandtradingmall.vo.GoodsVo2;
@@ -47,11 +49,20 @@ public class AliPayController {
     @Value("${alipay.charset}")
     private String charSet = "UTF-8";
 
+
+    /**
+     * 注入
+     */
+
+    private IShoppingCarMsgService shoppingCarMsgService;
+
     private IShoppingCarService shoppingCarService;
 
     private IOrdersService ordersService;
 
-    public AliPayController(IShoppingCarService shoppingCarService, IOrdersService ordersService) {
+    public AliPayController(IShoppingCarMsgService shoppingCarMsgService, IShoppingCarService shoppingCarService,
+                            IOrdersService ordersService) {
+        this.shoppingCarMsgService = shoppingCarMsgService;
         this.shoppingCarService = shoppingCarService;
         this.ordersService = ordersService;
     }
@@ -81,14 +92,17 @@ public class AliPayController {
         //生成订单
         String orderForm = new AcquireOrderForm().getOrderForm(getRan());
         String orderForm1 = new AcquireOrderForm().getOrderForm("1219528455234492");
-        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet, alipayPublicKey, signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet,
+                alipayPublicKey, signType);
         //获得初始化的AlipayClient
 
         //获取当前请求过来的地址
         String urls = request.getRequestURL().toString();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://localhost:80/list?sumclassifyName=居家用品&sumclassifyId=1&pageNum=1&pageSize=3");//http://10.2.3.48:8080/paySuccess
-        alipayRequest.setNotifyUrl("http://localhost:80/list?sumclassifyName=居家用品&sumclassifyId=1&pageNum=1&pageSize=3");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://localhost:80/list?sumclassifyName=居家用品&sumclassifyId=1&pageNum=1&pageSize" +
+                "=3");//http://10.2.3.48:8080/paySuccess
+        alipayRequest.setNotifyUrl("http://localhost:80/list?sumclassifyName=居家用品&sumclassifyId=1&pageNum=1&pageSize" +
+                "=3");//在公共参数中设置回跳和通知地址
 
 
         alipayRequest.setBizContent("{" +
@@ -187,7 +201,8 @@ public class AliPayController {
         //生成订单
         String orderForm = new AcquireOrderForm().getOrderForm(getRan());
         String orderForm1 = new AcquireOrderForm().getOrderForm(getRan());
-        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet, alipayPublicKey, signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet,
+                alipayPublicKey, signType);
         //获得初始化的AlipayClient
 
         //获取当前请求过来的地址
@@ -217,7 +232,7 @@ public class AliPayController {
             if (responses.isSuccess()) {
                 System.out.println("调用成功");
                 String allIds = null;
-                // TODO 删除购物车内对应商品 (若不是通过购物车支付，则不需要完成这步)
+                // 删除购物车内对应商品 (若不是通过购物车支付，则不需要完成这步)
                 // 根据商品id和用户名手机号码删除对应用户购物车的已购买的商品
                 for (Integer id : ids) {
                     allIds = id + ",";
@@ -227,13 +242,30 @@ public class AliPayController {
                     }
                 }
 
-                // TODO 生成订单
+                // 生成订单
                 boolean success = ordersService.insertAll(orderForm, allIds, allCount, total, telephone);
                 if (success) {
                     System.out.println("获取订单信息成功");
                 }
-                // TODO 算出购买后的购物车内还剩的商品数量 (若不是通过购物车支付，则不需要完成这步)
+                // 算出购买后的购物车内还剩的商品数量 (若不是通过购物车支付，则不需要完成这步)
+                //根据当前用户的手机号查询当前用户购物车内的总商品数
+                int count1 = shoppingCarService.selectCountByTelephone((String) telephone);
+                // 根据手机号查询msg里面的sumnum，有就修改，没有就添加
+                Shoppingcarmsg shoppingcarmsg = shoppingCarMsgService.selectCountByTelephone((String) telephone);
 
+                if (shoppingcarmsg != null) {
+                    // 修改总商品数量
+                    shoppingcarmsg.setShoppingcarmsgSumnum(count1);
+                    int i = shoppingCarMsgService.updateCountByTelephone(shoppingcarmsg);
+
+                } else {
+                    // 插入一个新的购物车信息
+                    Shoppingcarmsg shoppingcarmsg1 = new Shoppingcarmsg();
+                    shoppingcarmsg1.setShoppingcarmsgSumnum(count1);
+                    shoppingcarmsg1.setTelephone((String)telephone);
+                    int res = shoppingCarMsgService.insertCountByTelephone(shoppingcarmsg);
+
+                }
 
             } else {
                 System.out.println("调用失败");

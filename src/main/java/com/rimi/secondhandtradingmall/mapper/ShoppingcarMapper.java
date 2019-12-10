@@ -26,4 +26,6 @@ public interface ShoppingcarMapper {
     Goods selectAllGoodsByPhoneAndGoodsId(@Param("goodsId") Integer goodsId, @Param("telephone") String telephone);
 
     boolean dropShoppingcarGoodsByGoodsIdAndPhone(@Param("id") Integer id, @Param("telephone") String telephone);
+
+    int selectCountByTelephone(@Param("telephone") String telephone);
 }

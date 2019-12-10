@@ -8,4 +8,10 @@ import com.rimi.secondhandtradingmall.bean.Shoppingcarmsg;
  */
 public interface IShoppingCarMsgService {
     int selectSumNum(String telephone);
+
+    Shoppingcarmsg selectCountByTelephone(String telephone);
+
+    int updateCountByTelephone(Shoppingcarmsg shoppingcarmsg);
+
+    int insertCountByTelephone(Shoppingcarmsg shoppingcarmsg);
 }

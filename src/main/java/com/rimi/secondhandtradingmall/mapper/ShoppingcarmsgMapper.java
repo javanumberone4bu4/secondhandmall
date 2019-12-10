@@ -22,4 +22,6 @@ public interface ShoppingcarmsgMapper {
     int updateByPrimaryKey(Shoppingcarmsg record);
 
     Shoppingcarmsg selectShoppingMsg(String telephone);
+
+
 }

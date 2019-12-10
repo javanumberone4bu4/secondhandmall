@@ -1,12 +1,14 @@
 package com.rimi.secondhandtradingmall.mapper;
 
-import com.rimi.secondhandtradingmall.bean.Singlecenter;
+import com.rimi.secondhandtradingmall.bean.Singlecenter;import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/10 9:04
+ * @author junelee
+ * @date 2019/12/10 11:38
  */
 public interface SinglecenterMapper {
     int deleteByPrimaryKey(Integer singlecenterId);
@@ -20,4 +22,6 @@ public interface SinglecenterMapper {
     int updateByPrimaryKeySelective(Singlecenter record);
 
     int updateByPrimaryKey(Singlecenter record);
+
+    Singlecenter selectByTelephone(@Param("telephone") String telephone);
 }

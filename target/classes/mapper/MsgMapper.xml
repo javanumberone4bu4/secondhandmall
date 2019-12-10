@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rimi.secondhandtradingmall.mapper.MsgMapper">
+  <resultMap id="BaseResultMap" type="com.rimi.secondhandtradingmall.bean.Msg">
+    <!--@mbg.generated-->
+    <!--@Table msg-->
+    <id column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="msg_message" jdbcType="VARCHAR" property="msgMessage" />
+    <result column="session_id" jdbcType="VARCHAR" property="sessionId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    msg_id, telephone, msg_message, session_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from msg
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from msg
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="msg_id" keyProperty="msgId" parameterType="com.rimi.secondhandtradingmall.bean.Msg" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into msg (telephone, msg_message, session_id
+      )
+    values (#{telephone,jdbcType=VARCHAR}, #{msgMessage,jdbcType=VARCHAR}, #{sessionId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="msg_id" keyProperty="msgId" parameterType="com.rimi.secondhandtradingmall.bean.Msg" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into msg
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="msgMessage != null">
+        msg_message,
+      </if>
+      <if test="sessionId != null">
+        session_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="msgMessage != null">
+        #{msgMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionId != null">
+        #{sessionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rimi.secondhandtradingmall.bean.Msg">
+    <!--@mbg.generated-->
+    update msg
+    <set>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="msgMessage != null">
+        msg_message = #{msgMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionId != null">
+        session_id = #{sessionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rimi.secondhandtradingmall.bean.Msg">
+    <!--@mbg.generated-->
+    update msg
+    set telephone = #{telephone,jdbcType=VARCHAR},
+      msg_message = #{msgMessage,jdbcType=VARCHAR},
+      session_id = #{sessionId,jdbcType=VARCHAR}
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </update>
+    <select id="selectByTelephoneAndSessionId" resultMap="BaseResultMap">
+      select * from msg where telephone=#{telephone} and session_id=#{sessionId}
+    </select>
+</mapper>

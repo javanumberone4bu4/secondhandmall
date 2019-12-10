@@ -20,9 +20,12 @@ public interface IShoppingCarService {
 
     /**
      * 根据商品id和手机号删除当前用户已购买的购物车内的商品
+     *
      * @param id
      * @param telephone
      * @return
      */
     boolean dropShoppingcarGoodsByGoodsIdAndPhone(@Param("id") Integer id, @Param("telephone") Object telephone);
+
+    int selectCountByTelephone(@Param("telephone") String telephone);
 }
