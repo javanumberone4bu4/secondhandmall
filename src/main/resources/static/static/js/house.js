@@ -188,11 +188,11 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   //地址管理——表格
   table.render({
     elem: '#user-address'
-    ,url:  'json/address.json'
+    ,url:  '/insertAddress'
     ,skin: 'line'
     ,cols: [[
       {type:'space', width:100, align:'center', templet: '#spaceTpl', width:90}
-      ,{field:'singlecenterConsignee', title:'收货人', align:'center', width:90}
+      ,{field:'singleenterConsignee', title:'收货人', align:'center', width:90}
       ,{field:'singlecenterAddress', title:'地址', align:'center'}
       ,{field:'sTelephone', title:'联系方式', align:'center', width:120}
       ,{title:'操作', align:'center', templet: '#addressTpl', width:120}
@@ -246,14 +246,14 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   //个人中心——订单
   table.render({
     elem: '#house-user-order'
-    ,url:  'json/order.json'
+    ,url:  '/userData'
     ,skin: 'line'
     ,cols: [[
-      {title:'订单信息', align:'center', templet: '#orderTpl'}
-      ,{field:'avatar', title:'订购商品', templet: '#imgTpl', align:'center'}
-      ,{field:'number', title:'件数', align:'center', width:80}
-      ,{title:'价格', align:'center', templet: '#priceTpl', width:100}
-      ,{title:'订单状态', align:'center', templet: '#stateTpl', width:100}
+      {field:'ordersMsg',title:'订单号', align:'center', templet: '#orderTpl'}
+      ,{field:'goodsId', title:'订购商品ID', templet: '#imgTpl', align:'center'}
+      ,{field:'ordersSumnum', title:'总件数', align:'center', width:120,sort:true}
+      ,{field:'ordersSummoney',title:'价格', align:'center', templet: '#priceTpl', width:100,sort:true}
+      ,{field:'ordersStatus',title:'订单状态', align:'center', templet: '#stateTpl', width:100}
       ,{title:'订单操作', align:'center', templet: '#handleTpl', width:120}
     ]]
   });

@@ -31,5 +31,8 @@ public class SinglecenterController {
      public String userAdd(){
         return "useradd";
      }
-
+     @GetMapping("/user")
+    public String user(){
+        return "user";
+    }
 }

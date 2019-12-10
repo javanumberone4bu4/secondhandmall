@@ -53,6 +53,7 @@ public class JudgeLoginController {
         Singlecenter singlecenter = singleCenterService.selectByTelephone(vo.getTelephone());
         if (singlecenter != null) {
             if(singlecenter.getSinglecenterAddress()!=null) {
+                session.setAttribute("ordersAddress",singlecenter.getSinglecenterAddress());
                 // 调用支付功能
                 return new DefaultResult(ResultCode.SUCCESS);
             }else{

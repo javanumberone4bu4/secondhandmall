@@ -58,7 +58,7 @@ public class SinglecenterController2 {
         }
         return null;
     }
-    @GetMapping("/user")
+    @GetMapping("/userData")
     public ResultData user(String telephone,Model model,HttpServletResponse response) throws IOException {
         List<Orders> orders = ordersService.selectByTelephone(telephone);
         // 将查询到的对象传到前端页面

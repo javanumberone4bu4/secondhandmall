@@ -20,4 +20,6 @@ public interface IOrdersService {
 
 
     List<Orders> selectByTelephone(String telephone);
+
+    int insert(Orders orders);
 }

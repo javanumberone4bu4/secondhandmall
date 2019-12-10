@@ -47,6 +47,9 @@ public class GoodsVo2 {
     @ApiModelProperty(value = "sessionId")
     private String sessionId;
 
-
+    /**
+     * 地址
+     */
+    private String ordersAddress;
 
 }

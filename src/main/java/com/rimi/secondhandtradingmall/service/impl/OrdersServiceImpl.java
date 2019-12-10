@@ -35,4 +35,13 @@ public class OrdersServiceImpl implements IOrdersService {
         }
         return null;
     }
+
+    @Override
+    public int insert(Orders orders) {
+        int insert = ordersMapper.insert(orders);
+        if(insert>0){
+            return insert;
+        }
+        return 0;
+    }
 }

@@ -168,6 +168,7 @@
      //点击立即购买发送异步请求
     var goodsName="[[${detail.goodsName}]]";
     var goodsPrice=[[${detail.goodsPrice}]];
+    var ordersAddress="[[${session.ordersAddress}]]"
     $('.sale').on('click',function () {
       var shoppingcarNum=$("#payNum").val();
       $.ajax({
@@ -179,7 +180,7 @@
              window.location.href="/login";
            }
            if(data.code==200){
-             window.location.href="/purchase";
+             window.location.href="/purchase?goodsId="+goodsId+"&goodsName="+goodsName+"&shoppingcarNum="+shoppingcarNum+"&goodsPrice="+goodsPrice+"&telephone="+telephone+"&sessionId="+sessionId+"&ordersAddress="+ordersAddress;
            }
            if(data.code==600){
              window.location.href="/userAdd";

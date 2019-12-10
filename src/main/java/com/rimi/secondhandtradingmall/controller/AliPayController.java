@@ -7,6 +7,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.rimi.secondhandtradingmall.bean.Goods;
+import com.rimi.secondhandtradingmall.bean.Orders;
 import com.rimi.secondhandtradingmall.bean.Shoppingcarmsg;
 import com.rimi.secondhandtradingmall.common.AcquireOrderForm;
 import com.rimi.secondhandtradingmall.service.IOrdersService;
@@ -81,7 +82,7 @@ public class AliPayController {
 
     @GetMapping("/purchase")
     public void payment(GoodsVo2 vo, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        System.out.println(vo);
         // 获得商品总数量
        int shoppingcarNum = vo.getShoppingcarNum();
         // 获得商品单价
@@ -131,11 +132,17 @@ public class AliPayController {
                 String goodsId2 = String.valueOf(goodsId);
                 // 获取商品总件数
                 int shoppingcarNum1 = vo.getShoppingcarNum();
+                Orders orders=new Orders();
+                orders.setGoodsId(goodsId2);
+                orders.setOrdersAddress(vo.getOrdersAddress());
+                orders.setOrdersMsg(orderForm);
+                orders.setOrdersStatus("等待发货");
+                orders.setTelephone(vo.getTelephone());
+                orders.setOrdersSummoney(total);
+                orders.setOrdersSumnum(shoppingcarNum1);
+                int insert = ordersService.insert(orders);
+                System.out.println("订单生成成功");
 
-                boolean success = ordersService.insertAll(orderForm, goodsId2, shoppingcarNum, total, vo.getTelephone());
-                if (success) {
-                    System.out.println("获取订单信息成功");
-                }
             } else {
                 System.out.println("调用失败");
             }
