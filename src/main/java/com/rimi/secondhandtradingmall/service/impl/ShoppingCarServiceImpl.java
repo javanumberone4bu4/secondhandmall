@@ -26,17 +26,13 @@ public class ShoppingCarServiceImpl implements IShoppingCarService {
      * @return 查找到的一个商品对象
      */
     @Override
-    public Goods selectAllGoodsByPhoneAndGoodsId(Integer goodsId, Object telephone) {
-
-
-        return shoppingcarMapper.selectAllGoodsByPhoneAndGoodsId(goodsId,(String)telephone);
-
-
+    public Goods selectAllGoodsByPhoneAndGoodsId(Integer goodsId, String telephone) {
+        return shoppingcarMapper.selectAllGoodsByPhoneAndGoodsId(goodsId,telephone);
     }
 
     @Override
-    public boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id, Object telephone) {
-        return shoppingcarMapper.dropShoppingcarGoodsByGoodsIdAndPhone(id,(String)telephone);
+    public boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id, String telephone) {
+        return shoppingcarMapper.dropShoppingcarGoodsByGoodsIdAndPhone(id,telephone);
     }
 
     /**

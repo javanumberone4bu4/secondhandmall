@@ -15,7 +15,7 @@ public interface IShoppingCarService {
      * @param telephone 当前用户手机号
      * @return 查找到的一个商品对象
      */
-    Goods selectAllGoodsByPhoneAndGoodsId(@Param("goodsId") Integer goodsId, @Param("telephone") Object telephone);
+    Goods selectAllGoodsByPhoneAndGoodsId(Integer goodsId, String telephone);
 
 
     /**
@@ -25,7 +25,7 @@ public interface IShoppingCarService {
      * @param telephone
      * @return
      */
-    boolean dropShoppingcarGoodsByGoodsIdAndPhone(@Param("id") Integer id, @Param("telephone") Object telephone);
+    boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id,String telephone);
 
     int selectCountByTelephone(@Param("telephone") String telephone);
 }

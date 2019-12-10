@@ -12,6 +12,7 @@ import com.rimi.secondhandtradingmall.common.AcquireOrderForm;
 import com.rimi.secondhandtradingmall.service.IOrdersService;
 import com.rimi.secondhandtradingmall.service.IShoppingCarMsgService;
 import com.rimi.secondhandtradingmall.service.IShoppingCarService;
+import com.rimi.secondhandtradingmall.util.RandomUtils;
 import com.rimi.secondhandtradingmall.vo.AllGoodsVo2;
 import com.rimi.secondhandtradingmall.vo.GoodsVo2;
 import org.springframework.beans.factory.annotation.Value;
@@ -90,10 +91,9 @@ public class AliPayController {
 
 
         //生成订单
-        String orderForm = new AcquireOrderForm().getOrderForm(getRan());
+        String orderForm = new AcquireOrderForm().getOrderForm(RandomUtils.getRan());
         String orderForm1 = new AcquireOrderForm().getOrderForm("1219528455234492");
-        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet,
-                alipayPublicKey, signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet, alipayPublicKey, signType);
         //获得初始化的AlipayClient
 
         //获取当前请求过来的地址
@@ -136,16 +136,12 @@ public class AliPayController {
                 if (success) {
                     System.out.println("获取订单信息成功");
                 }
-
-
             } else {
                 System.out.println("调用失败");
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-
-
         response.setContentType("text/html;charset=" + "UTF-8");
         response.getWriter().write(form);//直接将完整的表单html输出到页面
         response.getWriter().flush();
@@ -156,10 +152,7 @@ public class AliPayController {
 
 
     @GetMapping("/purchaseCar")
-    public void paymentCar(AllGoodsVo2 vo, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        // 获取当前用户的手机号
-        Object telephone = request.getAttribute("telephone");
+    public void paymentCar(AllGoodsVo2 vo, String telephone, HttpServletResponse response) throws IOException {
         // 获取所有商品的总数量
         Integer allCount = 0;
         // 获得将要支付的购物车内单个类型的商品的总数量
@@ -197,14 +190,11 @@ public class AliPayController {
 
 
         //生成订单
-        String orderForm = new AcquireOrderForm().getOrderForm(getRan());
-        String orderForm1 = new AcquireOrderForm().getOrderForm(getRan());
+        String orderForm = new AcquireOrderForm().getOrderForm(RandomUtils.getRan());
+        String orderForm1 = new AcquireOrderForm().getOrderForm(RandomUtils.getRan());
         AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet,
                 alipayPublicKey, signType);
         //获得初始化的AlipayClient
-
-        //获取当前请求过来的地址
-        String urls = request.getRequestURL().toString();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl("http://localhost:80/user?telephone="+vo.getTelephone());//http://10.2.3.48:8080/paySuccess
         alipayRequest.setNotifyUrl("http://localhost:80/user?telephone="+vo.getTelephone());//在公共参数中设置回跳和通知地址
@@ -215,9 +205,9 @@ public class AliPayController {
                 // TODO 算 金额
                 "    \"total_amount\":\"" + total + "\"," +
                 //  随便写
-                "    \"subject\":\"" + getRan() + "\"," +
+                "    \"subject\":\"" + RandomUtils.getRan() + "\"," +
                 //  随便写
-                "    \"body\":\"" + getRan() + "\"," +
+                "    \"body\":\"" + RandomUtils.getRan() + "\"," +
                 "    \"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
                 "    \"extend_params\":{" +
                 "    \"sys_service_provider_id\":\"" + orderForm1 + "\"" +
@@ -271,7 +261,6 @@ public class AliPayController {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-
         response.setContentType("text/html;charset=" + "UTF-8");
         response.getWriter().write(form);//直接将完整的表单html输出到页面
         response.getWriter().flush();
