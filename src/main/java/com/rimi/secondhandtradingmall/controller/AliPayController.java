@@ -12,6 +12,7 @@ import com.rimi.secondhandtradingmall.service.IOrdersService;
 import com.rimi.secondhandtradingmall.service.IShoppingCarService;
 import com.rimi.secondhandtradingmall.vo.AllGoodsVo2;
 import com.rimi.secondhandtradingmall.vo.GoodsVo2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,21 @@ import java.util.List;
 @Controller
 public class AliPayController {
 
+    @Value("${alipay.server-url}")
+    private String serverUrl;
+    @Value("${alipay.app-id}")
+    private String appId;
+    @Value("${alipay.private-key}")
+    private String privateKey;
+    @Value("${alipay.alipay-public-key}")
+    private String alipayPublicKey;
+    @Value("${alipay.format}")
+    private String format = "json";
+    @Value("${alipay.sign-type}")
+    private String signType = "RSA2";
+    @Value("${alipay.charset}")
+    private String charSet = "UTF-8";
+
     private IShoppingCarService shoppingCarService;
 
     private IOrdersService ordersService;
@@ -48,7 +64,7 @@ public class AliPayController {
     public String getRan() {
         Double v = Math.random() * 10;
         String s = v.toString();
-        return s+System.currentTimeMillis();
+        return s + System.currentTimeMillis();
     }
 
     @GetMapping("/purchase")
@@ -65,26 +81,7 @@ public class AliPayController {
         //生成订单
         String orderForm = new AcquireOrderForm().getOrderForm(getRan());
         String orderForm1 = new AcquireOrderForm().getOrderForm("1219528455234492");
-        AlipayClient alipayClient = new DefaultAlipayClient(
-                "https://openapi.alipaydev.com/gateway.do",
-                "2016101600699685",
-                "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCj3FNoJq5xK0PBDlrp5PBbG2+qOMnederOFrXTC/qZ2vJl" +
-                        "/C0bsCBFrv6G+Sa/5SkqcCWvFxKs5DL0ZJoPOW5nDKpjn" +
-                        "+5pVfOx73KNfP68L1eQbJPoDkWbfpJLAtFAGjBbjVWI7Bk88uyhO2elPmO5/1rW" +
-                        "//qrAGLVdf6ifKTIOveHLIPAy0Vx3enuzEU468oTqo7W6wdoLU3IxVOf5YzChA56dl" +
-                        "/oZifaSOoAAIjEXQJpMgJUA2qccXFjq7ooQlcH2PhHBp009sRlBqndJyirALnsSHcwKy5bV3h" +
-                        "/sA8EiKDpdGeVNDBMfsUrfi2GY6G1b22rpbF" +
-                        "/5WlDpTNchwknAgMBAAECggEBAIe5m6yNPbinaXujdFKAO0Z7t0Z7u1n0ugTycrDZHz4JSPaIpqRkgpa1mEYcYahZHHv2YIBi0Ck866fbHHC31Wat6wSSGFxPwYcFGxFvE2C0pgcOqIRyLd3aPTq8nq5GAwASVWMQjOcbID18gyEwSFJr3MZxSSQTMco17jCQpbzjJI69d8g5Esw8V//TGT4dmz7e1CWbpBAXnvOTQCBkaAhg2VTzneSJvXpwfA6i+5pC47CPQGwG2DP8SizXwwuVqjBDpJFx80wBBraOsR7KUPb7oA83cZXBXdxI2j+uDuOUdd8MHDXNS2+gdw0A4tPjRhxuWDM1iwDgJYJLvopHw4ECgYEA6fTBhekJOBItTWMTOunxiBKznr7Xsvb7VkscQW4YFY6518gIngzHr4XOlwV1/Ag15u5axxRM2p288MSLnbqj+Mf2UGgJEoaX+HmVuZADEAgSdINnrqTRc3dwPbu38jWrdkqX3zBCb572dh7H8vYxmN5cWMAP8W2gyeUysSoicRcCgYEAs0zNFw5AWYVFQbwhp1MdOYzxVwgPqZNXDrJzH0TQk36GIFW/JBSqLMehvNPMscI3E2PQJyS9zhmVZ58sQoRnFsjYsRcd9wtPfDjocSvn3YyOOK6epK2+e7Bay7se4mEZTBslN+TG42upI1EJYYg5m7vLn3LF9KIbsiB5VVRMknECgYEA2FI0IhJgMNU1yClEnaO0bYIFTVHedZ7CtH6MqL8YS86FbcyKk0Dz3gqWA7PL7PbWiCl6DDtr+HQDQIgrI/NwK9cQnDYltVh36grZ8xMCke80yUC7PJMvC1mzkZEhuzX+zUiZdofT1gugjYVWkgMrxtJLhtBHrY8VLbjcD04LPI8CgYBBpwSNxaUgYmEqobV87D0OPqJ8KLJ7eDzvX74xm+P3reN04ZDcqEhrnymE19Ti3eeGzQyB2L07QzjmuWzealbJC//0UC+jrtuK89eA4P/EqtvEu4PRbuEJr1h/suOrJry5llL5dWayDVDgYqLZuKTHdmsn1kHPwq/7eFKVQQnMsQKBgQDVPfUEEUwk3PBh0wZ8EnhMbSjg3ooVrzbcowvzIJkpZjGDoM0sFj/pf4k6lGrZrTtcm57gUdfP5Ov6J/YJjYUCIcaDiGaRBsZ2HiGM6G8iU7Wg6dP7PMOE13mrHuxchP66FQwShw/EETJ+HJT65J5Hwh/jQ1yX8ra18Eiy0nqlZg==",
-                "json",
-                "UTF-8",
-                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp0vMtaYwqkKYvNhCp6Lc1" +
-                        "+S40KpeBnNSQBqPGgAZhSLoNKP06S8xxjFOIzujkOvPa8k6V2X2nO0VmX2I29tJ+4lJL8Boqkmw6NYQZq6xC1VoeSA1l" +
-                        "/vJGYvDz4IDhPY3mCcJeNjaph+afep9ZGW/P5bXGXK+AgmqYgLJBEc6IZdbc" +
-                        "+RBeqUFalDWzUiySITHxH50Df1FBTy6TYx8/ezWJy0hPtTQfB3HOmiDsjjSy590vvfXneY0uHWmSFh2p3FMjsNX" +
-                        "/vPAquHFHKgdpLVlJ9cpOlIZpxoNUNv6tDEd4DBgP/wsoQxNdHGfCbUhB/SLaN4slNf4YO3IVfzG97poTQIDAQAB",
-                "RSA2");
-
-
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet, alipayPublicKey, signType);
         //获得初始化的AlipayClient
 
         //获取当前请求过来的地址
@@ -114,8 +111,6 @@ public class AliPayController {
             AlipayTradePagePayResponse responses = alipayClient.pageExecute(alipayRequest);
             if (responses.isSuccess()) {
                 System.out.println("调用成功");
-
-
                 // TODO 生成订单
                 // 获取用户手机号
                 Object telephone = request.getAttribute("telephone");
@@ -192,26 +187,7 @@ public class AliPayController {
         //生成订单
         String orderForm = new AcquireOrderForm().getOrderForm(getRan());
         String orderForm1 = new AcquireOrderForm().getOrderForm(getRan());
-        AlipayClient alipayClient = new DefaultAlipayClient(
-                "https://openapi.alipaydev.com/gateway.do",
-                "2016101600699685",
-                "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCj3FNoJq5xK0PBDlrp5PBbG2+qOMnederOFrXTC/qZ2vJl" +
-                        "/C0bsCBFrv6G+Sa/5SkqcCWvFxKs5DL0ZJoPOW5nDKpjn" +
-                        "+5pVfOx73KNfP68L1eQbJPoDkWbfpJLAtFAGjBbjVWI7Bk88uyhO2elPmO5/1rW" +
-                        "//qrAGLVdf6ifKTIOveHLIPAy0Vx3enuzEU468oTqo7W6wdoLU3IxVOf5YzChA56dl" +
-                        "/oZifaSOoAAIjEXQJpMgJUA2qccXFjq7ooQlcH2PhHBp009sRlBqndJyirALnsSHcwKy5bV3h" +
-                        "/sA8EiKDpdGeVNDBMfsUrfi2GY6G1b22rpbF" +
-                        "/5WlDpTNchwknAgMBAAECggEBAIe5m6yNPbinaXujdFKAO0Z7t0Z7u1n0ugTycrDZHz4JSPaIpqRkgpa1mEYcYahZHHv2YIBi0Ck866fbHHC31Wat6wSSGFxPwYcFGxFvE2C0pgcOqIRyLd3aPTq8nq5GAwASVWMQjOcbID18gyEwSFJr3MZxSSQTMco17jCQpbzjJI69d8g5Esw8V//TGT4dmz7e1CWbpBAXnvOTQCBkaAhg2VTzneSJvXpwfA6i+5pC47CPQGwG2DP8SizXwwuVqjBDpJFx80wBBraOsR7KUPb7oA83cZXBXdxI2j+uDuOUdd8MHDXNS2+gdw0A4tPjRhxuWDM1iwDgJYJLvopHw4ECgYEA6fTBhekJOBItTWMTOunxiBKznr7Xsvb7VkscQW4YFY6518gIngzHr4XOlwV1/Ag15u5axxRM2p288MSLnbqj+Mf2UGgJEoaX+HmVuZADEAgSdINnrqTRc3dwPbu38jWrdkqX3zBCb572dh7H8vYxmN5cWMAP8W2gyeUysSoicRcCgYEAs0zNFw5AWYVFQbwhp1MdOYzxVwgPqZNXDrJzH0TQk36GIFW/JBSqLMehvNPMscI3E2PQJyS9zhmVZ58sQoRnFsjYsRcd9wtPfDjocSvn3YyOOK6epK2+e7Bay7se4mEZTBslN+TG42upI1EJYYg5m7vLn3LF9KIbsiB5VVRMknECgYEA2FI0IhJgMNU1yClEnaO0bYIFTVHedZ7CtH6MqL8YS86FbcyKk0Dz3gqWA7PL7PbWiCl6DDtr+HQDQIgrI/NwK9cQnDYltVh36grZ8xMCke80yUC7PJMvC1mzkZEhuzX+zUiZdofT1gugjYVWkgMrxtJLhtBHrY8VLbjcD04LPI8CgYBBpwSNxaUgYmEqobV87D0OPqJ8KLJ7eDzvX74xm+P3reN04ZDcqEhrnymE19Ti3eeGzQyB2L07QzjmuWzealbJC//0UC+jrtuK89eA4P/EqtvEu4PRbuEJr1h/suOrJry5llL5dWayDVDgYqLZuKTHdmsn1kHPwq/7eFKVQQnMsQKBgQDVPfUEEUwk3PBh0wZ8EnhMbSjg3ooVrzbcowvzIJkpZjGDoM0sFj/pf4k6lGrZrTtcm57gUdfP5Ov6J/YJjYUCIcaDiGaRBsZ2HiGM6G8iU7Wg6dP7PMOE13mrHuxchP66FQwShw/EETJ+HJT65J5Hwh/jQ1yX8ra18Eiy0nqlZg==",
-                "json",
-                "UTF-8",
-                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp0vMtaYwqkKYvNhCp6Lc1" +
-                        "+S40KpeBnNSQBqPGgAZhSLoNKP06S8xxjFOIzujkOvPa8k6V2X2nO0VmX2I29tJ+4lJL8Boqkmw6NYQZq6xC1VoeSA1l" +
-                        "/vJGYvDz4IDhPY3mCcJeNjaph+afep9ZGW/P5bXGXK+AgmqYgLJBEc6IZdbc" +
-                        "+RBeqUFalDWzUiySITHxH50Df1FBTy6TYx8/ezWJy0hPtTQfB3HOmiDsjjSy590vvfXneY0uHWmSFh2p3FMjsNX" +
-                        "/vPAquHFHKgdpLVlJ9cpOlIZpxoNUNv6tDEd4DBgP/wsoQxNdHGfCbUhB/SLaN4slNf4YO3IVfzG97poTQIDAQAB",
-                "RSA2");
-
-
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet, alipayPublicKey, signType);
         //获得初始化的AlipayClient
 
         //获取当前请求过来的地址
@@ -219,7 +195,6 @@ public class AliPayController {
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl("http://10.2.3.48:8080/paySuccess");//http://10.2.3.48:8080/paySuccess
         alipayRequest.setNotifyUrl("http://10.2.3.48:8080/paySuccess");//在公共参数中设置回跳和通知地址
-
 
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderForm + "\"," +
@@ -258,7 +233,6 @@ public class AliPayController {
                     System.out.println("获取订单信息成功");
                 }
                 // TODO 算出购买后的购物车内还剩的商品数量 (若不是通过购物车支付，则不需要完成这步)
-
 
 
             } else {
