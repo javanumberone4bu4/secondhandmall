@@ -30,7 +30,7 @@
         <label>数量</label>
         <div class="layui-input-inline btn-input">
           <button class="layui-btn layui-btn-primary sup">-</button>
-          <input type="text" class="layui-input" id="payNum">
+          <input type="text" class="layui-input" >
           <button class="layui-btn layui-btn-primary sub">+</button>
         </div>
         <p class="inputTips" >已超出库存数量！</p>
@@ -103,7 +103,7 @@
         console.log(result);
       }
     });
-    var count=[[${count}]]
+    var count=[[${count}]];
       //执行一个laypage实例
       laypage.render({
           elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
@@ -112,7 +112,7 @@
           ,limit:3
           ,curr:1
           ,prev:'上一页'
-          ,netx:'下一页'
+          ,next:'下一页'
           ,first:1
           ,last:50
           ,layout:['page','next']
@@ -152,16 +152,16 @@
         }
       });
     })
-    var goodsNum=$("#payNum").val();
+    var shoppingcarNum=$(".layui-input").val();
     //点击立即购买发送异步请求
     var goodsId=[[${detail.goodsId}]];
-    var goodsName=[[${detail.goodsName}]];
+    var goodsName="[[${detail.goodsName}]]";
     var goodsPrice=[[${detail.goodsPrice}]];
     var sessionId=getSessionId();
     $('.sale').on('click',function () {
       $.ajax({
         type: "get",
-        url: "/judgeLogin?goodsId="+goodsId+"&goodsName="+goodsName+"&goodsNum="+goodsNum+"&goodsPrice="+goodsPrice+"&telephone=18780811904&sessionId="+sessionId,
+        url: "/judgeLogin?goodsId="+goodsId+"&goodsName="+goodsName+"&shoppingcarNum="+shoppingcarNum+"&goodsPrice="+goodsPrice+"&telephone=18780811904&sessionId="+sessionId,
         dataType: "json",
         success: function(result){
           console.log(result);

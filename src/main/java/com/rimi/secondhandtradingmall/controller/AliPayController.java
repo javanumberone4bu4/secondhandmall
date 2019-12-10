@@ -59,7 +59,7 @@ public class AliPayController {
     /**
      * 获得一个随机数
      *
-     * @return
+     * @return 随机数
      */
     public String getRan() {
         Double v = Math.random() * 10;
@@ -242,10 +242,6 @@ public class AliPayController {
             e.printStackTrace();
         }
 
-        //{    "out_trade_no":"4f59245f5bdf561f0f52",    "product_code":"FAST_INSTANT_TRADE_PAY",
-        // "total_amount":8888,    "subject":"Iphone32 160G",    "body":"Iphone32 160G",
-        // "passback_params":"merchantBizType%3d3C%26merchantBizNo%3d2016010101111",    "extend_params":{
-        // "sys_service_provider_id":"92e7844abdd75710b6dd",    }  }
         response.setContentType("text/html;charset=" + "UTF-8");
         response.getWriter().write(form);//直接将完整的表单html输出到页面
         response.getWriter().flush();

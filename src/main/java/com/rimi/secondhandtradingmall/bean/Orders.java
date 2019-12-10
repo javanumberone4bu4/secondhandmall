@@ -8,10 +8,10 @@ import lombok.Data;
 /**
  * ${Description}
  *
- * @author junelee
- * @date 2019/12/9 17:03
+ * @author Wang Xiaoping
+ * @date 2019/12/10 8:58
  */
-@ApiModel(value = "com-rimi-secondhandtradingmall-bean-Orders")
+@ApiModel(value = "com.rimi.secondhandtradingmall.bean.Orders")
 @Data
 public class Orders implements Serializable {
     /**
@@ -30,7 +30,7 @@ public class Orders implements Serializable {
      * 商品ID(可多个)
      */
     @ApiModelProperty(value = "商品ID(可多个)")
-    private Integer goodsId;
+    private String goodsId;
 
     /**
      * 件数(总商品件数)

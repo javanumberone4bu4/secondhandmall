@@ -6,7 +6,7 @@
     <!--@Table orders-->
     <id column="orders_id" jdbcType="INTEGER" property="ordersId" />
     <result column="orders_msg" jdbcType="VARCHAR" property="ordersMsg" />
-    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
     <result column="orders_sumnum" jdbcType="INTEGER" property="ordersSumnum" />
     <result column="orders_summoney" jdbcType="DOUBLE" property="ordersSummoney" />
     <result column="orders_status" jdbcType="VARCHAR" property="ordersStatus" />
@@ -35,7 +35,7 @@
     insert into orders (orders_msg, goods_id, orders_sumnum, 
       orders_summoney, orders_status, telephone, 
       orders_address)
-    values (#{ordersMsg,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{ordersSumnum,jdbcType=INTEGER}, 
+    values (#{ordersMsg,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{ordersSumnum,jdbcType=INTEGER}, 
       #{ordersSummoney,jdbcType=DOUBLE}, #{ordersStatus,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
       #{ordersAddress,jdbcType=VARCHAR})
   </insert>
@@ -70,7 +70,7 @@
         #{ordersMsg,jdbcType=VARCHAR},
       </if>
       <if test="goodsId != null">
-        #{goodsId,jdbcType=INTEGER},
+        #{goodsId,jdbcType=VARCHAR},
       </if>
       <if test="ordersSumnum != null">
         #{ordersSumnum,jdbcType=INTEGER},
@@ -97,7 +97,7 @@
         orders_msg = #{ordersMsg,jdbcType=VARCHAR},
       </if>
       <if test="goodsId != null">
-        goods_id = #{goodsId,jdbcType=INTEGER},
+        goods_id = #{goodsId,jdbcType=VARCHAR},
       </if>
       <if test="ordersSumnum != null">
         orders_sumnum = #{ordersSumnum,jdbcType=INTEGER},
@@ -121,7 +121,7 @@
     <!--@mbg.generated-->
     update orders
     set orders_msg = #{ordersMsg,jdbcType=VARCHAR},
-      goods_id = #{goodsId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=VARCHAR},
       orders_sumnum = #{ordersSumnum,jdbcType=INTEGER},
       orders_summoney = #{ordersSummoney,jdbcType=DOUBLE},
       orders_status = #{ordersStatus,jdbcType=VARCHAR},

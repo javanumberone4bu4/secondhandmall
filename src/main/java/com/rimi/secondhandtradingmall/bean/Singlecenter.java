@@ -7,10 +7,11 @@ import lombok.Data;
 
 /**
  * ${Description}
+ *
  * @author Wang Xiaoping
- * @date 2019/12/9 16:36
+ * @date 2019/12/10 9:04
  */
-@ApiModel(value = "com-rimi-secondhandtradingmall-bean-Singlecenter")
+@ApiModel(value = "com.rimi.secondhandtradingmall.bean.Singlecenter")
 @Data
 public class Singlecenter implements Serializable {
     /**
