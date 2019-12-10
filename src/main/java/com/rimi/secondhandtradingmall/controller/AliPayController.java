@@ -73,8 +73,8 @@ public class AliPayController {
      * @return 随机数
      */
     public String getRan() {
-        Double v = Math.random() * 10;
-        String s = v.toString();
+        double v = Math.random() * 10;
+        String s = String.valueOf(v);
         return s + System.currentTimeMillis();
     }
 
@@ -82,9 +82,9 @@ public class AliPayController {
     public void payment(GoodsVo2 vo, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // 获得商品总数量
-        Integer shoppingcarNum = vo.getShoppingcarNum();
+       int shoppingcarNum = vo.getShoppingcarNum();
         // 获得商品单价
-        Double goodsPrice = vo.getGoodsPrice();
+        double goodsPrice = vo.getGoodsPrice();
         // 计算出总价
         double total = shoppingcarNum * goodsPrice;
 
@@ -99,16 +99,14 @@ public class AliPayController {
         //获取当前请求过来的地址
         String urls = request.getRequestURL().toString();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://localhost:80/list?sumclassifyName=居家用品&sumclassifyId=1&pageNum=1&pageSize" +
-                "=3");//http://10.2.3.48:8080/paySuccess
-        alipayRequest.setNotifyUrl("http://localhost:80/list?sumclassifyName=居家用品&sumclassifyId=1&pageNum=1&pageSize" +
-                "=3");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://localhost:80/user?telephone="+vo.getTelephone());//http://10.2.3.48:8080/paySuccess
+        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone="+vo.getTelephone());//在公共参数中设置回跳和通知地址
 
 
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderForm + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                // TODO 算 金额
+                //  算 金额
                 "    \"total_amount\":\"" + total + "\"," +
                 //  随便写
                 "    \"subject\":\"" + vo.getGoodsName() + "\"," +
@@ -125,16 +123,16 @@ public class AliPayController {
             AlipayTradePagePayResponse responses = alipayClient.pageExecute(alipayRequest);
             if (responses.isSuccess()) {
                 System.out.println("调用成功");
-                // TODO 生成订单
+                // 生成订单
                 // 获取用户手机号
-                Object telephone = request.getAttribute("telephone");
+                //Object telephone = request.getAttribute("telephone");
                 // 获取商品id
-                Integer goodsId = vo.getGoodsId();
-                String goodsId2 = goodsId.toString();
+                int goodsId = vo.getGoodsId();
+                String goodsId2 = String.valueOf(goodsId);
                 // 获取商品总件数
-                Integer shoppingcarNum1 = vo.getShoppingcarNum();
+                int shoppingcarNum1 = vo.getShoppingcarNum();
 
-                boolean success = ordersService.insertAll(orderForm, goodsId2, shoppingcarNum, total, telephone);
+                boolean success = ordersService.insertAll(orderForm, goodsId2, shoppingcarNum, total, vo.getTelephone());
                 if (success) {
                     System.out.println("获取订单信息成功");
                 }
@@ -208,8 +206,8 @@ public class AliPayController {
         //获取当前请求过来的地址
         String urls = request.getRequestURL().toString();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://10.2.3.48:8080/paySuccess");//http://10.2.3.48:8080/paySuccess
-        alipayRequest.setNotifyUrl("http://10.2.3.48:8080/paySuccess");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://localhost:80/user?telephone="+vo.getTelephone());//http://10.2.3.48:8080/paySuccess
+        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone="+vo.getTelephone());//在公共参数中设置回跳和通知地址
 
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderForm + "\"," +

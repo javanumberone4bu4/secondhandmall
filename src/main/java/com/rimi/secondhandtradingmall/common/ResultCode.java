@@ -26,7 +26,11 @@ public enum ResultCode {
     /**
      * 服务器异常
      */
-    ERROR(500, "服务器异常");
+    ERROR(500, "服务器异常"),
+    /**
+     * 其他跳转
+     */
+    OTHER(600,"其他跳转");
 
     private int code;
     private String message;

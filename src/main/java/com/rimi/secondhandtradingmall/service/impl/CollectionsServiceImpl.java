@@ -6,6 +6,8 @@ import com.rimi.secondhandtradingmall.service.ICollectionsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Wang Xiaoping
  * @date 2019/12/9 19:39
@@ -32,6 +34,15 @@ public class CollectionsServiceImpl implements ICollectionsService {
     public Collections selectByTelephoneAndGoodsId(String telephone, Integer goodsId) {
         Collections collections = collectionsMapper.selectByTelephoneAndGoodsId(telephone, goodsId);
         if(collections!=null){
+            return collections;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Collections> selectAllByTelephone(String telephone) {
+        List<Collections> collections = collectionsMapper.selectAllByTelephone(telephone);
+        if(collections!=null&&collections.size()>0){
             return collections;
         }
         return null;

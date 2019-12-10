@@ -26,11 +26,12 @@
       <p><span>￥<big><b th:text="${detail.getGoodsPrice()}"></b></big></span></p>
       <dl><dt>颜色</dt><dd  th:each="goods : ${colors}" th:text="${colors[goodsStat.index]}"></dd></dl>
       <dl><dt>尺寸</dt><dd  th:each="goods : ${sizes}" th:text="${sizes[goodsStat.index]}"></dd></dl>
+      <input type="hidden" id="sessionId" th:value="${sessionId}" />
       <div class="number layui-form">
         <label>数量</label>
         <div class="layui-input-inline btn-input">
           <button class="layui-btn layui-btn-primary sup">-</button>
-          <input type="text" class="layui-input" >
+          <input type="text" class="layui-input" id="payNum">
           <button class="layui-btn layui-btn-primary sub">+</button>
         </div>
         <p class="inputTips" >已超出库存数量！</p>
@@ -94,10 +95,18 @@
             ,element=layui.element
         ,laypage=layui.laypage;
     //上面已经引入了jquery的ajax方法，下面直接传参到后台
+      var telephone="";
+      var v1=[[${session.allTelephone}]]
+      alert(v1);
+      if(v1==null){
+        telephone=-1;
+      }else{
+        telephone=v1;
+      }
     $.ajax({
       type: "post",
       url: "/shoppingCarMsg/note",//请求地址已在另一处设置
-      data: {telephone:"18780811904"},
+      data: {telephone:telephone},
       dataType: "json",
       success: function(result){
         console.log(result);
@@ -134,37 +143,47 @@
           if(c_end==-1) c_end=document.cookie.length
           return unescape(document.cookie.substring(c_start,c_end));
         }
+      }else{
+        var JSESSIONID=$("#sessionId").val();
+        return JSESSIONID;
       }
     }
-
-
+      var sessionId=getSessionId();
     // var goodsNum=$("#payNum").val();
     //点击收藏发送异步请求
     var goodsId=[[${detail.goodsId}]];
     $('.collect').on('click',function () {
       $.ajax({
         type: "post",
-        url: "/chooseNum",
-        data: {goodsId:goodsId,telephone:'18780811904'},
+        url: "/collect",
+        data: {goodsId:goodsId,telephone:telephone,sessionId:sessionId},
         dataType: "json",
         success: function(result){
           console.log(result);
         }
       });
     })
-    var shoppingcarNum=$(".layui-input").val();
-    //点击立即购买发送异步请求
-    var goodsId=[[${detail.goodsId}]];
+
+
+     //点击立即购买发送异步请求
     var goodsName="[[${detail.goodsName}]]";
     var goodsPrice=[[${detail.goodsPrice}]];
-    var sessionId=getSessionId();
     $('.sale').on('click',function () {
+      var shoppingcarNum=$("#payNum").val();
       $.ajax({
         type: "get",
-        url: "/judgeLogin?goodsId="+goodsId+"&goodsName="+goodsName+"&shoppingcarNum="+shoppingcarNum+"&goodsPrice="+goodsPrice+"&telephone=18780811904&sessionId="+sessionId,
+        url: "/judgeLogin?goodsId="+goodsId+"&goodsName="+goodsName+"&shoppingcarNum="+shoppingcarNum+"&goodsPrice="+goodsPrice+"&telephone="+telephone+"&sessionId="+sessionId,
         dataType: "json",
-        success: function(result){
-          console.log(result);
+        success: function(data){
+           if(data.code==201){
+             window.location.href="/login";
+           }
+           if(data.code==200){
+             window.location.href="/purchase";
+           }
+           if(data.code==600){
+             window.location.href="/userAdd";
+           }
         }
       });
     })

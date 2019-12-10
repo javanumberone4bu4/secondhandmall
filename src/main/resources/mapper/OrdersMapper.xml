@@ -137,4 +137,7 @@
       #{total,jdbcType=DOUBLE}, #{telephone,jdbcType=VARCHAR}
       )
     </insert>
+    <select id="selectByTelephone" resultMap="BaseResultMap">
+      select * from  orders where telephone=#{telephone}
+    </select>
 </mapper>

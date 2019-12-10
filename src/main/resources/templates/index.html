@@ -108,10 +108,11 @@
             ,layer = layui.layer
             ,element=layui.element;
     //上面已经引入了jquery的ajax方法，下面直接传参到后台
+    var telephone=[[${session.allTelephone}]]
     $.ajax({
       type: "post",
       url: "/shoppingCarMsg/note",//请求地址已在另一处设置
-      data: {telephone:"18780811904"},
+      data: {telephone:telephone},
       dataType: "json",
       success: function(result){
         console.log(result);

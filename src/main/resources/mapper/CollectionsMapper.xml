@@ -72,4 +72,7 @@
     <select id="selectByTelephoneAndGoodsId" resultMap="BaseResultMap">
       select * from collections where telephone=#{telephone} and goods_id=#{goodsId}
     </select>
+    <select id="selectAllByTelephone" resultMap="BaseResultMap">
+      select *  from collections where telephone=#{telephone}
+    </select>
 </mapper>

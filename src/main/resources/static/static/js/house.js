@@ -75,12 +75,12 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   });
   
   //登入页——弹框
-  $("#house-login").find(".getCode").children("button").on('click', function(){
-    layer.msg('验证码已发送');
-  });
-  form.on('submit(user-login)', function(data){
-    window.location.href = "index.html";
-  });
+  // $("#house-login").find(".getCode").children("button").on('click', function(){
+  //   layer.msg('验证码已发送');
+  // });
+  // form.on('submit(user-login)', function(data){
+  //   window.location.href = "index.html";
+  // });
   
   //列表页——点击切换
   $(".house-list").children(".filter").find("ul").each(function(){
@@ -211,7 +211,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
       layer.open({
         type: 2
         ,title: '编辑地址'
-        ,content: 'iframe.html'
+        ,content: '/iframe'
         ,area: ['730px', '420px']
         ,shade: 0.8
         ,skin: 'address-class'
@@ -229,7 +229,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
     layer.open({
       type: 2
       ,title: '新建地址'
-      ,content: 'iframe.html'
+      ,content: '/iframe'
       ,area: ['730px', '420px']
       ,shade: 0.8
       ,skin: 'address-class'

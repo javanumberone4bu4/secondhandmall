@@ -74,6 +74,8 @@ public class GoodsDetailController {
         }else{
             model.addAttribute("sizes",goods.getGoodsSize());
         }
+        String id = session.getId();
+        model.addAttribute("sessionId",id);
         model.addAttribute("detail",goods);
         return "detail";
     }

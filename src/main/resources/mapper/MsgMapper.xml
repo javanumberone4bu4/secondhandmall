@@ -85,4 +85,10 @@
     <select id="selectByTelephoneAndSessionId" resultMap="BaseResultMap">
       select * from msg where telephone=#{telephone} and session_id=#{sessionId}
     </select>
+    <select id="selectByTelephone" resultMap="BaseResultMap">
+      select * from msg where telephone=#{telephone}
+    </select>
+  <select id="selectByTelephoneAndMsg" resultMap="BaseResultMap">
+    select * from msg where telephone=#{telephone} and msg_message=#{msgMessage}
+  </select>
 </mapper>

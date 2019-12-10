@@ -22,4 +22,8 @@ public interface MsgMapper {
     int updateByPrimaryKey(Msg record);
 
     Msg selectByTelephoneAndSessionId(@Param("telephone") String telephone, @Param("sessionId") String sessionId);
+
+    Msg selectByTelephone(String telephone);
+
+    Msg selectByTelephoneAndMsg(@Param("telephone")String telephone,@Param("msgMessage")String msgMessage);
 }

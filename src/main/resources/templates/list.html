@@ -36,10 +36,11 @@
   }).use(['jquery','laypage'],function () {
     var $ = layui.jquery
             ,laypage=layui.laypage;
+    var telephone=[[${session.allTelephone}]];
     $.ajax({
       type: "post",
       url: "/shoppingCarMsg/note",//请求地址已在另一处设置
-      data: {telephone:"18780811904"},
+      data: {telephone:telephone},
       dataType: "json",
       success: function(result){
         console.log(result);

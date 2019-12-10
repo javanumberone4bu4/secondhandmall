@@ -6,8 +6,11 @@ import com.rimi.secondhandtradingmall.service.ICollectionsService;
 import com.rimi.secondhandtradingmall.service.IMsgService;
 import com.rimi.secondhandtradingmall.vo.CollectionsVo;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 /**
  * @author Wang Xiaoping
@@ -38,8 +41,10 @@ public class CollectionsController {
         }
         return "detail";
     }
-    @GetMapping("/login")
-    public String login(){
-        return "login";
+    @GetMapping("/selectCollections")
+    public String selectCollections(String telephone, Model model){
+        List<Collections> collections = collectionsService.selectAllByTelephone(telephone);
+        model.addAttribute("collections",collections);
+        return "usercol";
     }
 }

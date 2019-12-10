@@ -8,4 +8,12 @@ import com.rimi.secondhandtradingmall.bean.Msg;
  */
 public interface IMsgService {
     Msg selectByTelephoneAndSessionId(String telephone,String sessionId);
+
+    Msg selectByTelephone(String telephone);
+
+    int insert(Msg msg);
+
+    int update(Msg msg);
+
+    Msg selectByTelephoneAndMsg(String telephone,String msgMessage);
 }
