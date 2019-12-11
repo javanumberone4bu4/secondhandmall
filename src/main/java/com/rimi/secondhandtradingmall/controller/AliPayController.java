@@ -75,8 +75,11 @@ public class AliPayController {
      * @return 随机数
      */
     public String getRan() {
-        double v = Math.random() * 10;
+        int v = (int) (Math.random() * 10);
+        System.out.println(v);
         String s = String.valueOf(v);
+        System.out.println(s);
+        System.out.println(s + System.currentTimeMillis());
         return s + System.currentTimeMillis();
     }
 
@@ -84,7 +87,7 @@ public class AliPayController {
     public void payment(GoodsVo2 vo, HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println(vo);
         // 获得商品总数量
-       int shoppingcarNum = vo.getShoppingcarNum();
+        int shoppingcarNum = vo.getShoppingcarNum();
         // 获得商品单价
         double goodsPrice = vo.getGoodsPrice();
         // 计算出总价
@@ -92,16 +95,18 @@ public class AliPayController {
 
 
         //生成订单
-        String orderForm = new AcquireOrderForm().getOrderForm(RandomUtils.getRan());
+        String orderForm = new AcquireOrderForm().getOrderForm(getRan());
         String orderForm1 = new AcquireOrderForm().getOrderForm("1219528455234492");
-        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet, alipayPublicKey, signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format, charSet,
+                alipayPublicKey, signType);
         //获得初始化的AlipayClient
 
         //获取当前请求过来的地址
         String urls = request.getRequestURL().toString();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://localhost:80/user?telephone="+vo.getTelephone());//http://10.2.3.48:8080/paySuccess
-        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone="+vo.getTelephone());//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://localhost:80/user?telephone=" + vo.getTelephone());//http://10.2.3
+        // .48:8080/paySuccess
+        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone=" + vo.getTelephone());//在公共参数中设置回跳和通知地址
 
 
         alipayRequest.setBizContent("{" +
@@ -132,7 +137,7 @@ public class AliPayController {
                 String goodsId2 = String.valueOf(goodsId);
                 // 获取商品总件数
                 int shoppingcarNum1 = vo.getShoppingcarNum();
-                Orders orders=new Orders();
+                Orders orders = new Orders();
                 orders.setGoodsId(goodsId2);
                 orders.setOrdersAddress(vo.getOrdersAddress());
                 orders.setOrdersMsg(orderForm);
@@ -140,6 +145,8 @@ public class AliPayController {
                 orders.setTelephone(vo.getTelephone());
                 orders.setOrdersSummoney(total);
                 orders.setOrdersSumnum(shoppingcarNum1);
+                orders.setColor(vo.getColor());
+                orders.setSize(vo.getSize());
                 int insert = ordersService.insert(orders);
                 System.out.println("订单生成成功");
 
@@ -161,11 +168,11 @@ public class AliPayController {
     @GetMapping("/purchaseCar")
     public void paymentCar(AllGoodsVo2 vo, String telephone, HttpServletResponse response) throws IOException {
         // 获取所有商品的总数量
-        Integer allCount = 0;
+        int allCount = 0;
         // 获得将要支付的购物车内单个类型的商品的总数量
-        Integer count = 0;
+        int count = 0;
         // 获得将要支付所有商品的总价
-        Double total = 0.0;
+        double total = 0.0;
         // 创建一个商品集合，用来存查到的当前用户的所有将要付款的购物车里的商品
         List<Goods> allGoods = new ArrayList<>();
         // 根据前端传来的商品id 查询出当前用户购物车的所有商品
@@ -179,11 +186,11 @@ public class AliPayController {
         // 遍历商品，获取所有商品的所有信息
         for (Goods good : allGoods) {
             // 获得单个商品的单价
-            Double goodsPrice = good.getGoodsPrice();
+            double goodsPrice = good.getGoodsPrice();
             // 获得单个商品的总量
-            Integer goodsNum = good.getGoodsNum();
+            int goodsNum = good.getGoodsNum();
             // 计算出单个商品的总价
-            Double goodsTotal = goodsPrice * goodsNum;
+            double goodsTotal = goodsPrice * goodsNum;
             // 价格叠加
             total += goodsTotal;
             // 支付所有商品总数叠加
@@ -203,13 +210,14 @@ public class AliPayController {
                 alipayPublicKey, signType);
         //获得初始化的AlipayClient
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://localhost:80/user?telephone="+vo.getTelephone());//http://10.2.3.48:8080/paySuccess
-        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone="+vo.getTelephone());//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://localhost:80/user?telephone=" + vo.getTelephone());//http://10.2.3
+        // .48:8080/paySuccess
+        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone=" + vo.getTelephone());//在公共参数中设置回跳和通知地址
 
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderForm + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                // TODO 算 金额
+                //  算 金额
                 "    \"total_amount\":\"" + total + "\"," +
                 //  随便写
                 "    \"subject\":\"" + RandomUtils.getRan() + "\"," +
@@ -257,7 +265,7 @@ public class AliPayController {
                     // 插入一个新的购物车信息
                     Shoppingcarmsg shoppingcarmsg1 = new Shoppingcarmsg();
                     shoppingcarmsg1.setShoppingcarmsgSumnum(count1);
-                    shoppingcarmsg1.setTelephone((String)telephone);
+                    shoppingcarmsg1.setTelephone((String) telephone);
                     int res = shoppingCarMsgService.insertCountByTelephone(shoppingcarmsg);
 
                 }

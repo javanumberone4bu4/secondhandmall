@@ -12,11 +12,13 @@
     <result column="orders_status" jdbcType="VARCHAR" property="ordersStatus" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="orders_address" jdbcType="VARCHAR" property="ordersAddress" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     orders_id, orders_msg, goods_id, orders_sumnum, orders_summoney, orders_status, telephone, 
-    orders_address
+    orders_address, `size`, color
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -34,10 +36,12 @@
     <!--@mbg.generated-->
     insert into orders (orders_msg, goods_id, orders_sumnum, 
       orders_summoney, orders_status, telephone, 
-      orders_address)
+      orders_address, `size`, color
+      )
     values (#{ordersMsg,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{ordersSumnum,jdbcType=INTEGER}, 
       #{ordersSummoney,jdbcType=DOUBLE}, #{ordersStatus,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
-      #{ordersAddress,jdbcType=VARCHAR})
+      #{ordersAddress,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="orders_id" keyProperty="ordersId" parameterType="com.rimi.secondhandtradingmall.bean.Orders" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -64,6 +68,12 @@
       <if test="ordersAddress != null">
         orders_address,
       </if>
+      <if test="size != null">
+        `size`,
+      </if>
+      <if test="color != null">
+        color,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="ordersMsg != null">
@@ -86,6 +96,12 @@
       </if>
       <if test="ordersAddress != null">
         #{ordersAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        #{color,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -114,6 +130,12 @@
       <if test="ordersAddress != null">
         orders_address = #{ordersAddress,jdbcType=VARCHAR},
       </if>
+      <if test="size != null">
+        `size` = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        color = #{color,jdbcType=VARCHAR},
+      </if>
     </set>
     where orders_id = #{ordersId,jdbcType=INTEGER}
   </update>
@@ -126,7 +148,9 @@
       orders_summoney = #{ordersSummoney,jdbcType=DOUBLE},
       orders_status = #{ordersStatus,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
-      orders_address = #{ordersAddress,jdbcType=VARCHAR}
+      orders_address = #{ordersAddress,jdbcType=VARCHAR},
+      `size` = #{size,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR}
     where orders_id = #{ordersId,jdbcType=INTEGER}
   </update>
     <insert id="insertAll">

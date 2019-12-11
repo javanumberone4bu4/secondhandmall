@@ -52,4 +52,14 @@ public class GoodsVo2 {
      */
     private String ordersAddress;
 
+    /**
+     * 商品颜色
+     */
+    private String color;
+
+    /**
+     * 商品尺寸
+     */
+    private String size;
+
 }

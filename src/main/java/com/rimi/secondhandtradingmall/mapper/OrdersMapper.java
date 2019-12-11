@@ -1,14 +1,12 @@
 package com.rimi.secondhandtradingmall.mapper;
 
-import com.rimi.secondhandtradingmall.bean.Orders;import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.rimi.secondhandtradingmall.bean.Orders;import org.apache.ibatis.annotations.Param;import java.util.List;
 
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/10 8:58
+ * @author junelee
+ * @date 2019/12/11 9:01
  */
 public interface OrdersMapper {
     int deleteByPrimaryKey(Integer ordersId);

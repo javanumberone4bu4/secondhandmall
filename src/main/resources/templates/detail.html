@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>二手交易商城-商品详情</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="/layui/css/layui.css">
-  <link rel="stylesheet" href="/static/css/index.css">
+    <meta charset="UTF-8">
+    <title>二手交易商城-商品详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
 
@@ -14,72 +14,85 @@
 <div th:replace="common/house-head :: house-head"></div>
 
 <div class="layui-container house-detail">
-  <p class="title"><a href="/">首页</a> &gt; <a th:text="${sumclassifyDetail.getSumclassifyName()}"></a> &gt; <span>产品详情</span></p>
-  <div class="layui-row price">
-    <div class="layui-col-sm6">
-      <div class="intro-img"><img th:src="${detail.getGoodsLogo()}"></div><ul class="thumb">
-        <li th:each="goods : ${descriptions6}"><img th:src="${descriptions6[goodsStat.index]}"></li>
-      </ul>
-    </div>
-    <div class="layui-col-sm6 shopChoose">
-      <div class="title"><p th:text="${detail.getGoodsName()}"></p></div>
-      <p><span>￥<big><b th:text="${detail.getGoodsPrice()}"></b></big></span></p>
-      <dl><dt>颜色</dt><dd  th:each="goods : ${colors}" th:text="${colors[goodsStat.index]}"></dd></dl>
-      <dl><dt>尺寸</dt><dd  th:each="goods : ${sizes}" th:text="${sizes[goodsStat.index]}"></dd></dl>
-      <input type="hidden" id="sessionId" th:value="${sessionId}" />
-      <div class="number layui-form">
-        <label>数量</label>
-        <div class="layui-input-inline btn-input">
-          <button class="layui-btn layui-btn-primary sup">-</button>
-          <input type="text" class="layui-input" id="payNum">
-          <button class="layui-btn layui-btn-primary sub">+</button>
+    <p class="title"><a href="/">首页</a> &gt; <a th:text="${sumclassifyDetail.getSumclassifyName()}"></a> &gt;
+        <span>产品详情</span></p>
+    <div class="layui-row price">
+        <div class="layui-col-sm6">
+            <div class="intro-img"><img th:src="${detail.getGoodsLogo()}"></div>
+            <ul class="thumb">
+                <li th:each="goods : ${descriptions6}"><img th:src="${descriptions6[goodsStat.index]}"></li>
+            </ul>
         </div>
-        <p class="inputTips" >已超出库存数量！</p>
-      </div>
-      <div class="shopBtn">
-        <button class="layui-btn layui-btn-primary sale">立即购买</button>
-        <button class="layui-btn shop"><i class="layui-icon layui-icon-house-shop"></i>加入购物车</button>
-        <button class="layui-btn layui-btn-primary collect"><i class="layui-icon layui-icon-rate" id="collect"></i>收藏</button>
-      </div>
-    </div>
-  </div>
-  <div class="layui-row layui-col-space30">
-    <div class="layui-col-sm8 detailTab">
-      <div class="layui-tab layui-tab-brief">
-        <ul class="layui-tab-title">
-          <li class="layui-this">详情</li>
-            <li>评论 <span>(<span th:text="${count}"></span>)</span></li>
-        </ul>
-        <div class="layui-tab-content">
-          <div class="layui-tab-item layui-show" th:each="goods : ${descriptions6}">
-            <img th:src="${descriptions6[goodsStat.index]}">
-          </div>
-          <div class="layui-tab-item">
-            <div class="comment">
-              <ul>
-                <li th:each="comments : ${comments}">
-                  <div class="img"><img th:src="${comments.getSinglecenter().getSinglecenterImage()}"></div>
-                  <p class="txt" th:text="${comments.getCommentsContent()}"></p>
-                  <p class="time" th:text="${comments.getCommentsTime()}"></p>
-                </li>
-              </ul>
-              <div id="detailList"></div>
-              </div>
-          </div>
+        <div class="layui-col-sm6 shopChoose">
+            <div class="title"><p th:text="${detail.getGoodsName()}"></p></div>
+            <p><span>￥<big><b th:text="${detail.getGoodsPrice()}"></b></big></span></p>
+            <span id="chooseColor" style="color:red;display: none;">请选择颜色</span>
+            <dl>
+                <dt>颜色</dt>
+                <dd id="myColor" th:each="goods : ${colors}" th:text="${colors[goodsStat.index]}"></dd>
+            </dl>
+            <span id="chooseSize" style="color:red;display:none">请选择尺寸</span>
+            <dl>
+                <dt>尺寸</dt>
+                <dd id="mySize" th:each="goods : ${sizes}" th:text="${sizes[goodsStat.index]}"></dd>
+            </dl>
+            <input type="hidden" id="sessionId" th:value="${sessionId}"/>
+            <div class="number layui-form">
+                <label>数量</label>
+                <div class="layui-input-inline btn-input">
+                    <button class="layui-btn layui-btn-primary sup">-</button>
+                    <input type="text" class="layui-input" id="payNum">
+                    <button class="layui-btn layui-btn-primary sub">+</button>
+                </div>
+                <p class="inputTips">已超出库存数量！</p>
+            </div>
+            <div class="shopBtn">
+                <button class="layui-btn layui-btn-primary sale">立即购买</button>
+                <button class="layui-btn shop"><i class="layui-icon layui-icon-house-shop"></i>加入购物车</button>
+                <button class="layui-btn layui-btn-primary collect"><i class="layui-icon layui-icon-rate"
+                                                                       id="collect"></i>收藏
+                </button>
+            </div>
         </div>
-      </div>  
     </div>
-    <div class="layui-col-sm4 detailCom">
-      <p class="title">热销推荐</p>
-      <ul class="detailCom-content hot-sell" th:each="good : ${session.goods}">
-        <li > <a class="text">
-          <div><img th:src="${good.getGoodsLogo()}"></div>
-          <p th:text="${good.getGoodsName()}"></p>
-          <p class="price">￥<span th:text="${good.getGoodsPrice()}"></span></p>
-        </a></li>
-      </ul>
+    <div class="layui-row layui-col-space30">
+        <div class="layui-col-sm8 detailTab">
+            <div class="layui-tab layui-tab-brief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">详情</li>
+                    <li>评论 <span>(<span th:text="${count}"></span>)</span></li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show" th:each="goods : ${descriptions6}">
+                        <img th:src="${descriptions6[goodsStat.index]}">
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="comment">
+                            <ul>
+                                <li th:each="comments : ${comments}">
+                                    <div class="img"><img th:src="${comments.getSinglecenter().getSinglecenterImage()}">
+                                    </div>
+                                    <p class="txt" th:text="${comments.getCommentsContent()}"></p>
+                                    <p class="time" th:text="${comments.getCommentsTime()}"></p>
+                                </li>
+                            </ul>
+                            <div id="detailList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm4 detailCom">
+            <p class="title">热销推荐</p>
+            <ul class="detailCom-content hot-sell" th:each="good : ${session.goods}">
+                <li><a class="text">
+                    <div><img th:src="${good.getGoodsLogo()}"></div>
+                    <p th:text="${good.getGoodsName()}"></p>
+                    <p class="price">￥<span th:text="${good.getGoodsPrice()}"></span></p>
+                </a></li>
+            </ul>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- 页面footer -->
@@ -87,115 +100,152 @@
 
 <script src="/layui/layui.js"></script>
 <script>
-  layui.config({
-    base: '/static/js/' //layui自定义layui组件目录
-  }).use(['jquery','layer','element','laypage'],function () {
-    var $ = layui.jquery
-            ,layer = layui.layer
-            ,element=layui.element
-        ,laypage=layui.laypage;
-    //上面已经引入了jquery的ajax方法，下面直接传参到后台
-      var telephone="";
-      var v1=[[${session.allTelephone}]]
-      alert(v1);
-      if(v1==null){
-        telephone=-1;
-      }else{
-        telephone=v1;
-      }
-    $.ajax({
-      type: "post",
-      url: "/shoppingCarMsg/note",//请求地址已在另一处设置
-      data: {telephone:telephone},
-      dataType: "json",
-      success: function(result){
-        console.log(result);
-      }
-    });
-    var count=[[${count}]];
-      //执行一个laypage实例
-      laypage.render({
-          elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
-          ,count: count //数据总数，从服务端得到
-          ,theme: '#daba91'
-          ,limit:3
-          ,curr:1
-          ,prev:'上一页'
-          ,next:'下一页'
-          ,first:1
-          ,last:50
-          ,layout:['page','next']
-          ,jump:function (obj,first) {
-              if (!first) {
-                  $('list-detail').empty();
-                  location.href="/detail?pageNum="+obj.curr+"&pageSize="+obj.limit+"&goodsId="+[[${detail.goodsId}]];
-              }
-          }
-      });
-    //获取浏览器的sessionId
-    function getSessionId(){
-      var c_name = 'JSESSIONID';
-      if(document.cookie.length>0){
-        c_start=document.cookie.indexOf(c_name + "=")
-        if(c_start!=-1){
-          c_start=c_start + c_name.length+1
-          c_end=document.cookie.indexOf(";",c_start)
-          if(c_end==-1) c_end=document.cookie.length
-          return unescape(document.cookie.substring(c_start,c_end));
-        }
-      }else{
-        var JSESSIONID=$("#sessionId").val();
-        return JSESSIONID;
-      }
+    function contains(subs, str) {
+        return str.indexOf(subs) >= 0 ? true : false;
     }
-      var sessionId=getSessionId();
-    // var goodsNum=$("#payNum").val();
-    //点击收藏发送异步请求
-    var goodsId=[[${detail.goodsId}]];
-    $('.collect').on('click',function () {
-      $.ajax({
-        type: "post",
-        url: "/collect",
-        data: {goodsId:goodsId,telephone:telephone,sessionId:sessionId},
-        dataType: "json",
-        success: function(result){
-          console.log(result);
+</script>
+<script>
+    layui.config({
+        base: '/static/js/' //layui自定义layui组件目录
+    }).use(['jquery', 'layer', 'element', 'laypage'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , element = layui.element
+            , laypage = layui.laypage;
+        //上面已经引入了jquery的ajax方法，下面直接传参到后台
+        var telephone = "";
+        var v1 = [[${session.allTelephone}]]
+        alert(v1);
+        if (v1 == null) {
+            telephone = -1;
+        } else {
+            telephone = v1;
         }
-      });
-    })
+        $.ajax({
+            type: "post",
+            url: "/shoppingCarMsg/note",//请求地址已在另一处设置
+            data: {telephone: telephone},
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            }
+        });
+        var count = [[${count}]];
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: count //数据总数，从服务端得到
+            , theme: '#daba91'
+            , limit: 3
+            , curr: 1
+            , prev: '上一页'
+            , next: '下一页'
+            , first: 1
+            , last: 50
+            , layout: ['page', 'next']
+            , jump: function (obj, first) {
+                if (!first) {
+                    $('list-detail').empty();
+                    location.href = "/detail?pageNum=" + obj.curr + "&pageSize=" + obj.limit + "&goodsId=" + [[${detail.goodsId}]];
+                }
+            }
+        });
+
+        //获取浏览器的sessionId
+        function getSessionId() {
+            var c_name = 'JSESSIONID';
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return unescape(document.cookie.substring(c_start, c_end));
+                }
+            } else {
+                var JSESSIONID = $("#sessionId").val();
+                return JSESSIONID;
+            }
+        }
+
+        var sessionId = getSessionId();
+        // var goodsNum=$("#payNum").val();
+        //点击收藏发送异步请求
+        var goodsId = [[${detail.goodsId}]];
+        $('.collect').on('click', function () {
+            $.ajax({
+                type: "post",
+                url: "/collect",
+                data: {goodsId: goodsId, telephone: telephone, sessionId: sessionId},
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        });
 
 
-     //点击立即购买发送异步请求
-    var goodsName="[[${detail.goodsName}]]";
-    var goodsPrice=[[${detail.goodsPrice}]];
-    var ordersAddress="[[${session.ordersAddress}]]"
-    $('.sale').on('click',function () {
-      var shoppingcarNum=$("#payNum").val();
-      $.ajax({
-        type: "get",
-        url: "/judgeLogin?goodsId="+goodsId+"&goodsName="+goodsName+"&shoppingcarNum="+shoppingcarNum+"&goodsPrice="+goodsPrice+"&telephone="+telephone+"&sessionId="+sessionId,
-        dataType: "json",
-        success: function(data){
-           if(data.code==201){
-             window.location.href="/login";
-           }
-           if(data.code==200){
-             window.location.href="/purchase?goodsId="+goodsId+"&goodsName="+goodsName+"&shoppingcarNum="+shoppingcarNum+"&goodsPrice="+goodsPrice+"&telephone="+telephone+"&sessionId="+sessionId+"&ordersAddress="+ordersAddress;
-           }
-           if(data.code==600){
-             window.location.href="/userAdd";
-           }
-        }
-      });
-    })
-  });
+//点击立即购买发送异步请求
+        var goodsName = "[[${detail.goodsName}]]";
+        var goodsPrice = [[${detail.goodsPrice}]];
+        var ordersAddress = "[[${session.ordersAddress}]]";
+
+        $('.sale').on('click', function () {
+            var size = "";
+            var color = "";
+            var color3 = $(".active").text();
+            if (contains("色", color3)) {
+                var color2 = color3.split("色");
+                color = color2[0] + "色";
+                alert(color);
+                alert(color2[1]);
+
+            }
+            if (color == "") {
+                $("#chooseColor").css("display", "inline");
+                return;
+            }
+
+            size = color2[1];
+
+
+            if (size == "") {
+                $("#chooseSize").css("display", "inline");
+                return;
+            }
+
+
+            var shoppingcarNum = $("#payNum").val();
+
+            $.ajax({
+                type: "get",
+                url: "/judgeLogin?goodsId=" + goodsId + "&goodsName=" + goodsName + "&shoppingcarNum=" + shoppingcarNum + "&goodsPrice="
+                    + goodsPrice + "&telephone=" + telephone + "&sessionId=" + sessionId,
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 201) {
+                        window.location.href = "/login";
+                    }
+                    if (data.code == 200) {
+                        window.location.href = "/purchase?goodsId=" + goodsId + "&goodsName=" + goodsName + "&shoppingcarNum=" + shoppingcarNum
+                            + "&goodsPrice=" + goodsPrice + "&telephone=" + telephone + "&sessionId=" + sessionId + "&ordersAddress=" +
+                            ordersAddress + "&color=" + color + "&size=" + size;
+                    }
+                    if (data.code == 600) {
+                        window.location.href = "/userAdd";
+                    }
+                }
+            });
+        })
+    });
 </script>
 
 <script>
-  layui.config({
-    base: '/static/js/'
-  }).use('house'); 
+    layui.config({
+        base: '/static/js/'
+    }).use('house');
 </script>
-  
+
+
 </body>
 </html>

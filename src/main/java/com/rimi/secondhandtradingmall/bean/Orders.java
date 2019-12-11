@@ -8,10 +8,10 @@ import lombok.Data;
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/10 8:58
+ * @author junelee
+ * @date 2019/12/11 9:01
  */
-@ApiModel(value = "com.rimi.secondhandtradingmall.bean.Orders")
+@ApiModel(value = "com-rimi-secondhandtradingmall-bean-Orders")
 @Data
 public class Orders implements Serializable {
     /**
@@ -61,6 +61,18 @@ public class Orders implements Serializable {
      */
     @ApiModelProperty(value = "用户的收货地址")
     private String ordersAddress;
+
+    /**
+     * 商品尺寸
+     */
+    @ApiModelProperty(value = "商品尺寸")
+    private String size;
+
+    /**
+     * 商品颜色
+     */
+    @ApiModelProperty(value = "商品颜色")
+    private String color;
 
     private static final long serialVersionUID = 1L;
 }
