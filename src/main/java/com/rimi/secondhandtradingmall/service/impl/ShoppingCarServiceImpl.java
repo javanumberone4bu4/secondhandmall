@@ -1,9 +1,12 @@
 package com.rimi.secondhandtradingmall.service.impl;
 
 import com.rimi.secondhandtradingmall.bean.Goods;
+import com.rimi.secondhandtradingmall.bean.Shoppingcar;
 import com.rimi.secondhandtradingmall.mapper.ShoppingcarMapper;
 import com.rimi.secondhandtradingmall.service.IShoppingCarService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author junelee
@@ -27,16 +30,17 @@ public class ShoppingCarServiceImpl implements IShoppingCarService {
      */
     @Override
     public Goods selectAllGoodsByPhoneAndGoodsId(Integer goodsId, String telephone) {
-        return shoppingcarMapper.selectAllGoodsByPhoneAndGoodsId(goodsId,telephone);
+        return shoppingcarMapper.selectAllGoodsByPhoneAndGoodsId(goodsId, telephone);
     }
 
     @Override
     public boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id, String telephone) {
-        return shoppingcarMapper.dropShoppingcarGoodsByGoodsIdAndPhone(id,telephone);
+        return shoppingcarMapper.dropShoppingcarGoodsByGoodsIdAndPhone(id, telephone);
     }
 
     /**
      * 查询商品总量
+     *
      * @param telephone
      * @return
      */
@@ -44,6 +48,25 @@ public class ShoppingCarServiceImpl implements IShoppingCarService {
     public int selectCountByTelephone(String telephone) {
 
         return shoppingcarMapper.selectCountByTelephone(telephone);
+
+    }
+
+    @Override
+    public int insertByTelephone(Shoppingcar shoppingcar) {
+
+        int i = shoppingcarMapper.insertByTelephone(shoppingcar);
+        if (i > 0) {
+            return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public List<Shoppingcar> selectAllGoodsByPhone(String telephone) {
+
+        List<Shoppingcar> shoppingcars = shoppingcarMapper.selectAllGoodsByPhone(telephone);
+        return shoppingcars;
+
 
     }
 }

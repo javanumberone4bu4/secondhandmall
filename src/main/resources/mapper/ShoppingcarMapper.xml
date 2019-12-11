@@ -117,4 +117,13 @@
       select SUM(shoppingcar_num)
       from shoppingcar where telephone = #{telephone,jdbcType=VARCHAR};
     </select>
+
+    <insert id="insertByTelephone">
+      insert into shoppingcar (goods_id, shoppingcar_num, shoppingcar_subtotal, telephone)
+      values (#{goodsId,jdbcType=INTEGER},#{shoppingcarNum,jdbcType=INTEGER},#{shoppingcarSubtotal,jdbcType=DOUBLE},#{telephone,jdbcType=VARCHAR});
+    </insert>
+  <select id="selectAllGoodsByPhone" resultMap="BaseResultMap">
+    select *
+    from shoppingcar where telephone = #{telephone,jdbcType=VARCHAR};
+  </select>
 </mapper>

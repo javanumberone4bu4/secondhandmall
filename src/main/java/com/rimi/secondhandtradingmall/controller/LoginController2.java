@@ -31,7 +31,7 @@ public class LoginController2 {
         String id = session.getId();
         msg.setSessionId(id);
         int update = msgService.update(msg);
-        session.setAttribute("allTelephone",telephone);;
+        session.setAttribute("allTelephone",telephone);
         return new DefaultResult(ResultCode.SUCCESS);
     }
 }

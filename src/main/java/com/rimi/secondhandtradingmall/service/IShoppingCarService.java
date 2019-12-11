@@ -1,7 +1,10 @@
 package com.rimi.secondhandtradingmall.service;
 
 import com.rimi.secondhandtradingmall.bean.Goods;
+import com.rimi.secondhandtradingmall.bean.Shoppingcar;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author Wang Xiaoping
@@ -25,7 +28,11 @@ public interface IShoppingCarService {
      * @param telephone
      * @return
      */
-    boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id,String telephone);
+    boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id, String telephone);
 
     int selectCountByTelephone(@Param("telephone") String telephone);
+
+    int insertByTelephone(Shoppingcar shoppingcar);
+
+    List<Shoppingcar> selectAllGoodsByPhone(@Param("telephone") String telephone);
 }

@@ -4,6 +4,8 @@ import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Shoppingcar;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * ${Description}
  *
@@ -28,4 +30,8 @@ public interface ShoppingcarMapper {
     boolean dropShoppingcarGoodsByGoodsIdAndPhone(@Param("id") Integer id, @Param("telephone") String telephone);
 
     int selectCountByTelephone(@Param("telephone") String telephone);
+
+    int insertByTelephone(Shoppingcar shoppingcar);
+
+    List<Shoppingcar> selectAllGoodsByPhone(@Param("telephone") String telephone);
 }

@@ -28,4 +28,6 @@ public interface GoodsMapper {
     List<Goods> selectLike();
 
     List<Goods> selectSecond(Integer sumclassifyId);
+
+    List<Goods> selectShoppingcarInYourLike();
 }

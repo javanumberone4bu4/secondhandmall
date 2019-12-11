@@ -18,4 +18,7 @@ public interface IGoodsService {
     List<Goods> selectSecond(Integer sumclassifyId);
 
     Goods selectByPrimaryKey(Integer goodsId);
+
+    List<Goods> selectShoppingcarInYourLike();
+
 }
