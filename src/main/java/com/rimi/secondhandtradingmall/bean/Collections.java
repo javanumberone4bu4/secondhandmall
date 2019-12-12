@@ -3,6 +3,8 @@ package com.rimi.secondhandtradingmall.bean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -31,6 +33,6 @@ public class Collections implements Serializable {
      */
     @ApiModelProperty(value = "用户名")
     private String telephone;
-
+    private Goods goods;
     private static final long serialVersionUID = 1L;
 }

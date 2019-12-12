@@ -44,4 +44,13 @@ public class OrdersServiceImpl implements IOrdersService {
         }
         return 0;
     }
+
+    @Override
+    public List<Orders> selectByStatus(String ordersStatus,String telephone) {
+        List<Orders> orders = ordersMapper.selectByStatus(ordersStatus,telephone);
+        if(orders!=null&&orders.size()>0){
+            return orders;
+        }
+        return null;
+    }
 }

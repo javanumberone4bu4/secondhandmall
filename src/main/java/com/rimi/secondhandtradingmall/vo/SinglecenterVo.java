@@ -23,5 +23,8 @@ public class SinglecenterVo {
      * 收货人手机号
      */
     private String sTelephone;
-
+    /**
+     * 是否默认
+     */
+    private String sureAddress;
 }

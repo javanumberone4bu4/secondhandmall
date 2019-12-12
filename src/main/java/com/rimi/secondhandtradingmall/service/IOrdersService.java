@@ -22,4 +22,6 @@ public interface IOrdersService {
     List<Orders> selectByTelephone(String telephone);
 
     int insert(Orders orders);
+
+    List<Orders> selectByStatus(String ordersStatus,String telephone);
 }

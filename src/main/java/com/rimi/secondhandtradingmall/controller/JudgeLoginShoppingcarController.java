@@ -51,7 +51,7 @@ public class JudgeLoginShoppingcarController {
         session.setAttribute("allMsg",vo);
 
         //  查询个人中心表，查询是否存在地址，有则直接跳转支付页面，没有则跳转到iframe页面进行添加地址
-        Singlecenter singlecenter = singleCenterService.selectByTelephone(vo.getTelephone());
+        Singlecenter singlecenter = singleCenterService.selectByPhoneAndSure(vo.getTelephone(),"是");
         if (singlecenter != null) {
             if(singlecenter.getSinglecenterAddress()!=null) {
                 // 调用支付功能

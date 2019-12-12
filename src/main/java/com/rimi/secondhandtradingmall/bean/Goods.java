@@ -3,6 +3,8 @@ package com.rimi.secondhandtradingmall.bean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 import org.apache.solr.client.solrj.beans.Field;
 
@@ -99,5 +101,6 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "商品图标")
     private String goodsLogo;
     private Secondclassify secondclassify;
+    private List<Collections> list;
     private static final long serialVersionUID = 1L;
 }

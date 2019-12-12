@@ -47,4 +47,13 @@ public class CollectionsServiceImpl implements ICollectionsService {
         }
         return null;
     }
+
+    @Override
+    public int delete(Integer collectionsId) {
+        int i = collectionsMapper.deleteByPrimaryKey(collectionsId);
+        if(i>0){
+            return i;
+        }
+        return 0;
+    }
 }

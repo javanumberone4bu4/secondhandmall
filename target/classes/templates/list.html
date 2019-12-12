@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/head :: head"></head>
+
+
+<!-- 网页头部 -->
+<div th:replace="common/house-head :: house-head"></div>
+
+
+
+<div class="layui-container house-list">
+  <p class="classify"><a href="/">首页</a> &gt; <span th:text="${sumclassifyName.getSumclassifyName()}"></span></p>
+  <div class="list-banner"></div>
+  <div class="filter">
+    <div><span>分类：</span><ul><li class="active">全部</li><li th:each="secondclassify : ${session.secondclassifies}" th:text="${secondclassify.getSecondclassifyName()}"></li></ul></div>
+    <div><span>排序：</span><ul><li class="active">默认</li><li>价格<i class="layui-icon layui-icon-house-up"></i><i class="layui-icon layui-icon-triangle-d"></i></li><li>上架时间</li></ul></div>
+  </div>
+  <div class="layui-row layui-col-space25">
+    <div class="layui-col-xs6 layui-col-sm3" th:each="goods : ${cache}">
+      <div class="list-detail">
+        <div class="img" ><img th:src="${goods.getGoodsLogo()}"></div>
+        <p class="title" ><a href="detail.html" th:text="${goods.getGoodsName()}"></a></p>
+        <p ><span class="price">￥<span th:text="${goods.getGoodsPrice()}"></span></span><span th:text="${goods.getGoodsPaypeople()}"></span>人付款</p>
+      </div>
+    </div>
+  </div>
+  <div id="houseList"></div>
+</div>
+
+ <div th:replace="common/footer :: footer"></div>
+
+<script th:inline="javascript">
+  layui.config({
+    base: '/static/js/' //layui自定义layui组件目录
+  }).use(['jquery','laypage'],function () {
+    var $ = layui.jquery
+            ,laypage=layui.laypage;
+    var telephone=[[${session.allTelephone}]];
+    $.ajax({
+      type: "post",
+      url: "/shoppingCarMsg/note",//请求地址已在另一处设置
+      data: {telephone:telephone},
+      dataType: "json",
+      success: function(result){
+        console.log(result);
+      }
+    });
+    var count=[[${session.count}]];
+    //执行一个laypage实例
+    laypage.render({
+      elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
+      ,count: count //数据总数，从服务端得到
+      ,theme: '#daba91'
+      ,limit:3
+      ,curr:1
+      ,prev:'上一页'
+      ,netx:'下一页'
+      ,first:1
+      ,last:50
+      ,layout:['page','next']
+      ,jump:function (obj,first) {
+        if (!first) {
+          $('list-detail').empty();
+          location.href="/list?pageNum="+obj.curr+"&pageSize="+obj.limit+"&sumclassifyName="+[[${session.sumclassifyName.sumclassifyName}]]+"&sumclassifyId="+[[${session.sumclassifyName.sumclassifyId}]];
+        }
+      }
+  });
+
+  })
+
+</script>
+<script>
+  layui.config({
+    base: '/static/js/'
+  }).use('house'); 
+</script>
+
+</body>
+</html>

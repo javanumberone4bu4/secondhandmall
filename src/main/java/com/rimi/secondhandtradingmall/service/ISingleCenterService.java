@@ -11,9 +11,17 @@ import java.util.List;
  */
 public interface ISingleCenterService {
 
-    Singlecenter selectByTelephone(String telephone);
+    Singlecenter selectByTelephone(String telephone,String singlecenterAddress);
 
     int insertSinglecenter(Singlecenter singlecenter);
 
     int updateByPrimaryKeySelective(Singlecenter singlecenter);
+
+    List<Singlecenter> selectallbystelephone(String sTelephone);
+
+    Singlecenter selectByPhoneAndSure(String sTelephone,String sureAddress);
+
+    int delete(Integer singlecenterId);
+
+    int update(SinglecenterVo vo);
 }

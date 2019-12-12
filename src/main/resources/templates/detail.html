@@ -115,7 +115,6 @@
         //上面已经引入了jquery的ajax方法，下面直接传参到后台
         var telephone = "";
         var v1 = [[${session.allTelephone}]]
-        alert(v1);
         if (v1 == null) {
             telephone = -1;
         } else {
@@ -130,7 +129,7 @@
                 console.log(result);
             }
         });
-        var count = [[${count}]];
+        var count = [[${session.d_count}]];
         //执行一个laypage实例
         laypage.render({
             elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
@@ -167,12 +166,15 @@
                 return JSESSIONID;
             }
         }
-
         var sessionId = getSessionId();
         // var goodsNum=$("#payNum").val();
         //点击收藏发送异步请求
         var goodsId = [[${detail.goodsId}]];
-        $('.collect').on('click', function () {
+        //详情页——收藏
+        $(".house-detail").find(".shopChoose").find(".collect").on('click', function(){
+            $(this).find("#collect").addClass("layui-icon-rate-solid").removeClass("layui-icon-rate");
+            $(this).find("#collect")[0].style.color = '#dbbb92';
+            layer.msg('已收藏');
             $.ajax({
                 type: "post",
                 url: "/collect",
@@ -180,10 +182,15 @@
                 dataType: "json",
                 success: function (result) {
                     console.log(result);
+                    if(result.code==201){
+                        window.location.href="/login";
+                    }
+                    if(result.code==200){
+                        window.location.href="/detail?goodsId="+goodsId+"&pageNum=1&pageSize=3";
+                    }
                 }
             });
         });
-
 
 //点击立即购买发送异步请求
         var goodsName = "[[${detail.goodsName}]]";
@@ -197,8 +204,6 @@
             if (contains("色", color3)) {
                 var color2 = color3.split("色");
                 color = color2[0] + "色";
-                alert(color);
-                alert(color2[1]);
 
             }
             if (color == "") {

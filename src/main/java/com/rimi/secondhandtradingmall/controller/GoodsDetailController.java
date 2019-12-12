@@ -48,9 +48,9 @@ public class GoodsDetailController {
         model.addAttribute("sumclassifyDetail",sumclassify);
         List<Comments> comments1 = commentsService.selectByGoodsId(vo.getGoodsId());
         if(comments1!=null&&comments1.size()>0){
-            model.addAttribute("count",comments1.size());
+            session.setAttribute("d_count",comments1.size());
         }else {
-            model.addAttribute("count",0);
+            session.setAttribute("d_count",0);
         }
         PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
         List<Comments> comments = commentsService.selectByGoodsId(vo.getGoodsId());

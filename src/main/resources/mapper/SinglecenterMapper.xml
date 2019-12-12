@@ -12,11 +12,12 @@
     <result column="singlecenter_mark" jdbcType="INTEGER" property="singlecenterMark" />
     <result column="singlecenter_address" jdbcType="VARCHAR" property="singlecenterAddress" />
     <result column="singlecenter_consignee" jdbcType="VARCHAR" property="singlecenterConsignee" />
+    <result column="sureAddress" jdbcType="VARCHAR" property="sureaddress" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     singlecenter_id, singlecenter_image, s_telephone, singlecenter_dfnum, singlecenter_dsnum, 
-    singlecenter_mark, singlecenter_address, singlecenter_consignee
+    singlecenter_mark, singlecenter_address, singlecenter_consignee, sureAddress
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -34,10 +35,10 @@
     <!--@mbg.generated-->
     insert into singlecenter (singlecenter_image, s_telephone, singlecenter_dfnum, 
       singlecenter_dsnum, singlecenter_mark, singlecenter_address, 
-      singlecenter_consignee)
+      singlecenter_consignee, sureAddress)
     values (#{singlecenterImage,jdbcType=VARCHAR}, #{sTelephone,jdbcType=VARCHAR}, #{singlecenterDfnum,jdbcType=INTEGER}, 
       #{singlecenterDsnum,jdbcType=INTEGER}, #{singlecenterMark,jdbcType=INTEGER}, #{singlecenterAddress,jdbcType=VARCHAR}, 
-      #{singlecenterConsignee,jdbcType=VARCHAR})
+      #{singlecenterConsignee,jdbcType=VARCHAR}, #{sureaddress,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="singlecenter_id" keyProperty="singlecenterId" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -64,6 +65,9 @@
       <if test="singlecenterConsignee != null">
         singlecenter_consignee,
       </if>
+      <if test="sureaddress != null">
+        sureAddress,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="singlecenterImage != null">
@@ -86,6 +90,9 @@
       </if>
       <if test="singlecenterConsignee != null">
         #{singlecenterConsignee,jdbcType=VARCHAR},
+      </if>
+      <if test="sureaddress != null">
+        #{sureaddress,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -114,6 +121,9 @@
       <if test="singlecenterConsignee != null">
         singlecenter_consignee = #{singlecenterConsignee,jdbcType=VARCHAR},
       </if>
+      <if test="sureaddress != null">
+        sureAddress = #{sureaddress,jdbcType=VARCHAR},
+      </if>
     </set>
     where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
   </update>
@@ -126,11 +136,18 @@
       singlecenter_dsnum = #{singlecenterDsnum,jdbcType=INTEGER},
       singlecenter_mark = #{singlecenterMark,jdbcType=INTEGER},
       singlecenter_address = #{singlecenterAddress,jdbcType=VARCHAR},
-      singlecenter_consignee = #{singlecenterConsignee,jdbcType=VARCHAR}
+      singlecenter_consignee = #{singlecenterConsignee,jdbcType=VARCHAR},
+      sureAddress = #{sureaddress,jdbcType=VARCHAR}
     where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
   </update>
     <select id="selectByTelephone" resultMap="BaseResultMap">
       select *
-      from shtm.singlecenter where s_telephone = #{telephone,jdbcType=VARCHAR};
+      from singlecenter where s_telephone=#{sTelephone} and singlecenter_address=#{singlecenterAddress}
     </select>
+  <select id="selectAllBySTelephone" resultMap="BaseResultMap">
+    select * from singlecenter where s_telephone=#{sTelephone}
+  </select>
+  <select id="selectByPhoneAndSure" resultMap="BaseResultMap">
+    select * from singlecenter where s_telephone=#{sTelephone} and sureAddress=#{sureAddress}
+  </select>
 </mapper>

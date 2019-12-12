@@ -8,10 +8,10 @@ import lombok.Data;
 /**
  * ${Description}
  *
- * @author junelee
- * @date 2019/12/10 11:38
+ * @author Wang Xiaoping
+ * @date 2019/12/11 19:38
  */
-@ApiModel(value = "com-rimi-secondhandtradingmall-bean-Singlecenter")
+@ApiModel(value = "com.rimi.secondhandtradingmall.bean.Singlecenter")
 @Data
 public class Singlecenter implements Serializable {
     /**
@@ -61,6 +61,12 @@ public class Singlecenter implements Serializable {
      */
     @ApiModelProperty(value = "收货人")
     private String singlecenterConsignee;
+
+    /**
+     * 是否默认地址
+     */
+    @ApiModelProperty(value = "是否默认地址")
+    private String sureaddress;
 
     private static final long serialVersionUID = 1L;
 }

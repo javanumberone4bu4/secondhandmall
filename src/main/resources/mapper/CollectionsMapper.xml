@@ -7,6 +7,20 @@
     <id column="collections_id" jdbcType="INTEGER" property="collectionsId" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+  <association property="goods" javaType="com.rimi.secondhandtradingmall.bean.Goods">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
+    <result column="goods_uptime" jdbcType="VARCHAR" property="goodsUptime" />
+    <result column="goods_description" jdbcType="VARCHAR" property="goodsDescription" />
+    <result column="goods_paypeople" jdbcType="INTEGER" property="goodsPaypeople" />
+    <result column="goods_color" jdbcType="VARCHAR" property="goodsColor" />
+    <result column="goods_size" jdbcType="VARCHAR" property="goodsSize" />
+    <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+    <result column="goods_purchasetime" jdbcType="INTEGER" property="goodsPurchasetime" />
+    <result column="secondclassify_id" jdbcType="INTEGER" property="secondclassifyId" />
+    <result column=" goods_logo" jdbcType="VARCHAR" property="goodsLogo" />
+  </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -73,6 +87,6 @@
       select * from collections where telephone=#{telephone} and goods_id=#{goodsId}
     </select>
     <select id="selectAllByTelephone" resultMap="BaseResultMap">
-      select *  from collections where telephone=#{telephone}
+      select *  from collections c left join goods g on c.goods_id=g.goods_id where c.telephone=#{telephone}
     </select>
 </mapper>

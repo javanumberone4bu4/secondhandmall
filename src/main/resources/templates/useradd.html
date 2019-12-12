@@ -17,12 +17,9 @@
     <p class="layui-hide-xs title">首页 &gt; <span>个人中心</span></p>
     <div class="layui-col-sm2">
       <ul class="user-list">
-        <li><a href="user.html">个人中心</a></li>
-        <li><a href="">消息中心</a></li>
-        <li class="active"><a href="useradd.html">地址管理</a></li>
-        <li><a href="usercol.html">我的收藏</a></li>
-        <!--<li><a href="">优惠券</a></li>-->
-        <!--<li><a href="">服务中心</a></li>-->
+        <li><a href="/user">个人中心</a></li>
+        <li class="active"><a href="/userAdd">地址管理</a></li>
+        <li><a th:href="'/selectCollections?telephone='+${session.allTelephone}+'&pageNum=1&pageSize=3'">我的收藏</a></li>
       </ul>
     </div>
     <div class="layui-col-sm10">
@@ -50,8 +47,122 @@
 </script>
 
 <script src="/layui/layui.js"></script>
+<script>
+layui.config({
+base: '/static/js/' //layui自定义layui组件目录
+}).use(['jquery', 'layer', 'element', 'laypage','table'], function () {
+  var $ = layui.jquery
+          , layer = layui.layer
+          , element = layui.element
+          , laypage = layui.laypage
+          ,table=layui.table;
+  var sTelephone=[[${session.allTelephone}]]
+//地址管理——表格
+  table.render({
+    elem: '#user-address'
+    , url: '/allAddress'
+    , where: {sTelephone:sTelephone}
+    , skin: 'line'
+    , response: {
+      statusCode: 200 //规定成功的状态码,默认0
+    }
+    , parseData: function (res) {
+      return {
+        "count": res.data.total,
+        "data": res.data.list,
+        "code": res.code,
+        "meg": res.message
+      };
+    }
+    , cols: [ [
+      {type: 'space', width: 100, align: 'center', templet: '#spaceTpl', width: 90}
+      , {field: 'singlecenterConsignee', title: '收货人', align: 'center', width: 90}
+      , {field: 'singlecenterAddress', title: '地址', align: 'center'}
+      , {field: 'stelephone', title: '联系方式', align: 'center', width: 120}
+      , {field: 'sureaddress', title: '是否默认', align: 'center', width: 90}
+      , {title: '操作', align: 'center', templet: '#addressTpl', width: 120}
+    ]]
+    ,page:true
+    ,limits:[1,2,3,4]
+    ,loading:true
+  });
 
-
+//地址管理——监听工具条
+  table.on('tool(user-address)', function (obj) {
+    var data=obj.data;
+    var singlecenterId = data.singlecenterId;
+    if (obj.event === 'del') {
+      layer.confirm('真的删除行么', function (index) {
+        obj.del();
+        layer.close(index);
+        $.ajax({
+          url:"/deleteSinglecenterId",
+          type:"post",
+          data:{singlecenterId:singlecenterId},
+          dataType:'json',
+          success:function (result) {
+            layer.alert('成功',{
+              icon:1
+            },
+            function () {
+              table.reload('user-address');
+            })
+          }
+        })
+      });
+    } else if (obj.event === 'edit') {
+      layer.open({
+        type: 2
+        , title: '编辑地址'
+        , content: '/iframe'
+        , area: ['730px', '420px']
+        , shade: 0.8
+        , skin: 'address-class'
+        , btn: '确定'
+        , yes: function (index, layero) {
+          window['layui-layer-iframe' + index].layui.form.on('submit(useradd-submit)', function (t) {
+            t.field;
+            //提交数据
+            $.ajax({
+              url:'/updateSinglecenter',
+              type:"post",
+              data: t.field,
+              dataType:"json",
+              success:function (result) {
+                layer.close(index)
+                if (result.code === 0){
+                  layer.msg("操作成功")
+                  table.reload('user-address');
+                } else {
+                  layer.msg("操作失败")
+                }
+              }
+            })
+          });
+          layero.find('iframe').contents().find("#useradd-submit").trigger('click');
+        }
+      });
+    }
+  });
+  $(".useradd").find(".address-add").on('click', function () {
+    layer.open({
+      type: 2
+      , title: '新建地址'
+      , content: '/iframe'
+      , area: ['730px', '420px']
+      , shade: 0.8
+      , skin: 'address-class'
+      , btn: '确定'
+      , yes: function (index, layero) {
+        window['layui-layer-iframe' + index].layui.form.on('submit(useradd-submit)', function (data) {
+          layer.close(index);
+        });
+        layero.find('iframe').contents().find("#useradd-submit").trigger('click');
+      }
+    });
+  });
+})
+</script>
 <script>
   layui.config({
     base: '/static/js/' 

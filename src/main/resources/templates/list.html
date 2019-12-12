@@ -20,7 +20,7 @@
     <div class="layui-col-xs6 layui-col-sm3" th:each="goods : ${cache}">
       <div class="list-detail">
         <div class="img" ><img th:src="${goods.getGoodsLogo()}"></div>
-        <p class="title" ><a href="detail.html" th:text="${goods.getGoodsName()}"></a></p>
+        <p class="title" ><a th:href="'/detail?goodsId='+${goods.getGoodsId()}+'&pageNum=1&pageSize=3'" th:text="${goods.getGoodsName()}"></a></p>
         <p ><span class="price">￥<span th:text="${goods.getGoodsPrice()}"></span></span><span th:text="${goods.getGoodsPaypeople()}"></span>人付款</p>
       </div>
     </div>
@@ -39,7 +39,7 @@
     var telephone=[[${session.allTelephone}]];
     $.ajax({
       type: "post",
-      url: "/shoppingCarMsg/note",//请求地址已在另一处设置
+      url: "/shoppingCarMsg/note",
       data: {telephone:telephone},
       dataType: "json",
       success: function(result){

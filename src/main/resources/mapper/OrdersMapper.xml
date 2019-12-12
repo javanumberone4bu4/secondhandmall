@@ -164,4 +164,7 @@
     <select id="selectByTelephone" resultMap="BaseResultMap">
       select * from  orders where telephone=#{telephone}
     </select>
+    <select id="selectByStatus" resultMap="BaseResultMap">
+      select * from  orders where orders_status like concat("%",#{ordersStatus},"%") and telephone =#{telephone}
+    </select>
 </mapper>

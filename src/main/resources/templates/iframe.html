@@ -54,7 +54,7 @@
             <input type="text" required lay-verify="required|phone" class="layui-input" id="telephone">
         </div>
     </div>
-    <input class="checkdef" type="checkbox" lay-skin="primary" title="设为默认" checked>
+    <input class="checkdef" type="checkbox" name="checkbox" lay-skin="primary" title="设为默认" checked>
     <div class="layui-form-item layui-hide">
         <input type="button" lay-submit lay-filter="useradd-submit" id="useradd-submit" value="确认">
     </div>
@@ -72,29 +72,38 @@
             , layer = layui.layer
             , element = layui.element;
 
-        var singlecenterAddress1 = $("#user-province1").val();
-        var singlecenterAddress2 = $("#user-province2").val();
-        var singlecenterAddress3 = $("#user-province3").val();
-        var singlecenterAddress4 = $("#user-province4").val();
-        // 最终地址
-        var singlecenterAddress = singlecenterAddress1 + singlecenterAddress2 + singlecenterAddress3;
-        // 手机号
-        var sTelephone = $("#telephone").val();
-        // 收货人
-        var singlecenterConsignee = $("#consignee").val();
-
+        //是否默认
+        var sureAddress="";
         $('#useradd-submit').on('click', function () {
+            var singlecenterAddress1 = $("#user-province1").val();
+            var singlecenterAddress2 = $("#user-province2").val();
+            var singlecenterAddress3 = $("#user-province3").val();
+            var singlecenterAddress4 = $("#user-province4").val();
+            // 最终地址
+            var singlecenterAddress = singlecenterAddress1 + singlecenterAddress2 + singlecenterAddress3 + singlecenterAddress4;
+            // 手机号
+            var sTelephone = $("#telephone").val();
+            // 收货人
+            var singlecenterConsignee = $("#consignee").val();
+            if($("input[name=checkbox]:checked").prop("checked")){
+                sureAddress="是";
+            }else{
+                sureAddress="否";
+            }
+
             $.ajax({
-                type: "post",
-                url: "/insertAddress",
-                data: {singlecenterAddress: singlecenterAddress,sTelephone:sTelephone,singlecenterConsignee:singlecenterConsignee},
+                type: "get",
+                url: "/insertAddress9?singlecenterAddress=" + singlecenterAddress + "&sTelephone=" + sTelephone + "&singlecenterConsignee=" + singlecenterConsignee,
                 dataType: "json",
                 success: function (result) {
                     console.log(result);
-                    window.location.href="/userAdd";
+                    if(result.code==200){
+                        window.location.href = "/userAdd";
+                    }
                 }
             })
         })
+    })
 
 </script>
 <script>

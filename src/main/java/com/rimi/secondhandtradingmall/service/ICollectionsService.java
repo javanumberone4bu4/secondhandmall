@@ -14,4 +14,6 @@ public interface ICollectionsService {
     Collections selectByTelephoneAndGoodsId(String telephone,Integer goodsId);
 
     List<Collections> selectAllByTelephone(String telephone);
+
+    int delete(Integer collectionsId);
 }

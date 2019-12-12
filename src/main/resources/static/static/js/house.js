@@ -156,123 +156,157 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   //   ,layout: ['page', 'next']
   // });
   //
-  //详情页——收藏
-  $(".house-detail").find(".shopChoose").find(".collect").on('click', function(){
-    $(this).find("#collect").addClass("layui-icon-rate-solid").removeClass("layui-icon-rate");
-    $(this).find("#collect")[0].style.color = '#dbbb92';
-    layer.msg('已收藏');
-  });
+  // //详情页——收藏
+  // $(".house-detail").find(".shopChoose").find(".collect").on('click', function(){
+  //   $(this).find("#collect").addClass("layui-icon-rate-solid").removeClass("layui-icon-rate");
+  //   $(this).find("#collect")[0].style.color = '#dbbb92';
+  //   layer.msg('已收藏');
+  // });
   
-  //我的收藏——点击切换
-  $(".house-usercol").find(".user-list").children("li").each(function(){
-    $(this).on('click', function(){
-      $(this).addClass("active").siblings().removeClass("active");
-    });
-  });
+  // //我的收藏——点击切换
+  // $(".house-usercol").find(".user-list").children("li").each(function(){
+  //   $(this).on('click', function(){
+  //     $(this).addClass("active").siblings().removeClass("active");
+  //   });
+  // });
   
   //我的收藏——分页
-  laypage.render({
-    elem: 'userList'
-    ,count: 50
-    ,theme: '#daba91'
-    ,layout: ['page', 'next']
-  });
+  // laypage.render({
+  //   elem: 'userList'
+  //   ,count: 50
+  //   ,theme: '#daba91'
+  //   ,layout: ['page', 'next']
+  // });
+  //
+  // //我的收藏——删除
+  // $(".house-usercol").find(".layui-tab-content").find(".goods").each(function(){
+  //   $(this).children(".del").on('click', function(){
+  //     $(this).parent("div").parent("div").remove();
+  //   });
+  // });
   
-  //我的收藏——删除
-  $(".house-usercol").find(".layui-tab-content").find(".goods").each(function(){
-    $(this).children(".del").on('click', function(){
-      $(this).parent("div").parent("div").remove();
-    });
-  });
+  // //地址管理——表格
+  // table.render({
+  //   elem: '#user-address'
+  //   ,url:  '/insertAddress'
+  //   ,where:{}
+  //   ,skin: 'line'
+  //   ,response:{
+  //      statusCode:200 //规定成功的状态码,默认0
+  //   }
+  //   ,parseData:function (res) {
+  //      return{
+  //        "count":res.data.total,
+  //        "data":res.data,
+  //         "code":res.code,
+  //        "meg":res.message
+  //      };
+  //   }
+  //   ,cols: [ [
+  //     {type:'space', width:100, align:'center', templet: '#spaceTpl', width:90}
+  //     ,{field:'singleenterConsignee', title:'收货人', align:'center', width:90}
+  //     ,{field:'singlecenterAddress', title:'地址', align:'center'}
+  //     ,{field:'sTelephone', title:'联系方式', align:'center', width:120}
+  //     ,{title:'操作', align:'center', templet: '#addressTpl', width:120}
+  //   ]]
+  // });
+  //
+  // //地址管理——监听工具条
+  // table.on('tool(user-address)', function(obj){
+  //   var data = obj.data;
+  //   if(obj.event === 'del'){
+  //     layer.confirm('真的删除行么', function(index){
+  //       obj.del();
+  //       layer.close(index);
+  //     });
+  //   }else if(obj.event === 'edit'){
+  //     layer.open({
+  //       type: 2
+  //       ,title: '编辑地址'
+  //       ,content: '/iframe'
+  //       ,area: ['730px', '420px']
+  //       ,shade: 0.8
+  //       ,skin: 'address-class'
+  //       ,btn: '确定'
+  //       ,yes: function(index, layero){
+  //         window['layui-layer-iframe'+ index].layui.form.on('submit(useradd-submit)', function(data){
+  //           layer.close(index);
+  //         });
+  //         layero.find('iframe').contents().find("#useradd-submit").trigger('click');
+  //       }
+  //     });
+  //   }
+  // });
+  // $(".useradd").find(".address-add").on('click', function(){
+  //   layer.open({
+  //     type: 2
+  //     ,title: '新建地址'
+  //     ,content: '/iframe'
+  //     ,area: ['730px', '420px']
+  //     ,shade: 0.8
+  //     ,skin: 'address-class'
+  //     ,btn: '确定'
+  //     ,yes: function(index, layero){
+  //       window['layui-layer-iframe'+ index].layui.form.on('submit(useradd-submit)', function(data){
+  //         layer.close(index);
+  //       });
+  //       layero.find('iframe').contents().find("#useradd-submit").trigger('click');
+  //     }
+  //   });
+  // });
   
-  //地址管理——表格
-  table.render({
-    elem: '#user-address'
-    ,url:  '/insertAddress'
-    ,skin: 'line'
-    ,cols: [[
-      {type:'space', width:100, align:'center', templet: '#spaceTpl', width:90}
-      ,{field:'singleenterConsignee', title:'收货人', align:'center', width:90}
-      ,{field:'singlecenterAddress', title:'地址', align:'center'}
-      ,{field:'sTelephone', title:'联系方式', align:'center', width:120}
-      ,{title:'操作', align:'center', templet: '#addressTpl', width:120}
-    ]]
-  });
-  
-  //地址管理——监听工具条
-  table.on('tool(user-address)', function(obj){
-    var data = obj.data;
-    if(obj.event === 'del'){
-      layer.confirm('真的删除行么', function(index){
-        obj.del();
-        layer.close(index);
-      });
-    }else if(obj.event === 'edit'){
-      layer.open({
-        type: 2
-        ,title: '编辑地址'
-        ,content: '/iframe'
-        ,area: ['730px', '420px']
-        ,shade: 0.8
-        ,skin: 'address-class'
-        ,btn: '确定'
-        ,yes: function(index, layero){
-          window['layui-layer-iframe'+ index].layui.form.on('submit(useradd-submit)', function(data){
-            layer.close(index);
-          });  
-          layero.find('iframe').contents().find("#useradd-submit").trigger('click');
-        }
-      });
-    }
-  });
-  $(".useradd").find(".address-add").on('click', function(){
-    layer.open({
-      type: 2
-      ,title: '新建地址'
-      ,content: '/iframe'
-      ,area: ['730px', '420px']
-      ,shade: 0.8
-      ,skin: 'address-class'
-      ,btn: '确定'
-      ,yes: function(index, layero){
-        window['layui-layer-iframe'+ index].layui.form.on('submit(useradd-submit)', function(data){
-          layer.close(index);
-        });  
-        layero.find('iframe').contents().find("#useradd-submit").trigger('click');
-      }
-    });
-  });
-  
-  //个人中心——订单
-  table.render({
-    elem: '#house-user-order'
-    ,url:  '/userData'
-    ,skin: 'line'
-    ,cols: [[
-      {field:'ordersMsg',title:'订单号', align:'center', templet: '#orderTpl'}
-      ,{field:'goodsId', title:'订购商品ID', templet: '#imgTpl', align:'center'}
-      ,{field:'ordersSumnum', title:'总件数', align:'center', width:120,sort:true}
-      ,{field:'ordersSummoney',title:'价格', align:'center', templet: '#priceTpl', width:100,sort:true}
-      ,{field:'ordersStatus',title:'订单状态', align:'center', templet: '#stateTpl', width:100}
-      ,{title:'订单操作', align:'center', templet: '#handleTpl', width:120}
-    ]]
-  });
-  table.on('tool(house-user-order)', function(obj){
-    var data = obj.data;
-    if(obj.event === 'check'){
-      layer.open({
-        type: 1
-        ,content: '查看物流'
-        ,area: ['500px', '300px']
-      });
-    }else if(obj.event === 'evaluate'){
-      layer.open({
-        type: 1
-        ,content: '收获并评价'
-        ,area: ['500px', '300px']
-      });
-    }
-  });
+  // //个人中心——订单
+  // table.render({
+  //   elem: '#house-user-order'
+  //   ,url:  '/userData'
+  //   ,skin: 'line'
+  //   ,response:{
+  //     statusCode:200 //规定成功的状态码,默认0
+  //   }
+  //   ,parseData:function (res) {
+  //     return{
+  //       "count":res.data.total,
+  //       "data":res.data.list,
+  //       "code":res.code,
+  //       "meg":res.message
+  //     };
+  //   }
+  //   ,cols: [ [
+  //     {field:'ordersMsg',title:'订单号', align:'center', templet: '#orderTpl'}
+  //     ,{field:'goodsId', title:'订购商品ID', templet: '#imgTpl', align:'center'}
+  //     ,{field:'ordersSumnum', title:'总件数', align:'center', width:120,sort:true}
+  //     ,{field:'ordersSummoney',title:'价格', align:'center', templet: '#priceTpl', width:100,sort:true}
+  //     ,{field:'ordersStatus',title:'订单状态', align:'center', templet: '#stateTpl', width:100}
+  //     ,{title:'订单操作', align:'center', templet: '#handleTpl', width:120}
+  //   ]]
+  //   ,done:function () {
+  //     $.ajax({
+  //       type: "get",
+  //       url: "/userData?telephone="+[[${session.allTelephone}]],
+  //       dataType: "json",
+  //       success: function (res) {
+  //         console.log(res);
+  //         // window.location.href = "/user";
+  //       }
+  //     })
+  //   }
+  // });
+  // table.on('tool(house-user-order)', function(obj){
+  //   var data = obj.data;
+  //   if(obj.event === 'check'){
+  //     layer.open({
+  //       type: 1
+  //       ,content: '查看物流'
+  //       ,area: ['500px', '300px']
+  //     });
+  //   }else if(obj.event === 'evaluate'){
+  //     layer.open({
+  //       type: 1
+  //       ,content: '收获并评价'
+  //       ,area: ['500px', '300px']
+  //     });
+  //   }
+  // });
   
   //购物车——表格
   table.render({

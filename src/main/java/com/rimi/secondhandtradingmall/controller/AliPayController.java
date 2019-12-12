@@ -1,6 +1,7 @@
 package com.rimi.secondhandtradingmall.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -9,8 +10,13 @@ import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Orders;
 import com.rimi.secondhandtradingmall.bean.Shoppingcarmsg;
+
+
 import com.rimi.secondhandtradingmall.common.AcquireOrderForm;
+import com.rimi.secondhandtradingmall.common.LayuiData;
 import com.rimi.secondhandtradingmall.service.IOrdersService;
+
+
 import com.rimi.secondhandtradingmall.service.IShoppingCarMsgService;
 import com.rimi.secondhandtradingmall.service.IShoppingCarService;
 import com.rimi.secondhandtradingmall.util.RandomUtils;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,9 +111,9 @@ public class AliPayController {
         //获取当前请求过来的地址
         String urls = request.getRequestURL().toString();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://localhost:80/user?telephone=" + vo.getTelephone());//http://10.2.3
+        alipayRequest.setReturnUrl("http://localhost:80/user?telephone="+vo.getTelephone());//http://10.2.3
         // .48:8080/paySuccess
-        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone=" + vo.getTelephone());//在公共参数中设置回跳和通知地址
+        alipayRequest.setNotifyUrl("http://localhost:80/user?telephone="+vo.getTelephone());//在公共参数中设置回跳和通知地址
 
 
         alipayRequest.setBizContent("{" +
@@ -149,7 +156,6 @@ public class AliPayController {
                 orders.setSize(vo.getSize());
                 int insert = ordersService.insert(orders);
                 System.out.println("订单生成成功");
-
             } else {
                 System.out.println("调用失败");
             }

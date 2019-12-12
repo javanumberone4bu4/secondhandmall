@@ -25,4 +25,6 @@ public interface OrdersMapper {
     ) Integer shoppingcarNum, @Param("total") double total, @Param("telephone") Object telephone);
 
     List<Orders> selectByTelephone(String telephone);
+
+    List<Orders> selectByStatus(@Param("ordersStatus") String ordersStatus,@Param("telephone")String telephone);
 }

@@ -2,19 +2,17 @@ package com.rimi.secondhandtradingmall.controller;
 
 import com.rimi.secondhandtradingmall.bean.Msg;
 import com.rimi.secondhandtradingmall.bean.Singlecenter;
+
+
 import com.rimi.secondhandtradingmall.common.DefaultResult;
 import com.rimi.secondhandtradingmall.common.Result;
 import com.rimi.secondhandtradingmall.common.ResultCode;
+
 import com.rimi.secondhandtradingmall.service.IMsgService;
 import com.rimi.secondhandtradingmall.service.ISingleCenterService;
 import com.rimi.secondhandtradingmall.vo.GoodsVo2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -50,7 +48,7 @@ public class JudgeLoginController {
         session.setAttribute("allMsg",vo);
 
         //  查询个人中心表，查询是否存在地址，有则直接跳转支付页面，没有则跳转到iframe页面进行添加地址
-        Singlecenter singlecenter = singleCenterService.selectByTelephone(vo.getTelephone());
+        Singlecenter singlecenter = singleCenterService.selectByPhoneAndSure(vo.getTelephone(),"是");
         if (singlecenter != null) {
             if(singlecenter.getSinglecenterAddress()!=null) {
                 session.setAttribute("ordersAddress",singlecenter.getSinglecenterAddress());
