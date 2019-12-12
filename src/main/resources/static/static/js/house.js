@@ -311,15 +311,15 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   //购物车——表格
   table.render({
     elem: '#house-usershop-table'
-    ,url:  'json/shop.json'
+    ,url:  '/getMyGoods'
     ,skin: 'line'
     ,cols: [[
       {type:'checkbox', width:50}
-      ,{title:'商品', align:'center', minWidth:260, templet: '#goodsTpl'}
-      ,{title:'单价', align:'center', minWidth:160, templet: '#priceTpl'}
-      ,{title:'数量', align:'center', width:150, templet: '#numTpl'}
-      ,{title:'小计', align:'center', width:120, templet: '#totalTpl'}
-      ,{title:'操作', align:'center', width:100, templet: '#shopTpl'}
+      ,{ field:'goodsLogo', title:'商品', align:'center', minWidth:260, templet: '#goodsTpl'}
+      ,{ field:'goodsPrice', title:'单价', align:'center', minWidth:160, templet: '#priceTpl'}
+      ,{ field:'goodsCount', title:'数量', align:'center', width:150, templet: '#numTpl'}
+      ,{ field:'goodsSubtotal', title:'小计', align:'center', width:120, templet: '#totalTpl'}
+      ,{ title:'操作', align:'center', width:100, templet: '#shopTpl'}
     ]]
     ,done: function(res, curr, count){
       //数字框
