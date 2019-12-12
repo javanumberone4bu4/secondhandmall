@@ -79,4 +79,11 @@ public class GoodsServiceImpl implements IGoodsService {
         }
         return null;
     }
+
+    @Override
+    public List<Goods> selectShoppingcarInYourLike() {
+
+        return goodsMapper.selectShoppingcarInYourLike();
+
+    }
 }
