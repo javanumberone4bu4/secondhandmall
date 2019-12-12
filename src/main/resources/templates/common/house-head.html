@@ -3,7 +3,8 @@
     <div class="layui-container">
         <div class="house-nav">
       <span class="layui-breadcrumb" lay-separator="|">
-        <a href="/login">登录</a>
+        <a href="/login" th:if="${session.allTelephone}==null">登录</a>
+          <a href="#" th:if="${session.allTelephone}!=null" th:text="${session.allTelephone}"></a>
         <a href="/user">我的订单</a>
         <a href="#">在线客服</a>
       </span>

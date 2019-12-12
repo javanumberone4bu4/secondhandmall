@@ -31,10 +31,10 @@
         <div class="layui-tab-content layui-row layui-col-space30">
           <div class="layui-col-xs3" th:each="collections : ${collections3}">
             <div class="goods">
-              <input id="collectionsId" type="hidden" th:value="${collections.getCollectionsId()}">
               <img th:src="${collections.getGoods().getGoodsLogo()}">
               <p th:text="${collections.getGoods().getGoodsName()}"></p>
               <p class="price">￥<span th:text="${collections.getGoods().getGoodsPrice()}"></span></p>
+              <input id="collectionsId" type="hidden"  th:value="${collections.getCollectionsId()}"/>
               <span class="del">&times;</span>
             </div>    
           </div>
@@ -57,13 +57,14 @@
             , laypage = layui.laypage;
     var count=[[${session.l_count}]];
     var telephone=[[${session.allTelephone}]];
+    var currs=[[${curr}]];
     //执行一个laypage实例
     laypage.render({
       elem: 'userList' //注意，这里的 test1 是 ID，不用加 # 号
       ,count: count //数据总数，从服务端得到
       ,theme: '#daba91'
       ,limit:3
-      ,curr:1
+      ,curr:currs
       ,prev:'上一页'
       ,netx:'下一页'
       ,first:1
@@ -82,23 +83,26 @@
         $(this).addClass("active").siblings().removeClass("active");
       });
     });
-    var collectionsId=$("#collectionsId").val();
     //我的收藏——删除
-    $(".house-usercol").find(".layui-tab-content").find(".goods").each(function(){
-      $(this).children(".del").on('click', function(){
-        $(this).parent("div").parent("div").remove();
-        $.ajax({
-          type: "post",
-          url: "/deleteCollections",
-          data: {collectionsId:collectionsId},
-          dataType: "json",
-          success: function (result) {
-            console.log(result);
-            window.location.href="/selectCollections?pageNum=1&pageSize=3&telephone="+telephone;
-          }
-        });
-      });
-    });
+    //  $(".house-usercol").find(".layui-tab-content").find(".goods").each(function(){
+    //   $(".goods").children(".del").on('click', function(){
+          $(".del").on('click',function () {
+              var collectionsId=$("#collectionsId").val();
+              // $(this).parent("div").parent("div").remove();
+              $.ajax({
+                  type: "post",
+                  url: "/deleteCollections",
+                  data: {collectionsId:collectionsId},
+                  dataType: "json",
+                  success: function (result) {
+                      console.log(result);
+                       window.location.href="/selectCollections?pageNum=1&pageSize=3&telephone="+telephone;
+                  }
+              });
+          })
+
+    //   });
+    // });
   })
 </script>
 <script>

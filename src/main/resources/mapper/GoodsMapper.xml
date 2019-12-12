@@ -217,4 +217,24 @@
         order by rand()
         limit 5;
     </select>
+    <select id="selectByParams" resultMap="BaseResultMap">
+        select * from goods g left join secondclassify s left join sumclassify s2 on s.sumclassify_id = s2.sumclassify_id and  g.secondclassify_id = s.secondclassify_id
+        <where>
+            <if test="secondclassifyName != null and secondclassifyName != ''">
+                and s.secondclassify_name like concat("%",#{secondclassifyName},"%")
+            </if>
+            <if test="sumclassifyId != null">
+                and s2.sumclassify_id = #{sumclassifyId}
+            </if>
+        </where>
+
+        order by
+        <if test="goodsPrice != null">
+             g.goods_price asc
+        </if>
+        <if test="goodsUptime != null and goodsUptime != ''">
+             g.goods_uptime asc
+        </if>
+
+    </select>
 </mapper>

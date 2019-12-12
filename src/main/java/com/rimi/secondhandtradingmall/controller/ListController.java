@@ -5,6 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Secondclassify;
 import com.rimi.secondhandtradingmall.bean.Sumclassify;
+import com.rimi.secondhandtradingmall.common.DefaultResultData;
+import com.rimi.secondhandtradingmall.common.ResultData;
 import com.rimi.secondhandtradingmall.service.IGoodsService;
 import com.rimi.secondhandtradingmall.service.ISecondClassifyService;
 import com.rimi.secondhandtradingmall.service.ISumClassifyService;
@@ -45,10 +47,10 @@ public class ListController {
         int update = sumClassifyService.update(sumclassify);
         List<Goods> goods1 = goodsService.selectSecond(vo.getSumclassifyId());
         session.setAttribute("count",goods1.size());
+        model.addAttribute("curr",vo.getPageNum());
         PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
         List<Goods> cache = goodsService.selectSecond(vo.getSumclassifyId());
         model.addAttribute("cache", cache);
         return "list";
     }
-
 }

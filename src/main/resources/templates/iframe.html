@@ -75,9 +75,19 @@
         //是否默认
         var sureAddress="";
         $('#useradd-submit').on('click', function () {
-            var singlecenterAddress1 = $("#user-province1").val();
-            var singlecenterAddress2 = $("#user-province2").val();
-            var singlecenterAddress3 = $("#user-province3").val();
+            //1 var myType = document.getElementById("userType");//获取select对象
+            //2 var index = myType.selectedIndex; //获取选项中的索引，selectIndex表示的是当前所选中的index
+            //3 myType.options[index].value;//获取选项中options的value值
+            //4 myType.options[index].text;//获取选项中options的value值
+           var myType1= document.getElementById("user-province1");
+           var index1=myType1.selectedIndex;
+           var singlecenterAddress1 = myType1.options[index1].text;
+            var myType2= document.getElementById("user-province2");
+            var index2=myType2.selectedIndex;
+            var singlecenterAddress2 = myType2.options[index2].text;
+            var myType3= document.getElementById("user-province3");
+            var index3=myType3.selectedIndex;
+            var singlecenterAddress3 = myType3.options[index3].text;
             var singlecenterAddress4 = $("#user-province4").val();
             // 最终地址
             var singlecenterAddress = singlecenterAddress1 + singlecenterAddress2 + singlecenterAddress3 + singlecenterAddress4;
@@ -85,7 +95,7 @@
             var sTelephone = $("#telephone").val();
             // 收货人
             var singlecenterConsignee = $("#consignee").val();
-            if($("input[name=checkbox]:checked").prop("checked")){
+            if($("input[name=checkbox]:checked").attr("checked")){
                 sureAddress="是";
             }else{
                 sureAddress="否";
@@ -93,7 +103,7 @@
 
             $.ajax({
                 type: "get",
-                url: "/insertAddress9?singlecenterAddress=" + singlecenterAddress + "&sTelephone=" + sTelephone + "&singlecenterConsignee=" + singlecenterConsignee,
+                url: "/insertAddress9?singlecenterAddress=" + singlecenterAddress + "&sTelephone=" + sTelephone + "&singlecenterConsignee=" + singlecenterConsignee+"&sureAddress="+sureAddress,
                 dataType: "json",
                 success: function (result) {
                     console.log(result);

@@ -21,4 +21,6 @@ public interface IGoodsService {
 
     List<Goods> selectShoppingcarInYourLike();
 
+    List<Goods> selectByParams(String secondclassifyName,String goodsUpTime,double goodsPrice,Integer sumclassifyId);
+
 }

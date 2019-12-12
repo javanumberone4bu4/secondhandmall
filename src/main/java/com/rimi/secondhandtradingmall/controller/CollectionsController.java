@@ -62,6 +62,7 @@ public class CollectionsController {
         PageHelper.startPage(pageNum,pageSize);
         List<Collections> collections = collectionsService.selectAllByTelephone(telephone);
         model.addAttribute("collections3",collections);
+        model.addAttribute("curr",pageNum);
         return "usercol";
     }
     @ResponseBody

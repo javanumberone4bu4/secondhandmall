@@ -1,6 +1,9 @@
 package com.rimi.secondhandtradingmall.mapper;
 
-import com.rimi.secondhandtradingmall.bean.Goods;import java.util.List;
+import com.rimi.secondhandtradingmall.bean.Goods;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * ${Description}
@@ -30,4 +33,6 @@ public interface GoodsMapper {
     List<Goods> selectSecond(Integer sumclassifyId);
 
     List<Goods> selectShoppingcarInYourLike();
+
+    List<Goods> selectByParams(@Param("secondclassifyName")String secondclassifyName,@Param("goodsPrice")double goodsPrice,@Param("goodsUptime")String goodsUptime,@Param("sumclassifyId") Integer sumclassifyId);
 }

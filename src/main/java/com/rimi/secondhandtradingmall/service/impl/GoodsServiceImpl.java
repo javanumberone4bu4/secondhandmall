@@ -86,4 +86,13 @@ public class GoodsServiceImpl implements IGoodsService {
         return goodsMapper.selectShoppingcarInYourLike();
 
     }
+
+    @Override
+    public List<Goods> selectByParams(String secondclassifyName, String goodsUpTime, double goodsPrice, Integer sumclassifyId) {
+        List<Goods> goods = goodsMapper.selectByParams(secondclassifyName, goodsPrice, goodsUpTime, sumclassifyId);
+        if(goods!=null&&goods.size()>0){
+            return goods;
+        }
+        return null;
+    }
 }
