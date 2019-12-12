@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rimi.secondhandtradingmall.mapper.SecondclassifyMapper">
+  <resultMap id="BaseResultMap" type="com.rimi.secondhandtradingmall.bean.Secondclassify">
+    <!--@mbg.generated-->
+    <!--@Table secondclassify-->
+    <id column="secondclassify_id" jdbcType="INTEGER" property="secondclassifyId" />
+    <result column="sumclassify_id" jdbcType="INTEGER" property="sumclassifyId" />
+    <result column="secondclassify_name" jdbcType="VARCHAR" property="secondclassifyName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    secondclassify_id, sumclassify_id, secondclassify_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from secondclassify
+    where secondclassify_id = #{secondclassifyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from secondclassify
+    where secondclassify_id = #{secondclassifyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="secondclassify_id" keyProperty="secondclassifyId" parameterType="com.rimi.secondhandtradingmall.bean.Secondclassify" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into secondclassify (sumclassify_id, secondclassify_name
+      )
+    values (#{sumclassifyId,jdbcType=INTEGER}, #{secondclassifyName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="secondclassify_id" keyProperty="secondclassifyId" parameterType="com.rimi.secondhandtradingmall.bean.Secondclassify" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into secondclassify
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sumclassifyId != null">
+        sumclassify_id,
+      </if>
+      <if test="secondclassifyName != null">
+        secondclassify_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sumclassifyId != null">
+        #{sumclassifyId,jdbcType=INTEGER},
+      </if>
+      <if test="secondclassifyName != null">
+        #{secondclassifyName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rimi.secondhandtradingmall.bean.Secondclassify">
+    <!--@mbg.generated-->
+    update secondclassify
+    <set>
+      <if test="sumclassifyId != null">
+        sumclassify_id = #{sumclassifyId,jdbcType=INTEGER},
+      </if>
+      <if test="secondclassifyName != null">
+        secondclassify_name = #{secondclassifyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where secondclassify_id = #{secondclassifyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rimi.secondhandtradingmall.bean.Secondclassify">
+    <!--@mbg.generated-->
+    update secondclassify
+    set sumclassify_id = #{sumclassifyId,jdbcType=INTEGER},
+      secondclassify_name = #{secondclassifyName,jdbcType=VARCHAR}
+    where secondclassify_id = #{secondclassifyId,jdbcType=INTEGER}
+  </update>
+    <select id="selectSecond" resultMap="BaseResultMap">
+      select * from secondclassify where sumclassify_id=#{sumclassifyId}
+    </select>
+</mapper>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head >
+  <meta charset="UTF-8">
+  <title>二手交易商城-地址</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body class="user">
+
+<!--头部-->
+<div th:replace="common/house-head :: house-head"></div>
+
+<div class="layui-container userpublic useradd">
+  <div class="layui-row layui-col-space20">
+    <p class="layui-hide-xs title">首页 &gt; <span>个人中心</span></p>
+    <div class="layui-col-sm2">
+      <ul class="user-list">
+        <li><a href="user.html">个人中心</a></li>
+        <li><a href="">消息中心</a></li>
+        <li class="active"><a href="useradd.html">地址管理</a></li>
+        <li><a href="usercol.html">我的收藏</a></li>
+        <!--<li><a href="">优惠券</a></li>-->
+        <!--<li><a href="">服务中心</a></li>-->
+      </ul>
+    </div>
+    <div class="layui-col-sm10">
+      <table class="layui-table" id="user-address" lay-filter="user-address"></table>
+      <button class="layui-btn layui-btn-primary address-add"><i class="layui-icon layui-icon-add-1">添加按钮</i></button>
+    </div>
+  </div>
+</div>
+
+
+
+<!--footer-->
+<footer th:replace="common/footer :: footer"></footer>
+
+
+
+<script type="text/html" id="spaceTpl">
+  {{#  if(d.default){ }}
+    <span id="default">默认</span>
+  {{#  } }}
+</script>
+<script type="text/html" id="addressTpl">
+  <a lay-event="del" style="color: #e39d55; margin-right: 15px; cursor: pointer;">删除</a>
+  <a lay-event="edit" style="color: #e39d55; cursor: pointer;">编辑</a>
+</script>
+
+<script src="/layui/layui.js"></script>
+
+
+<script>
+  layui.config({
+    base: '/static/js/' 
+  }).use('house'); 
+</script>
+
+</body>
+</html>

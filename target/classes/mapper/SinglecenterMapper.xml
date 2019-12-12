@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rimi.secondhandtradingmall.mapper.SinglecenterMapper">
+  <resultMap id="BaseResultMap" type="com.rimi.secondhandtradingmall.bean.Singlecenter">
+    <!--@mbg.generated-->
+    <!--@Table singlecenter-->
+    <id column="singlecenter_id" jdbcType="INTEGER" property="singlecenterId" />
+    <result column="singlecenter_image" jdbcType="VARCHAR" property="singlecenterImage" />
+    <result column="s_telephone" jdbcType="VARCHAR" property="sTelephone" />
+    <result column="singlecenter_dfnum" jdbcType="INTEGER" property="singlecenterDfnum" />
+    <result column="singlecenter_dsnum" jdbcType="INTEGER" property="singlecenterDsnum" />
+    <result column="singlecenter_mark" jdbcType="INTEGER" property="singlecenterMark" />
+    <result column="singlecenter_address" jdbcType="VARCHAR" property="singlecenterAddress" />
+    <result column="singlecenter_consignee" jdbcType="VARCHAR" property="singlecenterConsignee" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    singlecenter_id, singlecenter_image, s_telephone, singlecenter_dfnum, singlecenter_dsnum, 
+    singlecenter_mark, singlecenter_address, singlecenter_consignee
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from singlecenter
+    where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from singlecenter
+    where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="singlecenter_id" keyProperty="singlecenterId" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into singlecenter (singlecenter_image, s_telephone, singlecenter_dfnum, 
+      singlecenter_dsnum, singlecenter_mark, singlecenter_address, 
+      singlecenter_consignee)
+    values (#{singlecenterImage,jdbcType=VARCHAR}, #{sTelephone,jdbcType=VARCHAR}, #{singlecenterDfnum,jdbcType=INTEGER}, 
+      #{singlecenterDsnum,jdbcType=INTEGER}, #{singlecenterMark,jdbcType=INTEGER}, #{singlecenterAddress,jdbcType=VARCHAR}, 
+      #{singlecenterConsignee,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="singlecenter_id" keyProperty="singlecenterId" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into singlecenter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="singlecenterImage != null">
+        singlecenter_image,
+      </if>
+      <if test="sTelephone != null">
+        s_telephone,
+      </if>
+      <if test="singlecenterDfnum != null">
+        singlecenter_dfnum,
+      </if>
+      <if test="singlecenterDsnum != null">
+        singlecenter_dsnum,
+      </if>
+      <if test="singlecenterMark != null">
+        singlecenter_mark,
+      </if>
+      <if test="singlecenterAddress != null">
+        singlecenter_address,
+      </if>
+      <if test="singlecenterConsignee != null">
+        singlecenter_consignee,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="singlecenterImage != null">
+        #{singlecenterImage,jdbcType=VARCHAR},
+      </if>
+      <if test="sTelephone != null">
+        #{sTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="singlecenterDfnum != null">
+        #{singlecenterDfnum,jdbcType=INTEGER},
+      </if>
+      <if test="singlecenterDsnum != null">
+        #{singlecenterDsnum,jdbcType=INTEGER},
+      </if>
+      <if test="singlecenterMark != null">
+        #{singlecenterMark,jdbcType=INTEGER},
+      </if>
+      <if test="singlecenterAddress != null">
+        #{singlecenterAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="singlecenterConsignee != null">
+        #{singlecenterConsignee,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter">
+    <!--@mbg.generated-->
+    update singlecenter
+    <set>
+      <if test="singlecenterImage != null">
+        singlecenter_image = #{singlecenterImage,jdbcType=VARCHAR},
+      </if>
+      <if test="sTelephone != null">
+        s_telephone = #{sTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="singlecenterDfnum != null">
+        singlecenter_dfnum = #{singlecenterDfnum,jdbcType=INTEGER},
+      </if>
+      <if test="singlecenterDsnum != null">
+        singlecenter_dsnum = #{singlecenterDsnum,jdbcType=INTEGER},
+      </if>
+      <if test="singlecenterMark != null">
+        singlecenter_mark = #{singlecenterMark,jdbcType=INTEGER},
+      </if>
+      <if test="singlecenterAddress != null">
+        singlecenter_address = #{singlecenterAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="singlecenterConsignee != null">
+        singlecenter_consignee = #{singlecenterConsignee,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rimi.secondhandtradingmall.bean.Singlecenter">
+    <!--@mbg.generated-->
+    update singlecenter
+    set singlecenter_image = #{singlecenterImage,jdbcType=VARCHAR},
+      s_telephone = #{sTelephone,jdbcType=VARCHAR},
+      singlecenter_dfnum = #{singlecenterDfnum,jdbcType=INTEGER},
+      singlecenter_dsnum = #{singlecenterDsnum,jdbcType=INTEGER},
+      singlecenter_mark = #{singlecenterMark,jdbcType=INTEGER},
+      singlecenter_address = #{singlecenterAddress,jdbcType=VARCHAR},
+      singlecenter_consignee = #{singlecenterConsignee,jdbcType=VARCHAR}
+    where singlecenter_id = #{singlecenterId,jdbcType=INTEGER}
+  </update>
+    <select id="selectByTelephone" resultMap="BaseResultMap">
+      select *
+      from shtm.singlecenter where s_telephone = #{telephone,jdbcType=VARCHAR};
+    </select>
+</mapper>

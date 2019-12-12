@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rimi.secondhandtradingmall.mapper.OrdersMapper">
+  <resultMap id="BaseResultMap" type="com.rimi.secondhandtradingmall.bean.Orders">
+    <!--@mbg.generated-->
+    <!--@Table orders-->
+    <id column="orders_id" jdbcType="INTEGER" property="ordersId" />
+    <result column="orders_msg" jdbcType="VARCHAR" property="ordersMsg" />
+    <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
+    <result column="orders_sumnum" jdbcType="INTEGER" property="ordersSumnum" />
+    <result column="orders_summoney" jdbcType="DOUBLE" property="ordersSummoney" />
+    <result column="orders_status" jdbcType="VARCHAR" property="ordersStatus" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="orders_address" jdbcType="VARCHAR" property="ordersAddress" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    orders_id, orders_msg, goods_id, orders_sumnum, orders_summoney, orders_status, telephone, 
+    orders_address, `size`, color
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where orders_id = #{ordersId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from orders
+    where orders_id = #{ordersId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="orders_id" keyProperty="ordersId" parameterType="com.rimi.secondhandtradingmall.bean.Orders" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into orders (orders_msg, goods_id, orders_sumnum, 
+      orders_summoney, orders_status, telephone, 
+      orders_address, `size`, color
+      )
+    values (#{ordersMsg,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{ordersSumnum,jdbcType=INTEGER}, 
+      #{ordersSummoney,jdbcType=DOUBLE}, #{ordersStatus,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{ordersAddress,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="orders_id" keyProperty="ordersId" parameterType="com.rimi.secondhandtradingmall.bean.Orders" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ordersMsg != null">
+        orders_msg,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="ordersSumnum != null">
+        orders_sumnum,
+      </if>
+      <if test="ordersSummoney != null">
+        orders_summoney,
+      </if>
+      <if test="ordersStatus != null">
+        orders_status,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="ordersAddress != null">
+        orders_address,
+      </if>
+      <if test="size != null">
+        `size`,
+      </if>
+      <if test="color != null">
+        color,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ordersMsg != null">
+        #{ordersMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordersSumnum != null">
+        #{ordersSumnum,jdbcType=INTEGER},
+      </if>
+      <if test="ordersSummoney != null">
+        #{ordersSummoney,jdbcType=DOUBLE},
+      </if>
+      <if test="ordersStatus != null">
+        #{ordersStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ordersAddress != null">
+        #{ordersAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        #{color,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rimi.secondhandtradingmall.bean.Orders">
+    <!--@mbg.generated-->
+    update orders
+    <set>
+      <if test="ordersMsg != null">
+        orders_msg = #{ordersMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordersSumnum != null">
+        orders_sumnum = #{ordersSumnum,jdbcType=INTEGER},
+      </if>
+      <if test="ordersSummoney != null">
+        orders_summoney = #{ordersSummoney,jdbcType=DOUBLE},
+      </if>
+      <if test="ordersStatus != null">
+        orders_status = #{ordersStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ordersAddress != null">
+        orders_address = #{ordersAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        `size` = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where orders_id = #{ordersId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rimi.secondhandtradingmall.bean.Orders">
+    <!--@mbg.generated-->
+    update orders
+    set orders_msg = #{ordersMsg,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=VARCHAR},
+      orders_sumnum = #{ordersSumnum,jdbcType=INTEGER},
+      orders_summoney = #{ordersSummoney,jdbcType=DOUBLE},
+      orders_status = #{ordersStatus,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      orders_address = #{ordersAddress,jdbcType=VARCHAR},
+      `size` = #{size,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR}
+    where orders_id = #{ordersId,jdbcType=INTEGER}
+  </update>
+    <insert id="insertAll">
+      insert into orders (orders_msg, goods_id, orders_sumnum,
+      orders_summoney, telephone
+      )
+      values (#{orderForm,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{shoppingcarNum,jdbcType=INTEGER},
+      #{total,jdbcType=DOUBLE}, #{telephone,jdbcType=VARCHAR}
+      )
+    </insert>
+    <select id="selectByTelephone" resultMap="BaseResultMap">
+      select * from  orders where telephone=#{telephone}
+    </select>
+</mapper>
