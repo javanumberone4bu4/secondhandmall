@@ -57,36 +57,167 @@
     </div>
   </div>
 </script>
-<script type="text/html" id="priceTpl">
-  <p>
-    <span class="price">{{d.goodsPrice}}</span>
-    <!-- 原价 -->
-    <!--<del>{{d.original}}</del>-->
-  </p>
-</script>
-<script type="text/html" id="numTpl">
-  <!--<div class="numVal">-->
-    <!--<button class="layui-btn layui-btn-primary sup">-</button>-->
-    <!--<input type="text" class="layui-input" value="{{d.goodsCount}}" />-->
-    <!--<button class="layui-btn layui-btn-primary sub">+</button>-->
-    <p >{{d.goodsCount}}</p>
-  <!--</div>-->
-</script>
-<script type="text/html" id="totalTpl">
-  <span class="total" style="color: #cd2d15">￥{{d.goodsSubtotal}}</span>
-  <!--d.goodsPrice.slice(1)*d.goodsCount).toFixed(2)-->
-</script>
+<!--<script type="text/html" id="priceTpl">-->
+<!--  <p>-->
+<!--    <span class="price">{{d.goodsPrice}}</span>-->
+<!--    &lt;!&ndash; 原价 &ndash;&gt;-->
+<!--    &lt;!&ndash;<del>{{d.original}}</del>&ndash;&gt;-->
+<!--  </p>-->
+<!--</script>-->
+<!--<script type="text/html" id="numTpl">-->
+<!--  &lt;!&ndash;<div class="numVal">&ndash;&gt;-->
+<!--    &lt;!&ndash;<button class="layui-btn layui-btn-primary sup">-</button>&ndash;&gt;-->
+<!--    &lt;!&ndash;<input type="text" class="layui-input" value="{{d.goodsCount}}" />&ndash;&gt;-->
+<!--    &lt;!&ndash;<button class="layui-btn layui-btn-primary sub">+</button>&ndash;&gt;-->
+<!--    <p >{{d.goodsCount}}</p>-->
+<!--  &lt;!&ndash;</div>&ndash;&gt;-->
+<!--</script>-->
+<!--<script type="text/html" id="totalTpl">-->
+<!--  <span class="total" style="color: #cd2d15">￥{{d.goodsSubtotal}}</span>-->
+<!--  &lt;!&ndash;d.goodsPrice.slice(1)*d.goodsCount).toFixed(2)&ndash;&gt;-->
+<!--</script>-->
 
 <script type="text/html" id="shopTpl">
   <a lay-event="del">删除</a>
 </script>
 
 <script src="/layui/layui.js"></script>
-<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-<!--[if lt IE 9]>
-  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script>
+  layui.config({
+    base: '/static/js/' //layui自定义layui组件目录
+  }).use(['jquery', 'layer', 'element', 'laypage','table'], function () {
+    var $ = layui.jquery
+            , layer = layui.layer
+            , element = layui.element
+            , laypage = layui.laypage
+            , table = layui.table;
+    //上面已经引入了jquery的ajax方法，下面直接传参到后台
+    //购物车——表格
+    var telephone = [[${session.allTelephone}]];
+    table.render({
+      elem: '#house-usershop-table'
+      , url: '/getMyGoods'
+      , where: {telephone: telephone}
+      , response: {
+        statusCode: 200 //规定成功的状态码,默认0
+      }
+      , parseData: function (res) {
+        return {
+          "count": res.data.total,
+          "data": res.data.list,
+          "code": res.code,
+          "meg": res.message
+        };
+      }
+      , skin: 'line'
+      , cols: [ [
+        {checkbox: true, fixed: 'left', align: 'center'}
+        , {field: 'goodsLogo', title: '商品', align: 'center', minWidth: 260, templet: '#goodsTpl'}
+        , {field: 'goodsPrice', title: '单价', align: 'center', minWidth: 160, templet: function (data) {
+             return data.goods.goodsPrice;
+          }}
+        , {field: 'shoppingcarNum', title: '数量', align: 'center', width: 150}
+        , {field: 'goodsSubtotal', title: '小计', align: 'center', width: 120}
+        , {title: '操作', align: 'center', width: 100, templet: '#shopTpl'}
+      ]]
+      , page: true
+      , limits: [1, 2, 3, 4]
+      , loading: true
+        ,done: function(res, curr, count){
+          //数字框
+          $(".numVal").each(function(){
+            //获得小计 单价
+            var totalTd = $(this).parents("td").siblings().find(".total")[0]
+                    ,totalPrice = $(this).parents("td").siblings().find("span").filter(".price")[0].innerHTML;
+            $(this).children("button").each(function(index){
+              //获得数量
+              var numVal = $(this).parent("div").children("input");
+              $(this).on('click', function(){
+                if(index == "1"){
+                  numVal.val(Number(numVal.val()) + 1);
+                }else{
+                  numVal[0].value = numVal[0].value > 1 ? numVal[0].value - 1 : 1;
+                };
+                totalTd.innerHTML = '￥' + (numVal.val() * totalPrice.slice(1)).toFixed(2)
+              });
+            });
+            $(this).children("input").on('keydown', function(e){
+              if(e.keyCode === 13){
+                e.preventDefault();
+                this.value = isNaN(this.value) ? 1 : (this.value > 1 ? this.value : 1);
+                totalTd.innerHTML = '￥' + (this.value * totalPrice.slice(1)).toFixed(2)
+              };
+            });
+          });
+          //合计
+          // totalVal();
+          if($("#house-usershop-table").next("div").find(".layui-none").length != 0){
+            $(".house-usershop-table-num").css("display", "none");
+          };
+        }
+        ,text: {
+          none: '<div class="house-usershop-table-none"><div><img src="/static/img/shopnone.png"></div><p>购物车空空如也</p><a class="layui-btn layui-btn-primary" href="list.html">去逛逛</a></div>'
+        }
+        ,id: 'house-usershop-table'
+      });
+
+      //合计
+      var goodsVal = $(".house-usershop").find("#total").children("span")
+              ,copyWith = $(".house-usershop").find("#toCope").children("p").children("big")
+              ,copyTips = $(".house-usershop").find("#toCope").children("span");
+      //监听复选框选择 获得总数
+      table.on('checkbox(house-usershop-table)', function(obj){
+        var checkStatus = table.checkStatus('house-usershop-table');
+        goodsVal[0].innerHTML = 0;
+        $(checkStatus.data).each(function(){
+          goodsVal[0].innerHTML = parseFloat(this.number * this.price.slice(1)) + Number(goodsVal[0].innerHTML);
+        });
+        //满减
+        if(goodsVal[0].innerHTML > 200){
+          copyWith[0].innerHTML = '￥' + (goodsVal[0].innerHTML - 20).toFixed(2)
+          copyTips.css("display", "inline-block");
+        }else{
+          copyWith[0].innerHTML =  '￥' + parseFloat(goodsVal[0].innerHTML).toFixed(2);
+          copyTips.css("display", "none");
+        };
+        //转换格式
+        goodsVal[0].innerHTML = parseFloat(goodsVal[0].innerHTML).toFixed(2);
+        if(checkStatus.data.length != 0){
+          $(".house-usershop-table-num").children("input")[0].checked = true;
+          form.render('checkbox');
+        }else{
+          $(".house-usershop-table-num").children("input")[0].checked = false;
+          form.render('checkbox');
+        };
+        $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件');
+      });
+      table.on('tool(house-usershop-table)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'del'){
+          layer.confirm('确定删除此物品？', function(index){
+            obj.del();
+            layer.close(index);
+          });
+        }
+      });
+      $(".house-usershop").find("#batchDel").on('click', function(){
+        var checkStatus = table.checkStatus('house-usershop-table')
+                ,checkData = checkStatus.data;
+        if(checkData.length === 0){
+          layer.msg('请选择数据');
+        }else{
+          //执行 Ajax 操作之后再重载
+          table.reload('house-usershop-table');
+          $(".house-usershop-table-num").children("input")[0].checked = false;
+          form.render('checkbox');
+          $(".house-usershop-table-num").children(".numal").html('已选 0 件')
+          copyWith[0].innerHTML = goodsVal[0].innerHTML = '￥0.00';
+          copyTips.css("display", "none");
+          layer.msg('已删除');
+        }
+      });
+    });
+</script>
 <script>
   layui.config({
     base: '/static/js/' 

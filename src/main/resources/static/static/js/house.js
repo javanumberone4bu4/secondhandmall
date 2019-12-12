@@ -308,112 +308,113 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   //   }
   // });
   
-  //购物车——表格
-  table.render({
-    elem: '#house-usershop-table'
-    ,url:  '/getMyGoods'
-    ,skin: 'line'
-    ,cols: [[
-      {type:'checkbox', width:50}
-      ,{ field:'goodsLogo', title:'商品', align:'center', minWidth:260, templet: '#goodsTpl'}
-      ,{ field:'goodsPrice', title:'单价', align:'center', minWidth:160, templet: '#priceTpl'}
-      ,{ field:'goodsCount', title:'数量', align:'center', width:150, templet: '#numTpl'}
-      ,{ field:'goodsSubtotal', title:'小计', align:'center', width:120, templet: '#totalTpl'}
-      ,{ title:'操作', align:'center', width:100, templet: '#shopTpl'}
-    ]]
-    ,done: function(res, curr, count){
-      //数字框
-      $(".numVal").each(function(){
-        //获得小计 单价
-        var totalTd = $(this).parents("td").siblings().find(".total")[0]
-        ,totalPrice = $(this).parents("td").siblings().find("span").filter(".price")[0].innerHTML;
-        $(this).children("button").each(function(index){
-          //获得数量
-          var numVal = $(this).parent("div").children("input");         
-          $(this).on('click', function(){
-            if(index == "1"){
-              numVal.val(Number(numVal.val()) + 1);
-            }else{
-              numVal[0].value = numVal[0].value > 1 ? numVal[0].value - 1 : 1;
-            };
-            totalTd.innerHTML = '￥' + (numVal.val() * totalPrice.slice(1)).toFixed(2)
-          });
-        });
-        $(this).children("input").on('keydown', function(e){
-          if(e.keyCode === 13){
-            e.preventDefault();       
-            this.value = isNaN(this.value) ? 1 : (this.value > 1 ? this.value : 1);
-            totalTd.innerHTML = '￥' + (this.value * totalPrice.slice(1)).toFixed(2)
-          };
-        });
-      });
-      //合计  
-      // totalVal();
-      if($("#house-usershop-table").next("div").find(".layui-none").length != 0){
-        $(".house-usershop-table-num").css("display", "none");
-      };
-    }
-    ,text: {
-      none: '<div class="house-usershop-table-none"><div><img src="/static/img/shopnone.png"></div><p>购物车空空如也</p><a class="layui-btn layui-btn-primary" href="list.html">去逛逛</a></div>'
-    }
-    ,id: 'house-usershop-table'
-  });
-  
-  //合计
-  var goodsVal = $(".house-usershop").find("#total").children("span")
-  ,copyWith = $(".house-usershop").find("#toCope").children("p").children("big")
-  ,copyTips = $(".house-usershop").find("#toCope").children("span");
-  //监听复选框选择 获得总数
-  table.on('checkbox(house-usershop-table)', function(obj){
-    var checkStatus = table.checkStatus('house-usershop-table');
-    goodsVal[0].innerHTML = 0;
-    $(checkStatus.data).each(function(){
-      goodsVal[0].innerHTML = parseFloat(this.number * this.price.slice(1)) + Number(goodsVal[0].innerHTML);
-    });
-    //满减
-    if(goodsVal[0].innerHTML > 200){
-      copyWith[0].innerHTML = '￥' + (goodsVal[0].innerHTML - 20).toFixed(2)
-      copyTips.css("display", "inline-block");
-    }else{
-      copyWith[0].innerHTML =  '￥' + parseFloat(goodsVal[0].innerHTML).toFixed(2);
-      copyTips.css("display", "none");
-    };
-    //转换格式
-    goodsVal[0].innerHTML = parseFloat(goodsVal[0].innerHTML).toFixed(2);
-    if(checkStatus.data.length != 0){
-      $(".house-usershop-table-num").children("input")[0].checked = true;
-      form.render('checkbox');
-    }else{
-      $(".house-usershop-table-num").children("input")[0].checked = false;
-      form.render('checkbox');
-    };
-    $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件');
-  });
-  table.on('tool(house-usershop-table)', function(obj){
-    var data = obj.data;
-    if(obj.event === 'del'){
-      layer.confirm('确定删除此物品？', function(index){
-        obj.del();
-        layer.close(index);
-      });
-    }
-  });
-  $(".house-usershop").find("#batchDel").on('click', function(){
-    var checkStatus = table.checkStatus('house-usershop-table')
-    ,checkData = checkStatus.data;
-    if(checkData.length === 0){
-      layer.msg('请选择数据');
-    }else{
-      //执行 Ajax 操作之后再重载
-      table.reload('house-usershop-table');
-      $(".house-usershop-table-num").children("input")[0].checked = false;
-      form.render('checkbox');
-      $(".house-usershop-table-num").children(".numal").html('已选 0 件')
-      copyWith[0].innerHTML = goodsVal[0].innerHTML = '￥0.00';
-      copyTips.css("display", "none");
-      layer.msg('已删除');
-    }
-  });
+  // //购物车——表格
+  // table.render({
+  //   elem: '#house-usershop-table'
+  //   ,url:  '/getMyGoods'
+  //   ,where:{telephone:}
+  //   ,skin: 'line'
+  //   ,cols: [[
+  //     {type:'checkbox', width:50}
+  //     ,{ field:'goodsLogo', title:'商品', align:'center', minWidth:260, templet: '#goodsTpl'}
+  //     ,{ field:'goodsPrice', title:'单价', align:'center', minWidth:160, templet: '#priceTpl'}
+  //     ,{ field:'goodsCount', title:'数量', align:'center', width:150, templet: '#numTpl'}
+  //     ,{ field:'goodsSubtotal', title:'小计', align:'center', width:120, templet: '#totalTpl'}
+  //     ,{ title:'操作', align:'center', width:100, templet: '#shopTpl'}
+  //   ]]
+  //   ,done: function(res, curr, count){
+  //     //数字框
+  //     $(".numVal").each(function(){
+  //       //获得小计 单价
+  //       var totalTd = $(this).parents("td").siblings().find(".total")[0]
+  //       ,totalPrice = $(this).parents("td").siblings().find("span").filter(".price")[0].innerHTML;
+  //       $(this).children("button").each(function(index){
+  //         //获得数量
+  //         var numVal = $(this).parent("div").children("input");
+  //         $(this).on('click', function(){
+  //           if(index == "1"){
+  //             numVal.val(Number(numVal.val()) + 1);
+  //           }else{
+  //             numVal[0].value = numVal[0].value > 1 ? numVal[0].value - 1 : 1;
+  //           };
+  //           totalTd.innerHTML = '￥' + (numVal.val() * totalPrice.slice(1)).toFixed(2)
+  //         });
+  //       });
+  //       $(this).children("input").on('keydown', function(e){
+  //         if(e.keyCode === 13){
+  //           e.preventDefault();
+  //           this.value = isNaN(this.value) ? 1 : (this.value > 1 ? this.value : 1);
+  //           totalTd.innerHTML = '￥' + (this.value * totalPrice.slice(1)).toFixed(2)
+  //         };
+  //       });
+  //     });
+  //     //合计
+  //     // totalVal();
+  //     if($("#house-usershop-table").next("div").find(".layui-none").length != 0){
+  //       $(".house-usershop-table-num").css("display", "none");
+  //     };
+  //   }
+  //   ,text: {
+  //     none: '<div class="house-usershop-table-none"><div><img src="/static/img/shopnone.png"></div><p>购物车空空如也</p><a class="layui-btn layui-btn-primary" href="list.html">去逛逛</a></div>'
+  //   }
+  //   ,id: 'house-usershop-table'
+  // });
+  //
+  // //合计
+  // var goodsVal = $(".house-usershop").find("#total").children("span")
+  // ,copyWith = $(".house-usershop").find("#toCope").children("p").children("big")
+  // ,copyTips = $(".house-usershop").find("#toCope").children("span");
+  // //监听复选框选择 获得总数
+  // table.on('checkbox(house-usershop-table)', function(obj){
+  //   var checkStatus = table.checkStatus('house-usershop-table');
+  //   goodsVal[0].innerHTML = 0;
+  //   $(checkStatus.data).each(function(){
+  //     goodsVal[0].innerHTML = parseFloat(this.number * this.price.slice(1)) + Number(goodsVal[0].innerHTML);
+  //   });
+  //   //满减
+  //   if(goodsVal[0].innerHTML > 200){
+  //     copyWith[0].innerHTML = '￥' + (goodsVal[0].innerHTML - 20).toFixed(2)
+  //     copyTips.css("display", "inline-block");
+  //   }else{
+  //     copyWith[0].innerHTML =  '￥' + parseFloat(goodsVal[0].innerHTML).toFixed(2);
+  //     copyTips.css("display", "none");
+  //   };
+  //   //转换格式
+  //   goodsVal[0].innerHTML = parseFloat(goodsVal[0].innerHTML).toFixed(2);
+  //   if(checkStatus.data.length != 0){
+  //     $(".house-usershop-table-num").children("input")[0].checked = true;
+  //     form.render('checkbox');
+  //   }else{
+  //     $(".house-usershop-table-num").children("input")[0].checked = false;
+  //     form.render('checkbox');
+  //   };
+  //   $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件');
+  // });
+  // table.on('tool(house-usershop-table)', function(obj){
+  //   var data = obj.data;
+  //   if(obj.event === 'del'){
+  //     layer.confirm('确定删除此物品？', function(index){
+  //       obj.del();
+  //       layer.close(index);
+  //     });
+  //   }
+  // });
+  // $(".house-usershop").find("#batchDel").on('click', function(){
+  //   var checkStatus = table.checkStatus('house-usershop-table')
+  //   ,checkData = checkStatus.data;
+  //   if(checkData.length === 0){
+  //     layer.msg('请选择数据');
+  //   }else{
+  //     //执行 Ajax 操作之后再重载
+  //     table.reload('house-usershop-table');
+  //     $(".house-usershop-table-num").children("input")[0].checked = false;
+  //     form.render('checkbox');
+  //     $(".house-usershop-table-num").children(".numal").html('已选 0 件')
+  //     copyWith[0].innerHTML = goodsVal[0].innerHTML = '￥0.00';
+  //     copyTips.css("display", "none");
+  //     layer.msg('已删除');
+  //   }
+  // });
   
   
   //固定 bar

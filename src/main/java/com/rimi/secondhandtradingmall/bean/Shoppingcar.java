@@ -49,6 +49,6 @@ public class Shoppingcar implements Serializable {
      */
     @ApiModelProperty(value = "用户名")
     private String telephone;
-
+     private Goods goods;
     private static final long serialVersionUID = 1L;
 }

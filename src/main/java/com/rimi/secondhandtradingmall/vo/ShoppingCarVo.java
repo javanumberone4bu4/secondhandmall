@@ -49,5 +49,9 @@ public class ShoppingCarVo {
      */
     private String goodsLogo;
 
+    private Integer page;
+
+    private Integer limit;
+
 
 }

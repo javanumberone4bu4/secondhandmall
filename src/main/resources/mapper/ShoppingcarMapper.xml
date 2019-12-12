@@ -10,6 +10,20 @@
     <result column="shoppingcar_subtotal" jdbcType="DOUBLE" property="shoppingcarSubtotal" />
     <result column="shoppingcar_sumsubtotal" jdbcType="DOUBLE" property="shoppingcarSumsubtotal" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <association property="goods" javaType="com.rimi.secondhandtradingmall.bean.Goods">
+      <id column="goods_id" jdbcType="INTEGER" property="goodsId"/>
+      <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+      <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice"/>
+      <result column="goods_uptime" jdbcType="VARCHAR" property="goodsUptime"/>
+      <result column="goods_description" jdbcType="VARCHAR" property="goodsDescription"/>
+      <result column="goods_paypeople" jdbcType="INTEGER" property="goodsPaypeople"/>
+      <result column="goods_color" jdbcType="VARCHAR" property="goodsColor"/>
+      <result column="goods_size" jdbcType="VARCHAR" property="goodsSize"/>
+      <result column="goods_num" jdbcType="INTEGER" property="goodsNum"/>
+      <result column="goods_purchasetime" jdbcType="INTEGER" property="goodsPurchasetime"/>
+      <result column="secondclassify_id" jdbcType="INTEGER" property="secondclassifyId"/>
+      <result column=" goods_logo" jdbcType="VARCHAR" property="goodsLogo"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -124,6 +138,6 @@
     </insert>
   <select id="selectAllGoodsByPhone" resultMap="BaseResultMap">
     select *
-    from shoppingcar where telephone = #{telephone,jdbcType=VARCHAR};
+    from shoppingcar s left join goods g on s.goods_id = g.goods_id where telephone = #{telephone,jdbcType=VARCHAR}
   </select>
 </mapper>

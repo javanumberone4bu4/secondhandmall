@@ -1,6 +1,8 @@
 package com.rimi.secondhandtradingmall.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Shoppingcar;
 import com.rimi.secondhandtradingmall.common.DefaultResultData;
@@ -102,59 +104,11 @@ public class ShoppingCarController {
     @ApiOperation("根据手机号获取当前用户购物车内的所有商品")
     @GetMapping("/getMyGoods")
     @ResponseBody
-    public void getMyGoods(ShoppingCarVo vo, HttpSession session, HttpServletResponse response) throws IOException {
-
-
-        Object allTelephone = session.getAttribute("allTelephone");
-
-
-        double sumsubtotal = 0.0;
-
-        LayuiData layuiData = new LayuiData();
-
-        List<ShoppingCarVo> shoppingcarVo = new ArrayList<>();
-
-        // 根据手机号获取到所有购物车表里面对应用户的商品
-
-        List<Shoppingcar> shoppingcar = shoppingCarService.selectAllGoodsByPhone((String)allTelephone);
-        for (Shoppingcar shoppingcar1 : shoppingcar) {
-            // 根据购物车商品id查询出商品的名称
-            Goods goods = goodsService.selectByPrimaryKey(shoppingcar1.getGoodsId());
-            // 完善商品名称
-            vo.setGoodsName(goods.getGoodsName());
-            // 完善商品单价
-            vo.setGoodsPrice(goods.getGoodsPrice());
-            // 完善商品数量
-            vo.setGoodsCount(shoppingcar1.getShoppingcarNum());
-            // 完善商品图片
-            vo.setGoodsLogo(goods.getGoodsLogo());
-            // 完善商品小计
-            vo.setGoodsSubtotal(shoppingcar1.getShoppingcarSubtotal());
-            // 完善单个购物车商品的信息
-            shoppingcarVo.add(vo);
-            // 叠加单个商品的总价
-            sumsubtotal += shoppingcar1.getShoppingcarSubtotal();
-
-        }
-
-
-        if (shoppingcar.size() > 0) {
-            layuiData.setCode(0);
-            layuiData.setMsg("获取到了数据");
-            layuiData.setData(shoppingcarVo);
-
-            // 将封装后的数据转成json格式的数据
-            String jsonString = JSONObject.toJSONString(layuiData);
-            // 设置响应的格式
-            response.setContentType("application/json;charset=utf-8");
-            // 将数据响应到浏览器
-            PrintWriter writer = response.getWriter();
-            writer.print(jsonString);
-            writer.close();
-
-        }
-
-        layuiData.setMsg("没有数据");
+    public ResultData getMyGoods(ShoppingCarVo vo, HttpSession session, HttpServletResponse response) throws IOException {
+        PageHelper.startPage(vo.getPage(),vo.getLimit());
+        List<Shoppingcar> shoppingcar = shoppingCarService.selectAllGoodsByPhone(vo.getTelephone());
+        PageInfo pageInfo=new PageInfo(shoppingcar);
+     return new DefaultResultData(pageInfo);
 
     }
 
