@@ -10,6 +10,11 @@ import lombok.Data;
 public class ShoppingCarVo {
 
     /**
+     * 购物车id
+     */
+    private Integer shoppingcarId;
+
+    /**
      * 商品的id
      */
     private Integer goodsId;
@@ -49,9 +54,21 @@ public class ShoppingCarVo {
      */
     private String goodsLogo;
 
+    /**
+     * 商品尺寸
+     */
+    private String shoppingcarSize;
+
+    /**
+     * 商品颜色
+     */
+    private String shoppingcarColor;
+
     private Integer page;
 
     private Integer limit;
+
+
 
 
 }

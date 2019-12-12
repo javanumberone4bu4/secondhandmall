@@ -9,11 +9,10 @@ import java.util.List;
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/4 15:43
+ * @author junelee
+ * @date 2019/12/12 17:32
  */
 public interface ShoppingcarMapper {
-    int deleteByPrimaryKey(Integer shoppingcarId);
 
     int insert(Shoppingcar record);
 
@@ -34,4 +33,6 @@ public interface ShoppingcarMapper {
     int insertByTelephone(Shoppingcar shoppingcar);
 
     List<Shoppingcar> selectAllGoodsByPhone(@Param("telephone") String telephone);
+
+    int deleteByPrimaryKey(@Param("ShoppingcarId") Integer ShoppingcarId, @Param("telephone") String telephone);
 }

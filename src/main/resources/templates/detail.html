@@ -48,7 +48,7 @@
             </div>
             <div class="shopBtn">
                 <button class="layui-btn layui-btn-primary sale">立即购买</button>
-                <button class="layui-btn shop"><i class="layui-icon layui-icon-house-shop"></i>加入购物车</button>
+                <button class="layui-btn shop" id="addShoppingCar"><i class="layui-icon layui-icon-house-shop"></i>加入购物车</button>
                 <button class="layui-btn layui-btn-primary collect"><i class="layui-icon layui-icon-rate"
                                                                        id="collect"></i>收藏
                 </button>
@@ -113,6 +113,10 @@
             , element = layui.element
             , laypage = layui.laypage;
         //上面已经引入了jquery的ajax方法，下面直接传参到后台
+
+
+
+
         var telephone = "";
         var v1 = [[${session.allTelephone}]]
         if (v1 == null) {
@@ -167,7 +171,7 @@
             }
         }
         var sessionId = getSessionId();
-        // var goodsNum=$("#payNum").val();
+        var goodsNum=$("#payNum").val();
         //点击收藏发送异步请求
         var goodsId = [[${detail.goodsId}]];
         //详情页——收藏
@@ -209,6 +213,9 @@
             if (color == "") {
                 $("#chooseColor").css("display", "inline");
                 return;
+            } else {
+                $("#chooseColor").css("display", "inline-block");
+                return;
             }
 
             size = color2[1];
@@ -216,6 +223,9 @@
 
             if (size == "") {
                 $("#chooseSize").css("display", "inline");
+                return;
+            } else {
+                $("#chooseSize").css("display", "inline-block");
                 return;
             }
 
@@ -241,7 +251,41 @@
                     }
                 }
             });
-        })
+        });
+
+        // 添加购物车事件
+        $('#addShoppingCar').on('click',function () {
+            var size = "";
+            var color = "";
+            var color3 = $(".active").text();
+            if (contains("色", color3)) {
+                var color2 = color3.split("色");
+                color = color2[0] + "色";
+
+            }
+            if (color == "") {
+                $("#chooseColor").css("display", "inline");
+                return;
+            }
+
+            size = color2[1];
+
+
+            if (size == "") {
+                $("#chooseSize").css("display", "inline");
+                return;
+            }
+
+            var goodsNum = $("#payNum").val();
+            $.ajax({
+                type:"get",
+                url:"/addShoppingCar?goodsId="+goodsId+"&goodsNum="+goodsNum+"&telephone="+telephone+"&shoppingcarSize="+size+"&shoppingcarColor"+color,
+                dataType:"json",
+                success:function (result) {
+                    console.log(result);
+                }
+            })
+        });
     });
 </script>
 

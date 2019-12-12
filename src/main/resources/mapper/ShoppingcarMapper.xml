@@ -10,6 +10,9 @@
     <result column="shoppingcar_subtotal" jdbcType="DOUBLE" property="shoppingcarSubtotal" />
     <result column="shoppingcar_sumsubtotal" jdbcType="DOUBLE" property="shoppingcarSumsubtotal" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="shoppingcar_size" jdbcType="VARCHAR" property="shoppingcarSize" />
+    <result column="shoppingcar_color" jdbcType="VARCHAR" property="shoppingcarColor" />
+
     <association property="goods" javaType="com.rimi.secondhandtradingmall.bean.Goods">
       <id column="goods_id" jdbcType="INTEGER" property="goodsId"/>
       <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
@@ -25,10 +28,13 @@
       <result column=" goods_logo" jdbcType="VARCHAR" property="goodsLogo"/>
     </association>
   </resultMap>
+
+
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     shoppingcar_id, goods_id, shoppingcar_num, shoppingcar_subtotal, shoppingcar_sumsubtotal, 
-    telephone
+    telephone, shoppingcar_size, shoppingcar_color
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -37,17 +43,15 @@
     from shoppingcar
     where shoppingcar_id = #{shoppingcarId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from shoppingcar
-    where shoppingcar_id = #{shoppingcarId,jdbcType=INTEGER}
-  </delete>
+
   <insert id="insert" keyColumn="shoppingcar_id" keyProperty="shoppingcarId" parameterType="com.rimi.secondhandtradingmall.bean.Shoppingcar" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into shoppingcar (goods_id, shoppingcar_num, shoppingcar_subtotal, 
-      shoppingcar_sumsubtotal, telephone)
+      shoppingcar_sumsubtotal, telephone, shoppingcar_size, 
+      shoppingcar_color)
     values (#{goodsId,jdbcType=INTEGER}, #{shoppingcarNum,jdbcType=INTEGER}, #{shoppingcarSubtotal,jdbcType=DOUBLE}, 
-      #{shoppingcarSumsubtotal,jdbcType=DOUBLE}, #{telephone,jdbcType=VARCHAR})
+      #{shoppingcarSumsubtotal,jdbcType=DOUBLE}, #{telephone,jdbcType=VARCHAR}, #{shoppingcarSize,jdbcType=VARCHAR}, 
+      #{shoppingcarColor,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="shoppingcar_id" keyProperty="shoppingcarId" parameterType="com.rimi.secondhandtradingmall.bean.Shoppingcar" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -68,6 +72,12 @@
       <if test="telephone != null">
         telephone,
       </if>
+      <if test="shoppingcarSize != null">
+        shoppingcar_size,
+      </if>
+      <if test="shoppingcarColor != null">
+        shoppingcar_color,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
@@ -84,6 +94,12 @@
       </if>
       <if test="telephone != null">
         #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="shoppingcarSize != null">
+        #{shoppingcarSize,jdbcType=VARCHAR},
+      </if>
+      <if test="shoppingcarColor != null">
+        #{shoppingcarColor,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -106,6 +122,12 @@
       <if test="telephone != null">
         telephone = #{telephone,jdbcType=VARCHAR},
       </if>
+      <if test="shoppingcarSize != null">
+        shoppingcar_size = #{shoppingcarSize,jdbcType=VARCHAR},
+      </if>
+      <if test="shoppingcarColor != null">
+        shoppingcar_color = #{shoppingcarColor,jdbcType=VARCHAR},
+      </if>
     </set>
     where shoppingcar_id = #{shoppingcarId,jdbcType=INTEGER}
   </update>
@@ -116,7 +138,9 @@
       shoppingcar_num = #{shoppingcarNum,jdbcType=INTEGER},
       shoppingcar_subtotal = #{shoppingcarSubtotal,jdbcType=DOUBLE},
       shoppingcar_sumsubtotal = #{shoppingcarSumsubtotal,jdbcType=DOUBLE},
-      telephone = #{telephone,jdbcType=VARCHAR}
+      telephone = #{telephone,jdbcType=VARCHAR},
+      shoppingcar_size = #{shoppingcarSize,jdbcType=VARCHAR},
+      shoppingcar_color = #{shoppingcarColor,jdbcType=VARCHAR}
     where shoppingcar_id = #{shoppingcarId,jdbcType=INTEGER}
   </update>
     <select id="selectAllGoodsByPhoneAndGoodsId" resultType="com.rimi.secondhandtradingmall.bean.Goods">
@@ -140,4 +164,7 @@
     select *
     from shoppingcar s left join goods g on s.goods_id = g.goods_id where telephone = #{telephone,jdbcType=VARCHAR}
   </select>
+  <delete id="deleteByPrimaryKey">
+    delete from shoppingcar where Shoppingcar_id = #{ShoppingcarId,jdbcType=INTEGER} and telephone = #{telephone,jdbcType=VARCHAR}
+  </delete>
 </mapper>

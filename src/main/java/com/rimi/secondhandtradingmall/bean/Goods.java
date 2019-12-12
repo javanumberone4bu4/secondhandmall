@@ -101,6 +101,9 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "商品图标")
     private String goodsLogo;
     private Secondclassify secondclassify;
+
     private List<Collections> list;
+
+
     private static final long serialVersionUID = 1L;
 }

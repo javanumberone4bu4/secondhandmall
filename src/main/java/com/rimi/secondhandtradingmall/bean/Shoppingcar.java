@@ -8,10 +8,10 @@ import lombok.Data;
 /**
  * ${Description}
  *
- * @author Wang Xiaoping
- * @date 2019/12/4 15:43
+ * @author junelee
+ * @date 2019/12/12 17:32
  */
-@ApiModel(value = "com.rimi.secondhandtradingmall.bean.Shoppingcar")
+@ApiModel(value = "com-rimi-secondhandtradingmall-bean-Shoppingcar")
 @Data
 public class Shoppingcar implements Serializable {
     /**
@@ -21,27 +21,27 @@ public class Shoppingcar implements Serializable {
     private Integer shoppingcarId;
 
     /**
-     * 商品ID
+     * 单个商品的ID
      */
-    @ApiModelProperty(value = "商品ID")
+    @ApiModelProperty(value = "单个商品的ID")
     private Integer goodsId;
 
     /**
-     * 数量
+     * 单个商品的数量
      */
-    @ApiModelProperty(value = "数量")
+    @ApiModelProperty(value = "单个商品的数量")
     private Integer shoppingcarNum;
 
     /**
-     * 小计
+     * 单个商品的小计
      */
-    @ApiModelProperty(value = "小计")
+    @ApiModelProperty(value = "单个商品的小计")
     private Double shoppingcarSubtotal;
 
     /**
-     * 合计
+     * 合计（暂时不用）
      */
-    @ApiModelProperty(value = "合计")
+    @ApiModelProperty(value = "合计（暂时不用）")
     private Double shoppingcarSumsubtotal;
 
     /**
@@ -49,6 +49,23 @@ public class Shoppingcar implements Serializable {
      */
     @ApiModelProperty(value = "用户名")
     private String telephone;
-     private Goods goods;
+
+    /**
+     * 商品的尺寸
+     */
+    @ApiModelProperty(value = "商品的尺寸")
+    private String shoppingcarSize;
+
+    /**
+     * 商品的颜色
+     */
+    @ApiModelProperty(value = "商品的颜色")
+    private String shoppingcarColor;
+
+    /**
+     * 商品对象
+     */
+    private Goods goods;
+
     private static final long serialVersionUID = 1L;
 }

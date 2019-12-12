@@ -2,6 +2,7 @@ package com.rimi.secondhandtradingmall.service.impl;
 
 import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Shoppingcar;
+import com.rimi.secondhandtradingmall.common.*;
 import com.rimi.secondhandtradingmall.mapper.ShoppingcarMapper;
 import com.rimi.secondhandtradingmall.service.IShoppingCarService;
 import org.springframework.stereotype.Service;
@@ -69,4 +70,16 @@ public class ShoppingCarServiceImpl implements IShoppingCarService {
 
 
     }
+
+    @Override
+    public int dropShoppingByShoppingcarId(Integer ShoppingcarId, String telephone) {
+        int i = shoppingcarMapper.deleteByPrimaryKey(ShoppingcarId,telephone);
+
+        if (i > 0) {
+            return i;
+        }
+        return -1;
+    }
+
+
 }

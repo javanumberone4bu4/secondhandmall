@@ -2,6 +2,8 @@ package com.rimi.secondhandtradingmall.service;
 
 import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Shoppingcar;
+import com.rimi.secondhandtradingmall.common.Result;
+import com.rimi.secondhandtradingmall.common.ResultData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -35,4 +37,7 @@ public interface IShoppingCarService {
     int insertByTelephone(Shoppingcar shoppingcar);
 
     List<Shoppingcar> selectAllGoodsByPhone(@Param("telephone") String telephone);
+
+
+    int dropShoppingByShoppingcarId(@Param("ShoppingcarId") Integer ShoppingcarId, @Param("telephone") String telephone);
 }

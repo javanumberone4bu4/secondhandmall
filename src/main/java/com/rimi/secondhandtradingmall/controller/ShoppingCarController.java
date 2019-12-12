@@ -5,11 +5,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rimi.secondhandtradingmall.bean.Goods;
 import com.rimi.secondhandtradingmall.bean.Shoppingcar;
-import com.rimi.secondhandtradingmall.common.DefaultResultData;
-import com.rimi.secondhandtradingmall.common.LayuiData;
-import com.rimi.secondhandtradingmall.common.ResultCode;
-import com.rimi.secondhandtradingmall.common.ResultData;
+import com.rimi.secondhandtradingmall.bean.Shoppingcarmsg;
+import com.rimi.secondhandtradingmall.common.*;
 import com.rimi.secondhandtradingmall.service.IGoodsService;
+import com.rimi.secondhandtradingmall.service.IShoppingCarMsgService;
 import com.rimi.secondhandtradingmall.service.IShoppingCarService;
 import com.rimi.secondhandtradingmall.vo.ShoppingCarVo;
 import io.swagger.annotations.Api;
@@ -44,12 +43,13 @@ public class ShoppingCarController {
     @Autowired
     private IShoppingCarService shoppingCarService;
 
-
+    @Autowired
+    private IShoppingCarMsgService shoppingCarMsgService;
 
 
     @ApiOperation("跳转到当前用户的购物车页面")
     @GetMapping("/usershop")
-    public String toUserShop(Model model,HttpSession session){
+    public String toUserShop(Model model, HttpSession session) {
 
         // 判断当前用户 是否登录
         Object allTelephone = session.getAttribute("allTelephone");
@@ -60,16 +60,15 @@ public class ShoppingCarController {
 
         // 随机查询五条商品出来
         List<Goods> goods = goodsService.selectShoppingcarInYourLike();
-        model.addAttribute("shoppingcarInYourLike",goods);
+        model.addAttribute("shoppingcarInYourLike", goods);
         return "usershop";
     }
 
 
-
-
     @ApiOperation("将商品添加到对应用户的购物车里面")
     @GetMapping("/addShoppingCar")
-    public ResultData addShoppingCar(ShoppingCarVo vo) {
+    public Result addShoppingCar(ShoppingCarVo vo) {
+
 
         // 初始化一个购物车对象
         Shoppingcar shoppingcar = new Shoppingcar();
@@ -91,12 +90,36 @@ public class ShoppingCarController {
         shoppingcar.setTelephone(vo.getTelephone());
         // 完善小计
         shoppingcar.setShoppingcarSubtotal(oneGoodsMoney);
+        // 完善尺寸
+        shoppingcar.setShoppingcarSize(vo.getShoppingcarSize());
+        // 完善颜色
+        shoppingcar.setShoppingcarColor(vo.getShoppingcarColor());
         // 插入当前所有信息到购物车表内
         int i = shoppingCarService.insertByTelephone(shoppingcar);
+        // 插入成功后更新购物车数字
         if (i > 0) {
-            return new DefaultResultData(ResultCode.SUCCESS);
+            // 添加成功后，查找购物车msg里面的信息
+            Shoppingcarmsg shoppingcarmsg = shoppingCarMsgService.selectCountByTelephone(vo.getTelephone());
+            if (shoppingcarmsg != null) {
+                // 不为空的话就更新
+                // 将购物车数字+1
+                shoppingcarmsg.setShoppingcarmsgSumnum(shoppingcarmsg.getShoppingcarmsgSumnum() + 1);
+                // 更新数据
+                shoppingCarMsgService.updateCountByTelephone(shoppingcarmsg);
+            } else {
+                // 为空则新增数据
+                Shoppingcarmsg shoppingcarmsg1 = new Shoppingcarmsg();
+                // 设置手机号
+                shoppingcarmsg1.setTelephone(vo.getTelephone());
+                // 设置初次添加默认值1
+                shoppingcarmsg1.setShoppingcarmsgSumnum(1);
+                // 插入新数据
+                shoppingCarMsgService.insertCountByTelephone(shoppingcarmsg1);
+            }
+
+            return new DefaultResult(ResultCode.SUCCESS);
         }
-        return new DefaultResultData(ResultCode.FAIL);
+        return new DefaultResult(ResultCode.FAIL);
 
     }
 
@@ -105,11 +128,33 @@ public class ShoppingCarController {
     @GetMapping("/getMyGoods")
     @ResponseBody
     public ResultData getMyGoods(ShoppingCarVo vo, HttpSession session, HttpServletResponse response) throws IOException {
-        PageHelper.startPage(vo.getPage(),vo.getLimit());
+        PageHelper.startPage(vo.getPage(), vo.getLimit());
         List<Shoppingcar> shoppingcar = shoppingCarService.selectAllGoodsByPhone(vo.getTelephone());
-        PageInfo pageInfo=new PageInfo(shoppingcar);
-     return new DefaultResultData(pageInfo);
+        PageInfo pageInfo = new PageInfo(shoppingcar);
+        return new DefaultResultData(pageInfo);
 
+    }
+
+
+    @ApiOperation("根据购物车id删除当前用户选中的商品")
+    @GetMapping("/dropShopping")
+    public String dropShopping(ShoppingCarVo vo ,Model model) {
+
+        // 删除商品
+        int i = shoppingCarService.dropShoppingByShoppingcarId(vo.getShoppingcarId(),vo.getTelephone());
+        // 更新
+        if (i > 0) {
+            // 查找购物车msg里面的信息
+            Shoppingcarmsg shoppingcarmsg = shoppingCarMsgService.selectCountByTelephone(vo.getTelephone());
+            // 将购物车数字-1
+            shoppingcarmsg.setShoppingcarmsgSumnum(shoppingcarmsg.getShoppingcarmsgSumnum() - 1);
+            // 更新数据
+            shoppingCarMsgService.updateCountByTelephone(shoppingcarmsg);
+            model.addAttribute("result","删除成功！");
+        }
+        model.addAttribute("result","遇到了网络波动~");
+
+        return "redirect:/usershop";
     }
 
 
