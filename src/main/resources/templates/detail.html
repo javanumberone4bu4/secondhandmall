@@ -118,8 +118,8 @@
 
 
         var telephone = "";
-        var v1 = [[${session.allTelephone}]]
-        if (v1 == null) {
+        var v1 = "[[${session.allTelephone}]]"
+        if (v1 == "") {
             telephone = -1;
         } else {
             telephone = v1;
@@ -216,7 +216,6 @@
                 return;
             } else {
                 $("#chooseColor").css("display", "inline-block");
-                return;
             }
 
             size = color2[1];
@@ -227,7 +226,6 @@
                 return;
             } else {
                 $("#chooseSize").css("display", "inline-block");
-                return;
             }
 
 
