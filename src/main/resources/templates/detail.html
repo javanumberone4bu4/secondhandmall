@@ -48,7 +48,8 @@
             </div>
             <div class="shopBtn">
                 <button class="layui-btn layui-btn-primary sale">立即购买</button>
-                <button class="layui-btn shop" id="addShoppingCar"><i class="layui-icon layui-icon-house-shop"></i>加入购物车</button>
+                <button class="layui-btn shop" id="addShoppingCar"><i class="layui-icon layui-icon-house-shop"></i>加入购物车
+                </button>
                 <button class="layui-btn layui-btn-primary collect"><i class="layui-icon layui-icon-rate"
                                                                        id="collect"></i>收藏
                 </button>
@@ -115,11 +116,9 @@
         //上面已经引入了jquery的ajax方法，下面直接传参到后台
 
 
-
-
         var telephone = "";
-        var v1 = "[[${session.allTelephone}]]"
-        if (v1 == "") {
+        var v1 = [[${session.allTelephone}]]
+        if (v1 == null) {
             telephone = -1;
         } else {
             telephone = v1;
@@ -134,7 +133,7 @@
             }
         });
         var count = [[${session.d_count}]];
-        var currs=[[${curr}]];
+        var currs = [[${curr}]];
         //执行一个laypage实例
         laypage.render({
             elem: 'houseList' //注意，这里的 test1 是 ID，不用加 # 号
@@ -171,12 +170,13 @@
                 return JSESSIONID;
             }
         }
+
         var sessionId = getSessionId();
-        var goodsNum=$("#payNum").val();
+        var goodsNum = $("#payNum").val();
         //点击收藏发送异步请求
         var goodsId = [[${detail.goodsId}]];
         //详情页——收藏
-        $(".house-detail").find(".shopChoose").find(".collect").on('click', function(){
+        $(".house-detail").find(".shopChoose").find(".collect").on('click', function () {
             $(this).find("#collect").addClass("layui-icon-rate-solid").removeClass("layui-icon-rate");
             $(this).find("#collect")[0].style.color = '#dbbb92';
             layer.msg('已收藏');
@@ -187,11 +187,11 @@
                 dataType: "json",
                 success: function (result) {
                     console.log(result);
-                    if(result.code==201){
-                        window.location.href="/login";
+                    if (result.code == 201) {
+                        window.location.href = "/login";
                     }
-                    if(result.code==200){
-                        window.location.href="/detail?goodsId="+goodsId+"&pageNum=1&pageSize=3";
+                    if (result.code == 200) {
+                        window.location.href = "/detail?goodsId=" + goodsId + "&pageNum=1&pageSize=3";
                     }
                 }
             });
@@ -211,12 +211,15 @@
                 color = color2[0] + "色";
 
             }
+            // alert(color3);
+            // alert(color);
             if (color == "") {
                 $("#chooseColor").css("display", "inline");
                 return;
-            } else {
-                $("#chooseColor").css("display", "inline-block");
             }
+            // if (color != "") {
+            //     $("#chooseColor").css("display", "none");
+            // }
 
             size = color2[1];
 
@@ -224,9 +227,10 @@
             if (size == "") {
                 $("#chooseSize").css("display", "inline");
                 return;
-            } else {
-                $("#chooseSize").css("display", "inline-block");
             }
+            // if (size != "") {
+            //     $("#chooseSize").css("display", "none");
+            // }
 
 
             var shoppingcarNum = $("#payNum").val();
@@ -253,7 +257,7 @@
         });
 
         // 添加购物车事件
-        $('#addShoppingCar').on('click',function () {
+        $('#addShoppingCar').on('click', function () {
             var size = "";
             var color = "";
             var color3 = $(".active").text();
@@ -266,6 +270,9 @@
                 $("#chooseColor").css("display", "inline");
                 return;
             }
+            // if (color != "") {
+            //     $("#chooseColor").css("display", "none");
+            // }
 
             size = color2[1];
 
@@ -274,14 +281,33 @@
                 $("#chooseSize").css("display", "inline");
                 return;
             }
-
+            // if (size != "") {
+            //     $("#chooseSize").css("display", "none");
+            // }
+            // alert(color+"====="+size);
             var goodsNum = $("#payNum").val();
             $.ajax({
-                type:"get",
-                url:"/addShoppingCar?goodsId="+goodsId+"&goodsNum="+goodsNum+"&telephone="+telephone+"&shoppingcarSize="+size+"&shoppingcarColor"+color,
-                dataType:"json",
-                success:function (result) {
-                    console.log(result);
+                type: "get",
+                url: "/shoppingcarJudgeLogin?goodsId=" + goodsId + "&goodsNum=" + goodsNum + "&telephone=" + telephone + "&shoppingcarSize=" + size + "&shoppingcarColor=" + color + "&sessionId=" + sessionId,
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 201) {
+                        window.location.href = "/login";
+                    }
+                    if (data.code == 200) {
+                        // window.location.href = "/addShoppingCar?goodsId=" + goodsId + "&goodsNum=" + goodsNum + "&telephone=" + telephone + "&shoppingcarSize=" + size + "&shoppingcarColor=" + color;
+                        $.ajax({
+                            type: "get",
+                            url: "/addShoppingCar?goodsId=" + goodsId + "&goodsNum=" + goodsNum + "&telephone=" + telephone + "&shoppingcarSize=" + size + "&shoppingcarColor=" + color,
+                            dataType: "json",
+                            success: function(data){
+                                layer.msg("添加购物车成功", {time: 1000});
+                            }
+                        });
+                    }
+                    if (data.code == 600) {
+                        window.location.href = "/userAdd";
+                    }
                 }
             })
         });

@@ -16,9 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -61,12 +59,17 @@ public class ShoppingCarController {
         // 随机查询五条商品出来
         List<Goods> goods = goodsService.selectShoppingcarInYourLike();
         model.addAttribute("shoppingcarInYourLike", goods);
+
+
+        model.addAttribute("mySession",session.getId());
+
         return "usershop";
     }
 
 
     @ApiOperation("将商品添加到对应用户的购物车里面")
     @GetMapping("/addShoppingCar")
+    @ResponseBody
     public Result addShoppingCar(ShoppingCarVo vo) {
 
 
@@ -91,6 +94,7 @@ public class ShoppingCarController {
         // 完善小计
         shoppingcar.setShoppingcarSubtotal(oneGoodsMoney);
         // 完善尺寸
+        //System.out.println(vo.getShoppingcarSize()+"========="+vo.getShoppingcarColor());
         shoppingcar.setShoppingcarSize(vo.getShoppingcarSize());
         // 完善颜色
         shoppingcar.setShoppingcarColor(vo.getShoppingcarColor());
@@ -124,6 +128,9 @@ public class ShoppingCarController {
     }
 
 
+
+
+
     @ApiOperation("根据手机号获取当前用户购物车内的所有商品")
     @GetMapping("/getMyGoods")
     @ResponseBody
@@ -138,10 +145,10 @@ public class ShoppingCarController {
 
     @ApiOperation("根据购物车id删除当前用户选中的商品")
     @GetMapping("/dropShopping")
-    public String dropShopping(ShoppingCarVo vo ,Model model) {
+    public String dropShopping(ShoppingCarVo vo, Model model) {
 
         // 删除商品
-        int i = shoppingCarService.dropShoppingByShoppingcarId(vo.getShoppingcarId(),vo.getTelephone());
+        int i = shoppingCarService.dropShoppingByShoppingcarId(vo.getShoppingcarId(), vo.getTelephone());
         // 更新
         if (i > 0) {
             // 查找购物车msg里面的信息
@@ -150,12 +157,28 @@ public class ShoppingCarController {
             shoppingcarmsg.setShoppingcarmsgSumnum(shoppingcarmsg.getShoppingcarmsgSumnum() - 1);
             // 更新数据
             shoppingCarMsgService.updateCountByTelephone(shoppingcarmsg);
-            model.addAttribute("result","删除成功！");
+            model.addAttribute("result", "删除成功！");
         }
-        model.addAttribute("result","遇到了网络波动~");
+        model.addAttribute("result", "遇到了网络波动~");
 
         return "redirect:/usershop";
     }
+
+    @ApiOperation("根据手机号和多个id删除多条购物车内的数据")
+    @PostMapping("/dropManyShopping")
+    @ResponseBody
+    public Result dropManyShopping(@RequestParam("shoppingcarIds[]") String[] shoppingcarIds, ShoppingCarVo vo) {
+
+        // 删除
+        int result = shoppingCarService.dropManyShoppingByShoppingcarId(shoppingcarIds, vo.getTelephone());
+
+        if (result < 0) {
+            return new DefaultResult(ResultCode.FAIL);
+        }
+        return new DefaultResult(ResultCode.SUCCESS);
+    }
+
+
 
 
 }

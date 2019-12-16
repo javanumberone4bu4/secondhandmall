@@ -30,7 +30,7 @@ public interface IShoppingCarService {
      * @param telephone
      * @return
      */
-    boolean dropShoppingcarGoodsByGoodsIdAndPhone(Integer id, String telephone);
+    boolean dropShoppingcarGoodsByGoodsIdAndPhone(String id, String telephone);
 
     int selectCountByTelephone(@Param("telephone") String telephone);
 
@@ -39,5 +39,15 @@ public interface IShoppingCarService {
     List<Shoppingcar> selectAllGoodsByPhone(@Param("telephone") String telephone);
 
 
-    int dropShoppingByShoppingcarId(@Param("ShoppingcarId") Integer ShoppingcarId, @Param("telephone") String telephone);
+    int dropShoppingByShoppingcarId(@Param("ShoppingcarId") Integer ShoppingcarId,
+                                    @Param("telephone") String telephone);
+
+    int dropManyShoppingByShoppingcarId(@Param("ShoppingcarIds") String[] ShoppingcarIds,
+                                        @Param("telephone") String telephone);
+
+    int selectShoppingcarByShoppingcarIdAndTelephone(@Param("shoppingcarIds") String[] shoppingcarIds, @Param(
+            "telephone") String telephone);
+
+    double selectAllShoppingcarPayByShoppingcarIdAndTelephone(@Param("shoppingcarIds") String[] shoppingcarIds, @Param(
+            "telephone") String telephone);
 }

@@ -22,6 +22,8 @@ import com.rimi.secondhandtradingmall.service.IShoppingCarService;
 import com.rimi.secondhandtradingmall.util.RandomUtils;
 import com.rimi.secondhandtradingmall.vo.AllGoodsVo2;
 import com.rimi.secondhandtradingmall.vo.GoodsVo2;
+import com.rimi.secondhandtradingmall.vo.ShoppingCarVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -82,11 +84,8 @@ public class AliPayController {
      * @return 随机数
      */
     public String getRan() {
-        int v = (int) (Math.random() * 10);
-        System.out.println(v);
+        int v = (int) (Math.random() * 3);
         String s = String.valueOf(v);
-        System.out.println(s);
-        System.out.println(s + System.currentTimeMillis());
         return s + System.currentTimeMillis();
     }
 
@@ -171,42 +170,29 @@ public class AliPayController {
     }
 
 
-    @GetMapping("/purchaseCar")
-    public void paymentCar(AllGoodsVo2 vo, String telephone, HttpServletResponse response) throws IOException {
+    @ApiOperation("购物车支付入口")
+    @PostMapping("/purchaseCar")
+    public void paymentCar(@RequestParam("shoppingcarIds[]") String[] shoppingcarIds, ShoppingCarVo vo, HttpServletResponse response) throws IOException {
+        //System.out.println(shoppingcarIds+"----"+vo);
         // 获取所有商品的总数量
         int allCount = 0;
         // 获得将要支付的购物车内单个类型的商品的总数量
         int count = 0;
         // 获得将要支付所有商品的总价
         double total = 0.0;
-        // 创建一个商品集合，用来存查到的当前用户的所有将要付款的购物车里的商品
-        List<Goods> allGoods = new ArrayList<>();
-        // 根据前端传来的商品id 查询出当前用户购物车的所有商品
-        List<Integer> goodsId1 = vo.getGoodsId();
-        for (Integer goodsId : goodsId1) {
-            allGoods.add(shoppingCarService.selectAllGoodsByPhoneAndGoodsId(goodsId, telephone));
-        }
-        // 创建一个Integer类型的集合，用来存储查到的所有商品id
-        List<Integer> ids = new ArrayList();
 
-        // 遍历商品，获取所有商品的所有信息
-        for (Goods good : allGoods) {
-            // 获得单个商品的单价
-            double goodsPrice = good.getGoodsPrice();
-            // 获得单个商品的总量
-            int goodsNum = good.getGoodsNum();
-            // 计算出单个商品的总价
-            double goodsTotal = goodsPrice * goodsNum;
-            // 价格叠加
-            total += goodsTotal;
-            // 支付所有商品总数叠加
-            allCount += goodsNum;
-            // 支付单个商品总数+1
-            count++;
-            // 添加当前商品的id到集合，该集合用于删除购物车内的商品
-            ids.add(good.getGoodsId());
+        // 根据id查找对应用户的购物车内是否存在该商品
+        int result = shoppingCarService.selectShoppingcarByShoppingcarIdAndTelephone(shoppingcarIds,vo.getTelephone());
 
+        if (result < 0) {
+            return;
         }
+
+        // 根据购物车id，用户的手机号定位到用户选中的购物车 算出用户将要支付多少钱
+        double resultPay = shoppingCarService.selectAllShoppingcarPayByShoppingcarIdAndTelephone(shoppingcarIds,vo.getTelephone());
+
+
+
 
 
         //生成订单
@@ -243,24 +229,24 @@ public class AliPayController {
                 String allIds = null;
                 // 删除购物车内对应商品 (若不是通过购物车支付，则不需要完成这步)
                 // 根据商品id和用户名手机号码删除对应用户购物车的已购买的商品
-                for (Integer id : ids) {
-                    allIds = id + ",";
-                    boolean success = shoppingCarService.dropShoppingcarGoodsByGoodsIdAndPhone(id, telephone);
+                for (String shoppingcarId : shoppingcarIds) {
+                    allIds = shoppingcarId + ",";
+                    boolean success = shoppingCarService.dropShoppingcarGoodsByGoodsIdAndPhone(shoppingcarId, vo.getTelephone());
                     if (!success) {
                         System.out.println("删除已购买商品失败！");
                     }
                 }
 
                 // 生成订单
-                boolean success = ordersService.insertAll(orderForm, allIds, allCount, total, telephone);
+                boolean success = ordersService.insertAll(orderForm, allIds, allCount, total, vo.getTelephone());
                 if (success) {
                     System.out.println("获取订单信息成功");
                 }
                 // 算出购买后的购物车内还剩的商品数量 (若不是通过购物车支付，则不需要完成这步)
                 //根据当前用户的手机号查询当前用户购物车内的总商品数
-                int count1 = shoppingCarService.selectCountByTelephone((String) telephone);
+                int count1 = shoppingCarService.selectCountByTelephone(vo.getTelephone());
                 // 根据手机号查询msg里面的sumnum，有就修改，没有就添加
-                Shoppingcarmsg shoppingcarmsg = shoppingCarMsgService.selectCountByTelephone((String) telephone);
+                Shoppingcarmsg shoppingcarmsg = shoppingCarMsgService.selectCountByTelephone(vo.getTelephone());
 
                 if (shoppingcarmsg != null) {
                     // 修改总商品数量
@@ -271,7 +257,7 @@ public class AliPayController {
                     // 插入一个新的购物车信息
                     Shoppingcarmsg shoppingcarmsg1 = new Shoppingcarmsg();
                     shoppingcarmsg1.setShoppingcarmsgSumnum(count1);
-                    shoppingcarmsg1.setTelephone((String) telephone);
+                    shoppingcarmsg1.setTelephone(vo.getTelephone());
                     int res = shoppingCarMsgService.insertCountByTelephone(shoppingcarmsg);
 
                 }

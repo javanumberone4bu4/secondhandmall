@@ -24,7 +24,7 @@
             <p>应付：<big>￥0.00</big></p>
             <!--<span>满减￥20，包邮</span>-->
         </div>
-        <button class="layui-btn">结算</button>
+        <button class="layui-btn" id="balance">结算</button>
     </div>
 
 
@@ -38,6 +38,7 @@
         </a></li>
     </ul>
 </div>
+<input id="mySession" type="hidden" th:value="${mySession}">
 
 
 <!-- 页面footer -->
@@ -93,13 +94,13 @@
             , table = layui.table;
         // 上面已经引入了jquery的ajax方法，下面直接传参到后台
 
-        var telephone=[[${session.allTelephone}]]
+        var telephone = [[${session.allTelephone}]]
         $.ajax({
             type: "post",
             url: "/shoppingCarMsg/note",//请求地址已在另一处设置
-            data: {telephone:telephone},
+            data: {telephone: telephone},
             dataType: "json",
-            success: function(result){
+            success: function (result) {
                 console.log(result);
             }
         });
@@ -179,52 +180,144 @@
         });
 
         // 合计
+
+
         var goodsVal = $(".house-usershop").find("#total").children("span")
             , copyWith = $(".house-usershop").find("#toCope").children("p").children("big")
             , copyTips = $(".house-usershop").find("#toCope").children("span");
         //监听复选框选择 获得总数
         table.on('checkbox(house-usershop-table)', function (obj) {
             var checkStatus = table.checkStatus('house-usershop-table');
+            var checkData = checkStatus.data;
             goodsVal[0].innerHTML = 0;
+            console.log(goodsVal[0]);
             $(checkStatus.data).each(function () {
-                goodsVal[0].innerHTML = parseFloat(this.number * this.price.slice(1)) + Number(goodsVal[0].innerHTML);
+                console.log(goodsVal[0]+"点击后");
+                console.log(this.shoppingcarSubtotal);
+                console.log(this.shoppingcarNum);
+                console.log(this);
+                console.log();
+                console.log();
+                goodsVal[0].innerHTML = parseFloat(this.shoppingcarSubtotal * this.shoppingcarNum) + Number(goodsVal[0].innerHTML);
+
+                // table.reload('house-usershop-table');
+                // $(".house-usershop-table-num").children("input")[0].checked = false;
+                // form.render('checkbox');
+                // console.log(checkStatus.data.length+"ha");
+                // $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件')
+                // copyWith[0].innerHTML = goodsVal[0].innerHTML = '￥0.00';
+                copyTips.css("display", "none");
+
             });
+            $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件');
+
+
             //满减
-            if (goodsVal[0].innerHTML > 200) {
-                copyWith[0].innerHTML = '￥' + (goodsVal[0].innerHTML - 20).toFixed(2)
-                copyTips.css("display", "inline-block");
-            } else {
+            // if (goodsVal[0].innerHTML > 200) {
+            //     copyWith[0].innerHTML = '￥' + (goodsVal[0].innerHTML - 20).toFixed(2)
+            //     copyTips.css("display", "inline-block");
+            // } else {
                 copyWith[0].innerHTML = '￥' + parseFloat(goodsVal[0].innerHTML).toFixed(2);
                 copyTips.css("display", "none");
-            }
-            ;
+            // }
+
+
+
             //转换格式
-            goodsVal[0].innerHTML = parseFloat(goodsVal[0].innerHTML).toFixed(2);
-            if (checkStatus.data.length != 0) {
-                $(".house-usershop-table-num").children("input")[0].checked = true;
-                form.render('checkbox');
-            } else {
-                $(".house-usershop-table-num").children("input")[0].checked = false;
-                form.render('checkbox');
-            }
-            ;
-            $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件');
+            // goodsVal[0].innerHTML = parseFloat(goodsVal[0].innerHTML).toFixed(2);
+            // if (checkStatus.data.length != 0) {
+            //     $(".house-usershop-table-num").children("input")[0].checked = true;
+            //     form.render('checkbox');
+            // } else {
+            //     $(".house-usershop-table-num").children("input")[0].checked = false;
+            //     form.render('checkbox');
+            // }
+            // ;
+            // $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件');
+
+
+
+
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        table.on('checkbox(house-usershop-table)', function (obj) {
+
+            // 总价和合计
+
+            var checkStatus = table.checkStatus('house-usershop-table');
+            goodsVal[0].innerHTML = 0;
+            console.log(goodsVal[0]);
+            $(checkStatus.data).each(function () {
+                // console.log(goodsVal[0]+"点击后");
+                // console.log(this.shoppingcarSubtotal);
+                // console.log(this.shoppingcarNum);
+                // console.log(this);
+                goodsVal[0].innerHTML = parseFloat(this.shoppingcarSubtotal * this.shoppingcarNum) + Number(goodsVal[0].innerHTML);
+
+                console.log(checkStatus.data.length+"--------");
+                copyTips.css("display", "none");
+
+
+            });
+
+
+
+            // 更新
+            $(".house-usershop-table-num").children(".numal").html('已选 ' + checkStatus.data.length + ' 件');
+
+            copyWith[0].innerHTML = '￥' + parseFloat(goodsVal[0].innerHTML).toFixed(2);
+            copyTips.css("display", "none");
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // 删除单条数据
         table.on('tool(house-usershop-table)', function (obj) {
             var data = obj.data;
             // alert(data.telephone);
             // alert(data.goodsId);
-            alert(data.shoppingcarId);
+            // alert(data.shoppingcarId);
             if (obj.event === 'del') {
                 layer.confirm('确定删除此物品？', function (index) {
 
                     $.ajax({
                         type: "get",
-                        url: "/dropShopping?shoppingcarId="+data.shoppingcarId+"&telephone="+data.telephone,//请求地址已在另一处设置
+                        url: "/dropShopping?shoppingcarId=" + data.shoppingcarId + "&telephone=" + data.telephone,//请求地址已在另一处设置
                         dataType: "json",
-                        success: function(result){
+                        success: function (result) {
                             console.log(result);
                         }
                     });
@@ -232,44 +325,131 @@
                     layer.close(index);
                 });
             }
-        });
-        $(".numal").on('click', function(){
-            $(".house-usershop-table-num").children(".numal").html('已选 '+checkData.length+' 件')
-            copyWith[0].innerHTML = goodsVal[0].innerHTML = '￥0.00';
         })
+
+
+        // 监听 选框后叠加的价格
+        $(".numal").on('click', function () {
+            $(".house-usershop-table-num").children(".numal").html('已选 ' + checkData.length + ' 件')
+            copyWith[0].innerHTML = goodsVal[0].innerHTML = '￥0.00';
+        });
+
+
+        // 监听 删除选中
         $(".house-usershop").find("#batchDel").on('click', function () {
 
-            var shoppingcarIds = [];
 
             var checkStatus = table.checkStatus('house-usershop-table')
                 , checkData = checkStatus.data;
             if (checkData.length === 0) {
                 layer.msg('请选择数据');
             } else {
+                var shoppingcarIds = [];
                 //执行 Ajax 操作之后再重载
-                alert(checkData.shoppingcarNum);
-                console.log(checkData);
-                for (let i = 0; i < checkData.length; i++) {
+                // alert(checkData.shoppingcarNum);
+                // console.log(checkData);
+
+                for (var i = 0; i < checkData.length; i++) {
+                    shoppingcarIds[i] = checkData[i].shoppingcarId;
+                    alert(checkData[i].shoppingcarId);
+                }
+                // alert(shoppingcarIds);
+
+
+
+
+
+
+                $.ajax({
+                    type: "post",
+                    url: "/dropManyShopping",//请求地址已在另一处设置
+                    data: {'shoppingcarIds[]': shoppingcarIds, telephone: telephone},
+                    dataType: "json",
+                    success: function (result) {
+                        // 无感刷新，体验超棒
+                        $(".layui-laypage-btn")[0].click();
+                        layer.msg("删除成功",{time:  1000});
+                    }
+                });
+
+
+            }
+        });
+
+
+
+        //获取浏览器的sessionId
+        function getSessionId() {
+            var c_name = 'JSESSIONID';
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return unescape(document.cookie.substring(c_start, c_end));
+                }
+            } else {
+                var JSESSIONID = $("#mySession").val();
+                return JSESSIONID;
+            }
+        }
+
+        var sessionId = getSessionId();
+
+
+
+
+        // 结算
+        $(".house-usershop").find("#balance").on('click', function () {
+
+            var checkStatus = table.checkStatus('house-usershop-table')
+                , checkData = checkStatus.data;
+            if (checkData.length === 0) {
+                layer.msg('请选择数据');
+            } else {
+                var shoppingcarIds = [];
+                //执行 Ajax 操作之后再重载
+                // alert(checkData.shoppingcarNum);
+                // console.log(checkData);
+
+                for (var i = 0; i < checkData.length; i++) {
                     shoppingcarIds[i] = checkData[i].shoppingcarId;
                 }
 
                 $.ajax({
-                    type: "get",
-                    url: "/dropManyShopping?shoppingcarIds="+shoppingcarIds+"&telephone="+data.telephone,//请求地址已在另一处设置
+                    type: "post",
+                    url: "/shoppingcarJudgeLogin",//请求地址已在另一处设置
+                    data: {'shoppingcarIds[]': shoppingcarIds, telephone: telephone, sessionId: sessionId},
                     dataType: "json",
-                    success: function(result){
-                        console.log(result);
+                    success: function (data) {
+                        // 无感刷新，体验超棒
+                        // $(".layui-laypage-btn")[0].click();
+                        // layer.msg("删除成功",{time:  1000});
+                        alert(data.code);
+                        if (data.code == 201) {
+                            window.location.href = "/login";
+                        }
+                        if (data.code == 200) {
+                            // window.location.href = "/purchaseCar?shoppingcarIds[]="+shoppingcarIds+"telephone="+telphone+"sessionId="+sessionId;
+                            $.ajax({
+                                type: "post",
+                                url: "/purchaseCar",
+                                data: {'shoppingcarIds[]': shoppingcarIds, telephone: telephone, sessionId: sessionId},
+                                dataType: "json",
+                                success: function (data) {
+                                    layer.msg("购买成功");
+                                }
+                            });
+                        }
+                        if (data.code == 600) {
+                            window.location.href = "/userAdd";
+                        }
                     }
                 });
-
-                table.reload('house-usershop-table');
-                $(".house-usershop-table-num").children("input")[0].checked = false;
-                form.render('checkbox');
-                $(".house-usershop-table-num").children(".numal").html('已选 '+checkData.length+' 件')
-                copyWith[0].innerHTML = goodsVal[0].innerHTML = '￥0.00';
-                copyTips.css("display", "none");
-                layer.msg('已删除');
             }
+
+
         });
     });
 </script>

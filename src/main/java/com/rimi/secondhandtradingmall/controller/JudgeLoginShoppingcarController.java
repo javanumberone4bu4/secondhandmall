@@ -12,6 +12,7 @@ import com.rimi.secondhandtradingmall.vo.AllGoodsVo2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class JudgeLoginShoppingcarController {
         this.singleCenterService = singleCenterService;
     }
 
-    @GetMapping("/judgeLogin2")
+    @GetMapping("/shoppingcarJudgeLogin")
     public Result judgeLogin(AllGoodsVo2 vo, HttpSession session) throws IOException {
         Msg msg = msgService.selectByTelephoneAndSessionId(vo.getTelephone(), vo.getSessionId());
         // 判断当前用户是否登陆
@@ -54,7 +55,7 @@ public class JudgeLoginShoppingcarController {
         Singlecenter singlecenter = singleCenterService.selectByPhoneAndSure(vo.getTelephone(),"是");
         if (singlecenter != null) {
             if(singlecenter.getSinglecenterAddress()!=null) {
-                // 调用支付功能
+                // 调用添加购物车接口
                 return new DefaultResult(ResultCode.SUCCESS);
             }else{
                 // 跳转到iframe页面

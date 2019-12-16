@@ -2,6 +2,8 @@ package com.rimi.secondhandtradingmall.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author junelee
  * @date 2019/12/11 11:21
@@ -13,6 +15,7 @@ public class ShoppingCarVo {
      * 购物车id
      */
     private Integer shoppingcarId;
+
 
     /**
      * 商品的id

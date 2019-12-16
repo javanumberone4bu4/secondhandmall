@@ -149,7 +149,7 @@
     </select>
   <delete id="dropShoppingcarGoodsByGoodsIdAndPhone">
     delete from shoppingcar
-    where shoppingcar_id = #{id,jdbcType=INTEGER} and telephone = #{telephone,jdbcType=VARCHAR};
+    where shoppingcar_id = #{id,jdbcType=VARCHAR} and telephone = #{telephone,jdbcType=VARCHAR};
   </delete>
     <select id="selectCountByTelephone" resultType="int">
       select SUM(shoppingcar_num)
@@ -157,8 +157,8 @@
     </select>
 
     <insert id="insertByTelephone">
-      insert into shoppingcar (goods_id, shoppingcar_num, shoppingcar_subtotal, telephone)
-      values (#{goodsId,jdbcType=INTEGER},#{shoppingcarNum,jdbcType=INTEGER},#{shoppingcarSubtotal,jdbcType=DOUBLE},#{telephone,jdbcType=VARCHAR});
+      insert into shoppingcar (goods_id, shoppingcar_num, shoppingcar_subtotal, telephone,shoppingcar_size,shoppingcar_color)
+      values (#{goodsId,jdbcType=INTEGER},#{shoppingcarNum,jdbcType=INTEGER},#{shoppingcarSubtotal,jdbcType=DOUBLE},#{telephone,jdbcType=VARCHAR},#{shoppingcarSize,jdbcType=VARCHAR},#{shoppingcarColor,jdbcType=VARCHAR});
     </insert>
   <select id="selectAllGoodsByPhone" resultMap="BaseResultMap">
     select *
@@ -167,4 +167,17 @@
   <delete id="deleteByPrimaryKey">
     delete from shoppingcar where Shoppingcar_id = #{ShoppingcarId,jdbcType=INTEGER} and telephone = #{telephone,jdbcType=VARCHAR}
   </delete>
+  <delete id="deleteManyShoppingByPrimaryKey">
+    delete from shoppingcar where Shoppingcar_id =#{ShoppingcarId,jdbcType=VARCHAR} and telephone = #{telephone,jdbcType=VARCHAR}
+  </delete>
+    <select id="selectShoppingcarByShoppingcarIdAndTelephone" resultMap="BaseResultMap">
+      select *
+      from shoppingcar where shoppingcar_id = #{shoppingcarId,jdbcType=VARCHAR} and telephone =
+      #{telephone,jdbcType=VARCHAR};
+    </select>
+  <select id="selectOneShoppingcarPayByShoppingcarIdAndTelephone" resultType="double">
+    select shoppingcar_subtotal
+    from shoppingcar where shoppingcar_id = #{shoppingcarId,jdbcType=VARCHAR} and telephone =
+    #{telephone,jdbcType=VARCHAR};
+  </select>
 </mapper>

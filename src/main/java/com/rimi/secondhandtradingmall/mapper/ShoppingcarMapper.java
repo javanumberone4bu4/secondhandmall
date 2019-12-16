@@ -26,7 +26,7 @@ public interface ShoppingcarMapper {
 
     Goods selectAllGoodsByPhoneAndGoodsId(@Param("goodsId") Integer goodsId, @Param("telephone") String telephone);
 
-    boolean dropShoppingcarGoodsByGoodsIdAndPhone(@Param("id") Integer id, @Param("telephone") String telephone);
+    int dropShoppingcarGoodsByGoodsIdAndPhone(@Param("id") String id, @Param("telephone") String telephone);
 
     int selectCountByTelephone(@Param("telephone") String telephone);
 
@@ -35,4 +35,13 @@ public interface ShoppingcarMapper {
     List<Shoppingcar> selectAllGoodsByPhone(@Param("telephone") String telephone);
 
     int deleteByPrimaryKey(@Param("ShoppingcarId") Integer ShoppingcarId, @Param("telephone") String telephone);
+
+    int deleteManyShoppingByPrimaryKey(@Param("ShoppingcarId") String ShoppingcarIds,
+                                       @Param("telephone") String telephone);
+
+    Shoppingcar selectShoppingcarByShoppingcarIdAndTelephone(@Param("shoppingcarId") String shoppingcarId, @Param(
+            "telephone") String telephone);
+
+    double selectOneShoppingcarPayByShoppingcarIdAndTelephone(@Param("shoppingcarId") String shoppingcarId, @Param(
+            "telephone") String telephone);
 }
