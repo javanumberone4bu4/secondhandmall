@@ -117,8 +117,8 @@
 
 
         var telephone = "";
-        var v1 = [[${session.allTelephone}]]
-        if (v1 == null) {
+        var v1 = "[[${session.allTelephone}]]";
+        if (v1 == "") {
             telephone = -1;
         } else {
             telephone = v1;
